@@ -2,7 +2,7 @@
 module.exports = {
     mysql: {
         host: 'host',
-        user: 'user',
+        user: 'root',
         password: 'pwd',
         database: 'database',
         port: 3306
