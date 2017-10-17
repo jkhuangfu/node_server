@@ -18,7 +18,7 @@ module.exports = {
                 msg: '密码为空'
             };
             jsonWrite(res, result);
-        } else if (param.img == '') {
+        } else if (param.img === '' || param.img === undefined) {
             jsonWrite(res, { code: 3, msg: '验证码为空' });
         } else if (param.img != req.session.img && param.img != '') {
             jsonWrite(res, { code: 0, msg: '验证码不正确' });
