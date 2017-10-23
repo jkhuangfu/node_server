@@ -4,12 +4,14 @@
 */
 module.exports = {
     ctrlCommon: () => {
-        let mysql = require('mysql');
-        let conf = require('../../conf/mySql');
-        let util = require('../../util/util');
+        const mysql = require('mysql');
+        const redis = require('redis');
+        const sqlConf = require('../../conf/mySql');
+        const util = require('../../util/util');
         global.sql = require('../sqlMap');
+        global.client = redis.createClient('6379', '127.0.0.1');
         /* 使用连接池 */
-        global.pool = mysql.createPool(util.extend({}, conf.mysql));
+        global.pool = mysql.createPool(util.extend({}, sqlConf.mysql));
         /* 向前台返回数据 方法*/
         global.jsonWrite = (res, ret) => {
             if (typeof ret === 'undefind') {

@@ -3,8 +3,7 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "start": "node ./bin/www",
-        "pm2": "pm2 start ./bin/www"
+        "start": "node ./bin/www"
     },
     "dependencies": {
         "body-parser": "~1.17.1",
@@ -14,8 +13,12 @@
         "ejs": "~2.5.6",
         "express": "~4.15.2",
         "express-session": "^1.15.5",
+        "memory-cache": "^0.2.0",
         "morgan": "~1.8.1",
         "mysql": "^2.14.1",
-        "serve-favicon": "~2.4.2"
+        "redis": "^2.8.0",
+        "request": "^2.83.0",
+        "serve-favicon": "~2.4.2",
+        "sha1": "^1.1.1"
     }
 }

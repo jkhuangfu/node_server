@@ -20,13 +20,15 @@ module.exports = {
             jsonWrite(res, result);
         } else if (param.img === '' || param.img === undefined) {
             jsonWrite(res, { code: 3, msg: '验证码为空' });
-        } else if (param.img != req.session.img && param.img != '') {
+        } else if (param.img !== req.session.img && param.img !== '') {
             jsonWrite(res, { code: 0, msg: '验证码不正确' });
         } else {
             pool.getConnection((err, connection) => {
                 connection.query(sql.insert, [param.nickName, param.passWord], (err, result) => {
                     if (result) {
-                        result = { code: 200, msg: '注册成功' }
+                        user.userName = param.nickName;
+                        req.session.user = user;
+                        result = { code: 200, msg: '注册成功' };
                     };
                     jsonWrite(res, result);
                     connection.release();
@@ -34,6 +36,5 @@ module.exports = {
 
             });
         };
-
     }
 };

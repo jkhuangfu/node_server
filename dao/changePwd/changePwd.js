@@ -1,5 +1,5 @@
-let common = require('../common/common');
-common.ctrlCommon();
+/* const common = require('../common/common');
+common.ctrlCommon(); */
 module.exports = {
     /* 
         oldPwd : user old awd
@@ -11,9 +11,9 @@ module.exports = {
         //let pram = req.body; //post
         let oldPwd = param.oldPwd;
         let newPwd = param.newPwd;
-        if (req.session.user) {
-            let nickName = req.session.user.userName;
-        } else {
+        let nickName = req.session.user.userName;
+
+        if (!nickName) {
             jsonWrite(res, { code: 99, message: 'session过期' });
             return;
         };

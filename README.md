@@ -1,10 +1,12 @@
 # node_express_mySQL
 个人学习Demo
 
+此分之为session版本
+
 PS：运行方法
 	
 	 npm install
 	
   npm run start
 		
-  npm run pm2 （此方法需要全局安装pm2 ---->npm install pm2 -g）
+

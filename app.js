@@ -1,20 +1,22 @@
-let express = require('express');
-let path = require('path');
-let favicon = require('serve-favicon');
-let logger = require('morgan');
-let cookieParser = require('cookie-parser');
-let bodyParser = require('body-parser');
-let session = require('express-session');
-let index = require('./routes/index');
-let users = require('./routes/users');
-let app = express();
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const index = require('./routes/index');
+const users = require('./routes/users');
+const RedisStore = require('connect-redis')(session);
+const app = express();
 //Session
 app.use(cookieParser('session'));
 app.use(session({
     secret: 'session', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
     saveUninitialized: true,
-    cookie: { maxAge: 120000 } //过期时间
+    HttpOnly: true,
+    cookie: { maxAge: 1 * 60 * 1000 } //过期时间
 }));
 //全局session
 app.use(function(req, res, next) {
@@ -39,7 +41,7 @@ app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    let err = new Error('Not Found');
+    const err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
