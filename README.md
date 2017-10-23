@@ -3,6 +3,8 @@
 
 此分之为session版本
 
+增加微信 js-sdk
+
 PS：运行方法
 	
 	 npm install
