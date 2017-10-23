@@ -1,5 +1,6 @@
 /* sql语句 */
 let sqlMap = {
+    checkUser: 'SELECT nickName FROM user_main WHERE nickName = ?', //检查用户
     insert: 'insert into user_main(nickName,regTime,passWord) values(?,now(),?)', //注册
     queryUserPwdByNickName: 'SELECT passWord FROM user_main WHERE nickName = ?', //根据用户名查询密码
     changePassWord: 'UPDATE user_main SET passWord = ? WHERE nickName = ?', //修改密码

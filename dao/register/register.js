@@ -24,16 +24,23 @@ module.exports = {
             jsonWrite(res, { code: 0, msg: '验证码不正确' });
         } else {
             pool.getConnection((err, connection) => {
-                connection.query(sql.insert, [param.nickName, param.passWord], (err, result) => {
-                    if (result) {
-                        user.userName = param.nickName;
-                        req.session.user = user;
-                        result = { code: 200, msg: '注册成功' };
+                connection.query(sql.checkUser, [param.nickName], (err, result) => {
+                    if (result.length > 0) {
+                        jsonWrite(res, { code: 4, msg: '已存在' });
+                    } else {
+                        pool.getConnection((err, connection) => {
+                            connection.query(sql.insert, [param.nickName, param.passWord], (err, result) => {
+                                if (result) {
+                                    user.userName = param.nickName;
+                                    req.session.user = user;
+                                    result = { code: 200, msg: '注册成功' };
+                                };
+                                jsonWrite(res, result);
+                            });
+                        });
                     };
-                    jsonWrite(res, result);
                     connection.release();
-                });
-
+                })
             });
         };
     }
