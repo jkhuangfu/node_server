@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const index = require('./routes/index');
 const users = require('./routes/users');
-const RedisStore = require('connect-redis')(session);
 const app = express();
 //Session
 app.use(cookieParser('session'));
@@ -18,7 +17,7 @@ app.use(session({
     HttpOnly: true,
     cookie: { maxAge: 1 * 60 * 1000 } //过期时间
 }));
-//全局session
+//全局sessiony
 app.use(function(req, res, next) {
     res.locals.session = req.session;
     next();
