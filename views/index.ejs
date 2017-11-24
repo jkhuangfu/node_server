@@ -3,33 +3,10 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="http://www.juyouqian.ren/js/jquery-1.8.3.min.js?vs=20171024"></script>
+    <%include ./common/common.ejs %>
   </head>
-  <body>
-  <h1>用户名：
-  <% if (session.user) { %>  
-     <%= session.user.userName%>
-  <% } else{%>
-       222   
-  <%}%> 
-
-
-
+  <body >
+<%= title%>
   
-  </h1>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
   </body>
-  <script>
-    $.ajax({
-      url:'/users/test',
-      type:"POST",
-      data:{
-        page:1
-      }, 
-      success:function(data){
-        console.log(data)
-      }
-    })
-  </script>
 </html>

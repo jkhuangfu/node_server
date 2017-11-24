@@ -7,17 +7,32 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const index = require('./routes/index');
 const users = require('./routes/users');
+const cors = require('cors');
 const app = express();
+
+/* app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By", ' 3.2.1')
+    next();
+}); */
+const corsOptions = {
+    origin: '*', //只有127可以访问
+    optionsSuccessStatus: 200,
+    credentials: true
+};
+app.use(cors(corsOptions));
 //Session
-app.use(cookieParser('session'));
+app.use(cookieParser('HFJKsession'));
 app.use(session({
-    secret: 'session', //与cookieParser中的一致
+    secret: 'HFJKsession', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
     saveUninitialized: true,
     HttpOnly: true,
-    cookie: { maxAge: 1 * 60 * 1000 } //过期时间
+    cookie: { maxAge: 30 * 60 * 1000 } //过期时间
 }));
-//全局sessiony
+//全局session
 app.use(function(req, res, next) {
     res.locals.session = req.session;
     next();
@@ -28,13 +43,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', index);
 app.use('/users', users);
 

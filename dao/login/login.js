@@ -5,8 +5,8 @@ const log4 = require('../../log4/log4').log;
 const user = {}; //存放用户信息
 module.exports = {
     login: (req, res, next) => {
-        let param = req.query || req.params; //get请求
-        //let param = req.body; //post
+        //let param = req.query || req.params; //get请求
+        let param = req.body; //post
         if (param.nickName === undefined || param.nickName === '') {
             jsonWrite(res, { code: 1, msg: '用户名为空' });
             log4.Info({ code: 1, msg: '用户名为空' });
@@ -22,7 +22,10 @@ module.exports = {
         } else {
             pool.getConnection((err, connection) => {
                 connection.query(sql.queryUserPwdByNickName, [param.nickName], (err, result) => {
-                    if (result[0].passWord != param.passWord) {
+                    if (result.length == 0) {
+                        result = { code: 5, msg: '用户名或密码错误' };
+                        log4.Info('用户名不存在');
+                    } else if (result[0].passWord != param.passWord || result.length == 0) {
                         result = { code: 5, msg: '用户名或密码错误' };
                         log4.Info({ code: 5, msg: '用户名或密码错误' });
                     } else {

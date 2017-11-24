@@ -45,6 +45,6 @@ log.writeErr = msg => {
     if (msg == null)
         msg = "";
     if (exp != null)
-        msg += "\r\n" + exp;
+        msg += "\r\n";
     logErr.error(msg);
 };
