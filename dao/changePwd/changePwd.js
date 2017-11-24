@@ -11,18 +11,19 @@ module.exports = {
         //let pram = req.body; //post
         let oldPwd = param.oldPwd;
         let newPwd = param.newPwd;
+        let newPwdAgain = param.newPwdAgain;
         let nickName = req.session.user.userName;
 
         if (!nickName) {
             jsonWrite(res, { code: 99, message: 'session过期' });
             return;
         };
-        if (nickName == '' || nickName == undefined) {
-            jsonWrite(res, { code: 0, message: '用户名为空' });
+        if (!oldPwd || !newPwd || !newPwdAgain) {
+            jsonWrite(res, { code: 1, message: '用户密码为空' });
             return;
         };
-        if (oldPwd == '' || oldPwd == undefined) {
-            jsonWrite(res, { code: 1, message: '用户密码为空' });
+        if (newPwd != newPwdAgain) {
+            jsonWrite(res, { code: 2, message: '两次密码不一致' });
             return;
         };
         pool.getConnection((err, connection) => {

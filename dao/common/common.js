@@ -14,7 +14,7 @@ module.exports = {
         global.jsonWrite = (res, ret) => {
             if (typeof ret === 'undefind') {
                 res.json({
-                    code: '400',
+                    code: '999',
                     msg: '操作失败'
                 });
             } else {

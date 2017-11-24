@@ -8,6 +8,6 @@ let sqlMap = {
     showMessage: 'update message set status = ? where id = ?', //是否显示
     deleteMessage: 'delete from message where id = ?', //删除信息
     queryShowMessage: 'select * from message where status = 1 order by `createTime` desc', //按照时间倒序获取要显示信息
-    queryAllMessage: 'select * from `message` order by `createTime` desc', //按照时间倒序获取所有信息
+    queryAllMessage: 'select * from `message` order by `createTime` desc limit (?,?)', //按照时间倒序获取所有信息
 };
 module.exports = sqlMap;
