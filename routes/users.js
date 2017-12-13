@@ -71,6 +71,12 @@ router.post('/getMsg', (req, res, next) => {
         res.send('0');
         return;
     }
+});
+/* 留言接口 */
+router.post('/delMsg', (req, res, next) => {
+    doMsg.deleteMessage(req, res, next)
+});
+router.post('/getMsg', (req, res, next) => {
     doMsg.getMsg(req, res, next)
 });
 router.post('/liveMsg', (req, res, next) => {

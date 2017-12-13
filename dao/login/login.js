@@ -13,13 +13,15 @@ module.exports = {
         } else if (param.passWord === undefined || param.passWord === '') {
             jsonWrite(res, { code: 2, msg: '密码为空' });
             log4.Info({ code: 2, msg: '密码为空' });
-        } else if (param.img === undefined || param.img === '') {
-            jsonWrite(res, { code: 4, msg: '验证码为空' });
-            log4.Info({ code: 4, msg: '验证码为空' });
-        } else if (param.img != req.session.img) {
-            jsonWrite(res, { code: 0, msg: '验证码不正确' });
-            log4.Info({ code: 0, msg: '验证码不正确' });
-        } else {
+        }
+        /* else if (param.img === undefined || param.img === '') {
+                   jsonWrite(res, { code: 4, msg: '验证码为空' });
+                   log4.Info({ code: 4, msg: '验证码为空' });
+               } else if (param.img != req.session.img) {
+                    jsonWrite(res, { code: 0, msg: '验证码不正确' });
+                   log4.Info({ code: 0, msg: '验证码不正确' });
+               }  */
+        else {
             pool.getConnection((err, connection) => {
                 connection.query(sql.queryUserPwdByNickName, [param.nickName], (err, result) => {
                     if (result.length == 0) {

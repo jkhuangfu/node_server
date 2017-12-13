@@ -9,7 +9,7 @@ module.exports = {
         let param = req.body; //post
         let sql = 'INSERT INTO message(articleId,articelTitle,msgCon,nickName,createTime) values(?,?,?,?,now())';
         let insertData = [param.articleId, param.articelTitle, param.msgCon, param.nickName];
-        log4.Info(param);
+        log4.Info(param)
         if (insertData.length != 4) {
             log4.Warn('数据不全');
             jsonWrite(res, { code: 99, msg: '数据不全' });
