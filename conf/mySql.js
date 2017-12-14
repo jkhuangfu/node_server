@@ -1,17 +1,17 @@
 /* test */
 module.exports = {
     mysqlDev: {
-        host: '127.0.0.1',
-        user: 'root',
-        password: 'huangfu',
-        database: 'api',
+        host: '',
+        user: '',
+        password: '',
+        database: '',
         port: 3306
     },
     mysqlOnline: {
-        host: '127.0.0.1',
-        user: 'huangfu',
-        password: 'huangFu1993!',
-        database: 'blog',
+        host: '',
+        user: '',
+        password: '',
+        database: '',
         port: 3306
     }
 };
