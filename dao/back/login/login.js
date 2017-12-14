@@ -1,6 +1,4 @@
-const common = require('../common/common');
-common.ctrlCommon();
-const log4 = require('../../log4/log4').log;
+const log4 = require('../../../log4/log4').log;
 /* 逻辑处理模块 */
 const user = {}; //存放用户信息
 module.exports = {

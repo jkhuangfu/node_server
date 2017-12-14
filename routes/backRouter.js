@@ -1,22 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const login = require('../dao/login/login');
-const register = require('../dao/register/register');
-const changePwd = require('../dao/changePwd/changePwd');
-const doMsg = require('../dao/manger/messageDo/queryMessage');
-const postMsg = require('../dao/manger/messageDo/postMessage');
-const postArticle = require('../dao/manger/articleDo/postArticle');
-const doArticle = require('../dao/manger/articleDo/doArticle');
+const login = require('../dao/back/login/login');
+const register = require('../dao/back/register/register');
+const changePwd = require('../dao/back/changePwd/changePwd');
+const doMsg = require('../dao/back/manger/messageDo/queryMessage');
+const postMsg = require('../dao/front/message/message');
+const postArticle = require('../dao/back/manger/articleDo/postArticle');
+const doArticle = require('../dao/back/manger/articleDo/doArticle');
 const captchapng = require('captchapng2'); //验证码组建
 const pnglib = require('pnglib');
 const p = new pnglib(100, 80, 8);
 const signature = require('../dao/wxShare/signature');
 const log4 = require('../log4/log4').log;
 const axios = require('axios');
-const common = require('../dao/common/common');
 const request = require('request');
-common.ctrlCommon();
-/* GET users listing. */
 // 注册
 router.post('/register', (req, res, next) => {
     log4.Info('======开始注册=====');

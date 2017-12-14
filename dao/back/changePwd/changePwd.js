@@ -1,5 +1,3 @@
-/* const common = require('../common/common');
-common.ctrlCommon(); */
 module.exports = {
     /* 
         oldPwd : user old awd

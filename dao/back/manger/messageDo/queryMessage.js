@@ -1,6 +1,6 @@
 const moment = require('moment');
 const qs = require('qs');
-const log4 = require('../../../log4/log4').log;
+const log4 = require('../../../../log4/log4').log;
 module.exports = {
     deleteMessage: (req, res, next) => {
         //let param = req.query || req.params; //get请求

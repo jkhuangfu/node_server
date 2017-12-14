@@ -1,4 +1,4 @@
-let common = require('../common/common');
+let common = require('../../common/common');
 common.ctrlCommon();
 /* 逻辑处理模块 */
 const user = {}; //存放用户信息

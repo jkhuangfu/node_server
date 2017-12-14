@@ -5,8 +5,10 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const index = require('./routes/index');
-const users = require('./routes/users');
+const MemoryStore = require('memorystore')(session); //解决session内存溢出问题
+const view = require('./routes/viewRouter'); //页面渲染
+const backRouter = require('./routes/backRouter'); //后台管理接口
+const frontRouter = require('./routes/frontRouter'); //前端展示接口
 const cors = require('cors');
 const app = express();
 const corsOptions = {
@@ -18,6 +20,9 @@ app.use(cors(corsOptions));
 //Session
 app.use(cookieParser('HFJKsession'));
 app.use(session({
+    store: new MemoryStore({
+        checkPeriod: 1000 * 60 * 30 // prune expired entries every 30 mins
+    }),
     secret: 'HFJKsession', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
     saveUninitialized: true,
@@ -41,8 +46,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', index);
-app.use('/users', users);
+app.use('/', view);
+app.use('/users', backRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
