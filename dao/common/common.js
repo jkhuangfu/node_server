@@ -7,7 +7,6 @@ module.exports = {
         const sqlConf = require('../../conf/mySql');
         const app = require('express')();
         let mysqlConfig;
-        console.log(app.get('env'))
         if (app.get('env') == 'development') {
             console.log('测试环境');
             mysqlConfig = sqlConf.mysqlDev;

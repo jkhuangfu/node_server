@@ -1,10 +1,10 @@
 /* 
- *@DEC 留言发布 Module
+ *@DEC 留言 Module
  */
 const qs = require('qs');
 const log4 = require('../../../log4/log4').log;
 module.exports = {
-    postMsg: (req, res, next) => {
+    postMessageByArticleId: (req, res, next) => {
         //let param = req.query || req.params; //get请求
         let param = req.body; //post
         let sql = 'INSERT INTO message(articleId,articelTitle,msgCon,nickName,createTime) values(?,?,?,?,now())';
@@ -32,5 +32,32 @@ module.exports = {
                 connection.release();
             })
         })
+    },
+    queryMessageByArticleId: (req, res, next) => {
+        //let param = req.query || req.params; //get请求
+        let param = req.body; //post
+        if (!param.id) {
+            jsonWrite(res, { code: 4, message: '参数异常' });
+            return;
+        };
+        let sql = 'SELECT * FROM message WHERE articleId = ' + param.id;
+        pool.getConnection((err, connection) => {
+            if (err) {
+                throw new Error(err);
+                log4.Warn(err);
+                jsonWrite(res, { code: 500, message: '数据库连接异常1' });
+                return flase;
+            };
+            connection.query(sql, (err, response) => {
+                if (err) {
+                    throw new Error(err);
+                    log4.Warn(err);
+                    jsonWrite(res, { code: 500, message: '数据库连接异常2' });
+                    return flase;
+                };
+                jsonWrite(res, { code: 200, messageList: response });
+                connection.release();
+            });
+        });
     }
 }

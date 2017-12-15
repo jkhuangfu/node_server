@@ -21,7 +21,7 @@ app.use(cors(corsOptions));
 app.use(cookieParser('HFJKsession'));
 app.use(session({
     store: new MemoryStore({
-        checkPeriod: 1000 * 60 * 30 // prune expired entries every 30 mins
+        checkPeriod: 1000 * 60 * 60 * 24 // prune expired entries every 24 h
     }),
     secret: 'HFJKsession', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
@@ -48,6 +48,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', view);
 app.use('/users', backRouter);
+app.use('/blog', frontRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
