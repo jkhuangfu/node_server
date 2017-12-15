@@ -21,7 +21,7 @@ router.get('/article/:id', (req, res, next) => {
             });
         })
         .then(data => {
-            res.render('articlePage/article', { articleCon: data1[0] })
+            res.render('articlePage/article', { articleCon: data[0] })
         })
         .catch((err) => {
             throw new Error(err);
