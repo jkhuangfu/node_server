@@ -1,0 +1,11 @@
+{
+    "apps": {
+        "name": "test",
+        "script": "./bin/www",
+        "watch": ["dao", "views", "log4", "app.js", "routes"],
+        "ignore_watch": [
+            "tmmp"
+        ],
+        "log_date_format": "YYYY-MM-DD HH:mm Z"
+    }
+}

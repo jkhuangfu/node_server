@@ -13,15 +13,22 @@ router.get('/article/:id', (req, res, next) => {
      */
     new Promise((reslove, reject) => {
             getArticle.queryArticleById(id, data => {
+                let res = {};
                 if (data.length == 0) {
-                    res.redirect('/');
-                    return;
-                }
-                reslove(data);
+                    res.status = false;
+                } else {
+                    res.status = true;
+                };
+                res.data = data;
+                reslove(res);
             });
         })
         .then(data => {
-            res.render('articlePage/article', { articleCon: data[0] })
+            if (data.status) {
+                res.render('articlePage/article', { articleCon: data.data[0] })
+            } else {
+                res.render('articlePage/article', { articleCon: { articleCon: '略略略' } })
+            }
         })
         .catch((err) => {
             throw new Error(err);

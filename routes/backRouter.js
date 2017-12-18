@@ -12,8 +12,9 @@ const pnglib = require('pnglib');
 const p = new pnglib(100, 80, 8);
 const signature = require('../dao/wxShare/signature');
 const log4 = require('../log4/log4').log;
-const axios = require('axios');
 const request = require('request');
+const multer = require('multer'); //文件上传
+const upload = multer({ dest: './tmmp/' });
 // 注册
 router.post('/register', (req, res, next) => {
     log4.Info('======开始注册=====');
@@ -25,7 +26,6 @@ router.get('/cacp', (req, res, next) => {
     log4.Info('======获取验证码=====' + rand);
     req.session.img = rand;
     let png = new captchapng(100, 30, rand);
-    //cosnole.log(req.session)
     res.writeHead(200, { 'Content-Type': 'image/png' });
     res.end(png.getBuffer());
 });
@@ -86,6 +86,9 @@ router.post('/postArticle', (req, res, next) => {
         return;
     }
     postArticle.postArticle(req, res, next);
+});
+router.post('/upImage', upload.single('file'), (req, res, next) => {
+    postArticle.upImage(req, res, next);
 });
 router.post('/getArticle', (req, res, next) => {
     if (!req.session.user) {
