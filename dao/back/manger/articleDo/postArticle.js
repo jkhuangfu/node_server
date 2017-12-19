@@ -35,7 +35,7 @@ module.exports = {
             connection.query(sql, insertData, (err, response) => {
                 if (err) {
                     log4.Warn('发布文章出错信息====' + err);
-                    jsonWrite(res, { code: 0, msg: '发布信息出错' });
+                    jsonWrite(res, { code: 99, msg: '发布信息出错' });
                     connection.release();
                     return;
                 };
