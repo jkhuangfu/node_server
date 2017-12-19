@@ -9,6 +9,8 @@ PS：运行方法
 	
 	 npm install
 	
-  npm run start
+  	 npm run start
+
+	 pm2 start start.json (需要全局安装pm2 npm install -g pm2)
 		
 

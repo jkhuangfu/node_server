@@ -8,8 +8,8 @@ const fs = require('fs');
 const co = require('co');
 const client = new OSS({
     region: 'oss-cn-beijing',
-    accessKeyId: 'L************a',
-    accessKeySecret: 'N**************fVCW'
+    accessKeyId: 'LT********a',
+    accessKeySecret: 'N************************CW'
 });
 const ali_oss = {
     bucket: 'blog-manger',
@@ -46,6 +46,7 @@ module.exports = {
     },
     upImage: (req, res, next) => {
         // 文件路径;
+        console.log(req)
         var filePath = './' + req.file.path;
         // 文件类型
         var temp = req.file.originalname.split('.');

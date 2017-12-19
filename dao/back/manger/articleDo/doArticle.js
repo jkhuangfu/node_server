@@ -3,7 +3,6 @@
  */
 const log4 = require('../../../../log4/log4').log;
 const moment = require('moment');
-const qs = require('qs');
 module.exports = {
     queryArticleByType: (req, res, next) => {
         //let param = req.query || req.params; //get请求
@@ -47,7 +46,7 @@ module.exports = {
     changeArticleStatus: (req, res, next) => {
         //let param = req.query || req.params; //get请求
         let param = req.body; //post
-        let id = qs.parse(param).id;
+        let id = param.id;
         if (id.length > 1) {
             id = id.join(',');
         } else {
@@ -74,7 +73,7 @@ module.exports = {
     deleteArticle: (req, res, next) => {
         //let param = req.query || req.params; //get请求
         let param = req.body; //post
-        let id = qs.parse(param).id;
+        let id = param.id;
         if (id.length > 1) {
             id = id.join(',');
         } else {

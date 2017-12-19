@@ -88,7 +88,12 @@ router.post('/postArticle', (req, res, next) => {
     postArticle.postArticle(req, res, next);
 });
 router.post('/upImage', upload.single('file'), (req, res, next) => {
-    postArticle.upImage(req, res, next);
+    try {
+        postArticle.upImage(req, res, next);
+    } catch (err) {
+        console.log(err)
+    }
+
 });
 router.post('/getArticle', (req, res, next) => {
     if (!req.session.user) {

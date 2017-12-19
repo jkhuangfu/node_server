@@ -1,11 +1,10 @@
 const moment = require('moment');
-const qs = require('qs');
 const log4 = require('../../../../log4/log4').log;
 module.exports = {
     deleteMessage: (req, res, next) => {
         //let param = req.query || req.params; //get请求
         let param = req.body; //post
-        let id = qs.parse(param).id;
+        let id = param.id;
         if (id.length > 1) {
             id = id.join(',');
         } else {
