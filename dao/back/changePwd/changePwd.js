@@ -5,13 +5,12 @@ module.exports = {
         nickName : user name
     */
     changePwd: (req, res, next) => {
-        let param = req.query || req.params; //get请求
-        //let pram = req.body; //post
+        //let param = req.query || req.params; //get请求
+        let param = req.body; //post
         let oldPwd = param.oldPwd;
         let newPwd = param.newPwd;
         let newPwdAgain = param.newPwdAgain;
         let nickName = req.session.user.userName;
-
         if (!nickName) {
             jsonWrite(res, { code: 99, message: 'session过期' });
             return;
