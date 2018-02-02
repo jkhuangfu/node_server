@@ -12,7 +12,7 @@ module.exports = {
                 headers: {
                     "content-type": "application/json",
                 }
-            }, function(error, response, body) {
+            }, (error, response, body) => {
                 if (!error && response.statusCode == 200) {
                     cache.put('access_token', body.access_token);
                     return body.access_token;
