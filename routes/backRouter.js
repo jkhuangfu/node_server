@@ -67,15 +67,10 @@ router.post('/getMsg', (req, res, next) => {
     if (!req.session.user) {
         res.send('0');
         return;
-    }
-});
-/* 留言接口 */
-router.post('/delMsg', (req, res, next) => {
-    doMsg.deleteMessage(req, res, next)
-});
-router.post('/getMsg', (req, res, next) => {
+    };
     doMsg.getMsg(req, res, next)
 });
+/* 留言接口 */
 router.post('/liveMsg', (req, res, next) => {
     postMsg.postMsg(req, res, next);
 });
