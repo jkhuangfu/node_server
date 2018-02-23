@@ -19,9 +19,9 @@ module.exports = {
         /**
          * type:0 未展示,1已展示,2查询全部
          */
-        pool.getConnection((err, connection) => {
+        pool.getConnection(async(err, connection) => {
             let count = 0;
-            connection.query(queryCountSql, (err, response) => {
+            await connection.query(queryCountSql, (err, response) => {
                 if (err) {
                     log4.writeErr(err);
                     return;
@@ -29,7 +29,7 @@ module.exports = {
                 count = response[0].count;
                 log4.Info('查询文章总条数成功====' + count);
             });
-            connection.query(querySql, (err, response) => {
+            await connection.query(querySql, (err, response) => {
                 if (err) {
                     log4.writeErr(err);
                     return;
@@ -112,13 +112,13 @@ module.exports = {
             sql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + param.articleTitle + '%"  AND isShow = ' + param.type;
             countSql = 'SELECT COUNT(*) AS count from (' + sql + ') t';
         };
-        pool.getConnection((err, connection) => {
+        pool.getConnection(async(err, connection) => {
             if (err) {
                 log4.Warn(err);
                 return;
             };
             let count = 0;
-            connection.query(countSql, (err, response) => {
+            await connection.query(countSql, (err, response) => {
                 if (err) {
                     log4.Warn(err);
                     return;
@@ -126,7 +126,7 @@ module.exports = {
                 count = response[0].count;
                 log4.Info('模糊查询文章总条数成功====' + count);
             });
-            connection.query(querySql, (err, response) => {
+            await connection.query(querySql, (err, response) => {
                 if (err) {
                     jsonWrite(res, { code: 9, msg: '搜索出错' });
                     connection.release();

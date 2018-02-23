@@ -36,8 +36,8 @@ module.exports = {
         const querrySql = 'select * from message  limit ' + pageIndex + ',' + pageSize;
         const countSql = 'select COUNT(*) AS count from message';
         let count, allMsg;
-        pool.getConnection((err, connection) => {
-            connection.query(countSql, (err, response) => {
+        pool.getConnection(async(err, connection) => {
+            await connection.query(countSql, (err, response) => {
                 if (err) {
                     log4.Warn(err);
                     return;
@@ -45,7 +45,7 @@ module.exports = {
                 count = response[0].count;
                 log4.Info('查询总条数成功====' + count);
             });
-            connection.query(querrySql, (err, response) => {
+            await connection.query(querrySql, (err, response) => {
                 if (err) {
                     log4.Warn(err);
                     return;
@@ -70,8 +70,8 @@ module.exports = {
         const sql = 'select * from message where articleTitle = "' + articleTitle + '"';
         const countSql = 'select COUNT(*) AS count from (' + sql + ') t';
         let count, allMsg;
-        pool.getConnection((err, connection) => {
-            connection.query(countSql, (err, response) => {
+        pool.getConnection(async(err, connection) => {
+            await connection.query(countSql, (err, response) => {
                 if (err) {
                     log4.Warn(err);
                     return;
@@ -79,7 +79,7 @@ module.exports = {
                 count = response[0].count;
                 log4.Info('查询总条数成功====' + count);
             });
-            connection.query(querrySql, (err, response) => {
+            await connection.query(querrySql, (err, response) => {
                 if (err) {
                     log4.Warn(err);
                     return;
