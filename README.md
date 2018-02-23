@@ -8,7 +8,7 @@ PS：运行方法 npm install 安装依赖
 	 (2) pm2 start start.json (需要全局安装pm2---> npm install -g pm2)
 
 
-## 文件目录
+## 文件目录结构及说明
 <pre>
 ├── app.js #入口配置文件
 ├── bin
