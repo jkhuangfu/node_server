@@ -10,13 +10,13 @@ PS：运行方法 npm install 安装依赖
 
 文件目录结构及说明
 
-<app.js #入口配置文件
-<<bin
-<<<www #端口号配置文件,默认3330
-<conf
-<<mySql.js #数据库连接信息（账号密码及数据库名）
-<dao
-<< back #后台API
++--app.js #入口配置文件
++-- bin
+│   +--www #端口号配置文件,默认3330
++-- conf
+│   +-- mySql.js #数据库连接信息（账号密码及数据库名）
++--dao
+│   +-- back #后台API
 <<<changePwd
 <<<<changePwd.js #修改密码API
 <<login
