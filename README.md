@@ -7,6 +7,58 @@ PS：运行方法 npm install 安装依赖
 
 	 (2) pm2 start start.json (需要全局安装pm2---> npm install -g pm2)
 
+
+文件目录结构及说明
+
+├── app.js #入口配置文件
+├── bin
+│   └── www #端口号配置文件,默认3330
+├── conf
+│   └── mySql.js #数据库连接信息（账号密码及数据库名）
+├── dao
+│   ├── back #后台API
+│   │   ├── changePwd
+│   │   │   └── changePwd.js #修改密码API
+│   │   ├── login
+│   │   │   └── login.js  #登录API
+│   │   ├── manger
+│   │   │   ├── articleDo
+│   │   │   │   ├── doArticle.js  #文章管理API
+│   │   │   │   └── postArticle.js  #文章发布API （包含阿里OSS APPID及secret配置）
+│   │   │   └── messageDo
+│   │   │       └── queryMessage.js  #留言管理API
+│   │   └── register
+│   │       └── register.js #注册API
+│   ├── common
+│   │   └── common.js #公共方法或变量信息
+│   ├── front #前端API
+│   │   ├── articleController
+│   │   │   └── getArticle.js #文章获取API
+│   │   └── message
+│   │       └── message.js #消息获取API
+│   ├── sqlMap.js #简单sql语句
+│   └── wxShare #微信JS-SDK
+│       ├── access_token.js
+│       ├── jsapi_ticket.js
+│       ├── signature.js
+│       └── wxconfig.js #微信公众号信息配置文件
+├── log4
+│   └── log4.js #日志配置文件
+├── package.json
+├── package-lock.json
+├── public #静态资源文件（js css img）
+│   └── favicon.ico
+├── routes
+│   ├── backRouter.js #后端API路由
+│   ├── frontRouter.js #前端渲染路由
+│   └── viewRouter.js #PM2启动配置文件
+├── start.json #PM2启动配置文件
+├── tmmp #阿里OSS文件上传临时目录
+├── util
+│   └── util.js
+└── views #前端页面（默认ejs引擎可在app.js配置修改）
+
+
 Mysql 表结构
 
 1.user_main 用户信息表
