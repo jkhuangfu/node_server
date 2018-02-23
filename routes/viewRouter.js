@@ -28,6 +28,10 @@ router.get('/MP_verify_tGmHaGktkQYkf6kr.txt', async(req, res, next) => {
 router.get('/', (req, res, next) => {
     res.render('index');
 });
+/* to 404 page */
+router.get('/notFound', (req, res, next) => {
+    res.render('error');
+});
 //文章路由
 router.get('/article/:id', (req, res, next) => {
     let id = req.params.id;
@@ -50,12 +54,12 @@ router.get('/article/:id', (req, res, next) => {
             if (data.status) {
                 res.render('articlePage/article', { articleCon: data.data[0] })
             } else {
-                res.render('articlePage/article', { articleCon: { articleCon: '略略略' } })
+                res.redirect('/notFound')
             }
         })
         .catch((err) => {
             throw new Error(err);
-            res.render('error');
+            res.redirect('/notFound')
         })
 });
 module.exports = router;
