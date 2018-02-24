@@ -5,7 +5,6 @@ module.exports = {
     login: (req, res, next) => {
         //let param = req.query || req.params; //get请求
         let param = req.body; //post
-        console.log(param)
         if (param.nickName === undefined || param.nickName === '') {
             jsonWrite(res, { code: 1, msg: '用户名为空' });
             log4.Info({ code: 1, msg: '用户名为空' });

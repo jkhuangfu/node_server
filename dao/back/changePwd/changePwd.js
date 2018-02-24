@@ -25,11 +25,11 @@ module.exports = {
         };
         pool.getConnection((err, connection) => {
             if (err) {
-                console.log(err)
+                jsonWrite(res, { code: 500, message: '服务器错误', errorMsg: err });
             } else {
                 connection.query(sql.queryUserPwdByNickName, [nickName], (err, result) => {
                     if (result) {
-                        if (oldPwd == result[0].passWord) {
+                        if (oldPwd.toLowerCase() == result[0].passWord.toLowerCase()) {
                             connection.query(sql.changePassWord, [newPwd, nickName], (err, result) => {
                                 if (result) {
                                     jsonWrite(res, { code: 3, message: '用户密码修改成功' });
