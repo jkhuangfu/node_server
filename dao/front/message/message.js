@@ -59,5 +59,34 @@ module.exports = {
                 connection.release();
             });
         });
+    },
+    postMsg: (req, res, next) => {
+        //let param = req.query || req.params; //get请求
+        let param = req.body; //post
+        let insertData = [param.articleId, param.articleTitle, param.msgCon, param.nickName];
+        log4.Info('传递数据===' + insertData);
+        if (insertData.indexOf(undefined) >= 0) {
+            jsonWrite(res, { code: 500, message: '参数异常' });
+            return;
+        };
+        let sql = 'INSERT INTO message (articleId,articleTitle,msgCon,nickName,createTime) values (?,?,?,?,now())';
+        pool.getConnection((err, connection) => {
+            if (err) {
+                throw new Error(err);
+                log4.Warn(err);
+                jsonWrite(res, { code: 500, message: '数据库连接异常1' });
+                return flase;
+            };
+            connection.query(sql, insertData, (err, response) => {
+                if (err) {
+                    throw new Error(err);
+                    log4.Warn(err);
+                    jsonWrite(res, { code: 500, message: err });
+                    return flase;
+                };
+                jsonWrite(res, { code: 200, message: '留言成功' });
+                connection.release();
+            });
+        });
     }
 }

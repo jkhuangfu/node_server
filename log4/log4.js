@@ -18,16 +18,9 @@ log4js.configure({
 });
 const log = {};
 exports.log = log;
-const logDebug = log4js.getLogger('logDebug');
 const logInfo = log4js.getLogger('logInfo');
 const logWarn = log4js.getLogger('logWarn');
 const logErr = log4js.getLogger('logErr');
-
-log.Debug = msg => {
-    if (msg == null)
-        msg = "";
-    logDebug.debug(msg);
-};
 
 log.Info = msg => {
     if (msg == null)
@@ -44,7 +37,5 @@ log.Warn = msg => {
 log.writeErr = msg => {
     if (msg == null)
         msg = "";
-    if (exp != null)
-        msg += "\r\n";
     logErr.error(msg);
 };
