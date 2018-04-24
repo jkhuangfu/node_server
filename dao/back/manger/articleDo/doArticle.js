@@ -1,7 +1,6 @@
 /*
  * 文章处理 Module 是否展示，删除 
  */
-const log4 = require('../../../../log4/log4').log;
 const moment = require('moment');
 module.exports = {
     queryArticleByType: (req, res, next) => {

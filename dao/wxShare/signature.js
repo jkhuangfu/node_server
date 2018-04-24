@@ -2,7 +2,6 @@ const sha1 = require('sha1');
 const request = require('request');
 const cache = require('memory-cache');
 const noncestr = 'Wm3WsdsTPz0wzccnW';
-const log4 = require('../../log4/log4').log;
 const config = require('./wxconfig');
 //前台传递的url必须encodeURIComponent操作
 module.exports = {

@@ -9,8 +9,10 @@ const MemoryStore = require('memorystore')(session); //解决session内存溢出
 const view = require('./routes/viewRouter'); //页面渲染
 const backRouter = require('./routes/backRouter'); //后台管理接口
 const frontRouter = require('./routes/frontRouter'); //前端展示接口
+const common = require('./dao/common/common'); //全局使用方法及变量
 const cors = require('cors');
 const app = express();
+common.ctrlCommon(app);
 const corsOptions = {
     origin: '*', //此处设置允许访问的域名
     optionsSuccessStatus: 200,

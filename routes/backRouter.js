@@ -11,7 +11,6 @@ const captchapng = require('captchapng2'); //验证码组件
 const pnglib = require('pnglib');
 const p = new pnglib(100, 80, 8);
 const signature = require('../dao/wxShare/signature');
-const log4 = require('../log4/log4').log;
 const request = require('request');
 const multer = require('multer'); //文件上传
 const upload = multer({ dest: './tmmp/' });

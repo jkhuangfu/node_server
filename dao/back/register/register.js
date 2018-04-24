@@ -1,9 +1,7 @@
-let common = require('../../common/common');
-common.ctrlCommon();
 /* 逻辑处理模块 */
-const user = {}; //存放用户信息
 module.exports = {
     register: (req, res, next) => {
+        const user = {}; //存放用户信息
         //let param = req.query || req.params; //get请求
         let pram = req.body; //post
         if (param.nickName === undefined || param.nickName === '') {

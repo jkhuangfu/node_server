@@ -1,7 +1,6 @@
 /*
  *文章发布 Module 
  */
-const log4 = require('../../../../log4/log4').log;
 const OSS = require('ali-oss');
 const fs = require('fs');
 // 初始化Client
