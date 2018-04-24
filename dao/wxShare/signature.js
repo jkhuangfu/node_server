@@ -1,30 +1,51 @@
 const sha1 = require('sha1');
+const request = require('request');
 const cache = require('memory-cache');
-const tiket = require('./jsapi_ticket');
 const noncestr = 'Wm3WsdsTPz0wzccnW';
 const config = require('./wxconfig');
 //前台传递的url必须encodeURIComponent操作
 module.exports = {
-    signature: async(req, res, next) => {
-        console.log('===进入签名阶段===');
-        //let param = req.query || req.params; //get请求
-        let param = req.body; //post
-        let timestamp = Math.floor(Date.now() / 1000);
-        let _ticket = ''; //获取jsapi_ticket
-        if (cache.get('ticket')) {
-            _ticket = cache.get('ticket')
-        } else {
-            _ticket = await tiket.getTicket();
-        };
-
+    signature: (req, res, next) => {
+        let param = req.body;
         let success = ''; //成功信息
-        let string1 = 'jsapi_ticket=' + _ticket + '&noncestr=' + noncestr + '&timestamp=' + timestamp + '&url=' + decodeURIComponent(param.url);
-        let signature = sha1(string1);
-        if (_ticket == undefined) {
-            success = 'error';
+        let string1 = '';
+        let timestamp = Math.floor(Date.now() / 1000);; //时间戳
+        if (cache.get('access_token') && cache.get('jsapi_ticket')) { //缓存中有token和jsapi_ticket
+            console.log('缓存中有token和jsapi_ticket');
+            string1 = 'jsapi_ticket=' + cache.get('jsapi_ticket') + '&noncestr=' + noncestr + '&timestamp=' + timestamp + '&url=' + decodeURIComponent(param.url);
         } else {
-            success = 'success';
+            console.log('缓存中没有token和jsapi_ticket');
+            request({
+                url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' + config.config.APPID + '&secret=' + config.config.APPSECRET,
+                method: "GET",
+                json: true,
+                headers: {
+                    "content-type": "application/json",
+                }
+            }, (error, response, body) => {
+                if (!error && response.statusCode == 200) {
+                    console.log('===获取access_token并放入cache===');
+                    cache.put('access_token', body.access_token, 7200000); //放入缓存7200000ms有效期两小时有效期
+                    let token = body.access_token;
+                    request({
+                        url: 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=' + token + '&type=jsapi',
+                        method: "GET",
+                        json: true,
+                        headers: {
+                            "content-type": "application/json",
+                        }
+                    }, (error, response, body) => {
+                        if (!error && response.statusCode == 200) {
+                            console.log('===获取jsapi_ticket并放入cache===');
+                            cache.put('jsapi_ticket', body.ticket, 7200000); //放入缓存7200000ms有效期
+                            string1 = 'jsapi_ticket=' + body.ticket + '&noncestr=' + noncestr + '&timestamp=' + timestamp + '&url=' + decodeURIComponent(param.url);
+                        }
+                    });
+                };
+            });
         };
+        console.log(string1);
+        let signature = sha1(string1);
         let resData = {
             success: success,
             appId: config.config.APPID, // 必填，公众号的唯一标识
@@ -34,4 +55,4 @@ module.exports = {
         };
         res.send(resData);
     }
-}
+};
