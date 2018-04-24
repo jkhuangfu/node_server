@@ -24,7 +24,6 @@ router.post('/register', (req, res, next) => {
 router.get('/cacp', (req, res, next) => {
     let rand = parseInt(Math.random() * 9000 + 1000);
     log4.Info('======获取验证码=====' + rand);
-    console.log(111)
     req.session.img = rand;
     let png = new captchapng(100, 30, rand);
     res.writeHead(200, { 'Content-Type': 'image/png' });
@@ -95,7 +94,7 @@ router.post('/upImage', upload.single('file'), (req, res, next) => {
     try {
         postArticle.upImage(req, res, next);
     } catch (err) {
-        console.log(err)
+        log4.writeErr(err)
     }
 
 });

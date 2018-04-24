@@ -1,6 +1,7 @@
 /* 
     ctrlCommon:数据库连接池及其他应用
 */
+const log4 = require('../../log4/log4').log;
 module.exports = {
     ctrlCommon: () => {
         const mysql = require('mysql');
@@ -8,10 +9,10 @@ module.exports = {
         const app = require('express')();
         let mysqlConfig;
         if (app.get('env') == 'development') {
-            console.log('测试环境');
+            log4.Info('测试环境');
             mysqlConfig = sqlConf.mysqlDev;
         } else if (app.get('env') == 'production') {
-            console.log('线上环境');
+            log4.Info('线上环境');
             mysqlConfig = sqlConf.mysqlOnline;
         };
         const util = require('../../util/util');

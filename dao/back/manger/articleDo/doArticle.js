@@ -60,7 +60,7 @@ module.exports = {
             };
             connection.query(sql, (err, response) => {
                 if (err) {
-                    console.log(err)
+                    log4.writeErr(err);
                     jsonWrite(res, { code: 9, msg: '更改出错' });
                     connection.release();
                     return;

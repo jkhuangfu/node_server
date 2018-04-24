@@ -46,7 +46,6 @@ module.exports = {
     },
     upImage: (req, res, next) => {
         // 文件路径;
-        console.log(req)
         var filePath = './' + req.file.path;
         // 文件类型
         var temp = req.file.originalname.split('.');
