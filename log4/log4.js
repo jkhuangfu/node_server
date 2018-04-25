@@ -34,7 +34,7 @@ log.Warn = msg => {
     logWarn.warn(msg);
 };
 
-log.writeErr = msg => {
+log.error = msg => {
     if (msg == null)
         msg = "";
     logErr.error(msg);

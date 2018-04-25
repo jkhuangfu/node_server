@@ -18,22 +18,27 @@ const writeJson = (res, timestamp, signature) => {
 module.exports = {
     signature: async(req, res, next) => {
         log4.Info('===进入签名===');
-        let param = req.body;
-        let string1 = '';
-        let timestamp = Math.floor(Date.now() / 1000); //时间戳
-        if (cache.get('access_token') && cache.get('jsapi_ticket')) { //缓存中有token和jsapi_ticket
-            log4.Info('缓存中有token和jsapi_ticket');
-            string1 = 'jsapi_ticket=' + cache.get('jsapi_ticket') + '&noncestr=' + noncestr + '&timestamp=' + timestamp + '&url=' + decodeURIComponent(param.url);
-            log4.Info(string1);
-            let signature = sha1(string1);
-            writeJson(res, timestamp, signature);
-        } else {
-            log4.Info('缓存中没有token和jsapi_ticket');
-            const token = await wxToken.getToken(config.config.APPID, config.config.APPSECRET);
-            const jsapi_ticket = await wxTicket.getTicket(token);
-            string1 = 'jsapi_ticket=' + jsapi_ticket + '&noncestr=' + noncestr + '&timestamp=' + timestamp + '&url=' + decodeURIComponent(param.url);
-            let signature = sha1(string1);
-            writeJson(res, timestamp, signature);
-        };
+        try {
+            let param = req.body;
+            let string1 = '';
+            let timestamp = Math.floor(Date.now() / 1000); //时间戳
+            if (cache.get('access_token') && cache.get('jsapi_ticket')) { //缓存中有token和jsapi_ticket
+                log4.Info('缓存中有token和jsapi_ticket');
+                string1 = 'jsapi_ticket=' + cache.get('jsapi_ticket') + '&noncestr=' + noncestr + '&timestamp=' + timestamp + '&url=' + decodeURIComponent(param.url);
+                log4.Info(string1);
+                let signature = sha1(string1);
+                writeJson(res, timestamp, signature);
+            } else {
+                log4.Info('缓存中没有token和jsapi_ticket');
+                const token = await wxToken.getToken(config.config.APPID, config.config.APPSECRET);
+                const jsapi_ticket = await wxTicket.getTicket(token);
+                string1 = 'jsapi_ticket=' + jsapi_ticket + '&noncestr=' + noncestr + '&timestamp=' + timestamp + '&url=' + decodeURIComponent(param.url);
+                let signature = sha1(string1);
+                writeJson(res, timestamp, signature);
+            };
+        } catch {
+            log4.error('签名信息异常');
+            res.json({ status: 500, message: '签名失败' });
+        }
     }
 };
