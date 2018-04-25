@@ -7,7 +7,6 @@
 var app = require('../app');
 var debug = require('debug')('node-express-mysql:server');
 var http = require('http');
-const log4 = require('../log4/log4').log;
 /**
  * Get port from environment and store in Express.
  */
