@@ -38,6 +38,8 @@ PS：运行方法 npm install 安装依赖
 │   │       └── message.js #消息获取API
 │   ├── sqlMap.js #简单sql语句
 │   └── wxShare #微信JS-SDK
+│       ├── access_token.js #获取token
+│       ├── jsapi_ticket.js #获取ticket
 │       ├── signature.js #签名
 │       └── wxconfig.js #微信公众号信息配置文件
 ├── log4
