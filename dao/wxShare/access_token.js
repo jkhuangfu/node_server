@@ -12,14 +12,14 @@ module.exports = {
                     "content-type": "application/json",
                 }
             }, (error, response, body) => {
-                if (!error && response.statusCode == 200 && body.errcode == 0) {
+                if (!error && response.statusCode == 200) {
                     log4.Info('===获取access_token并放入cache===');
                     log4.Info('token====' + body.access_token);
                     cache.put('access_token', body.access_token, 7200000); //放入缓存7200000ms有效期两小时有效期
                     resolve(body.access_token);
                 } else {
-                    log4.error('获取token失败===' + body.errmsg);
-                    reject(body.errmsg);
+                    log4.error('获取token失败===');
+                    reject('error');
                 };
             })
         });

@@ -36,8 +36,8 @@ module.exports = {
                 let signature = sha1(string1);
                 writeJson(res, timestamp, signature);
             };
-        } catch {
-            log4.error('签名信息异常');
+        } catch (error) {
+            log4.error(error);
             res.json({ status: 500, message: '签名失败' });
         }
     }
