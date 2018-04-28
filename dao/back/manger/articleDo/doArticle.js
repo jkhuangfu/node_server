@@ -20,15 +20,19 @@ module.exports = {
          */
         pool.getConnection(async(err, connection) => {
             let count = 0;
-            await connection.query(queryCountSql, (err, response) => {
-                if (err) {
-                    log4.writeErr(err);
-                    return;
-                }
-                count = response[0].count;
-                log4.Info('查询文章总条数成功====' + count);
+            count = await new Promise((resolve, reject) => {
+                connection.query(queryCountSql, (err, response) => {
+                    if (err) {
+                        log4.error(err);
+                        reject(err);
+                        return;
+                    } else {
+                        resolve(response[0].count);
+                        log4.Info('查询文章总条数成功====' + response[0].count);
+                    }
+                });
             });
-            await connection.query(querySql, (err, response) => {
+            connection.query(querySql, (err, response) => {
                 if (err) {
                     log4.writeErr(err);
                     return;

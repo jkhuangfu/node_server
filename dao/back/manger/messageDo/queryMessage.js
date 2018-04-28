@@ -36,15 +36,19 @@ module.exports = {
         const countSql = 'select COUNT(*) AS count from message';
         let count, allMsg;
         pool.getConnection(async(err, connection) => {
-            await connection.query(countSql, (err, response) => {
-                if (err) {
-                    log4.Warn(err);
-                    return;
-                }
-                count = response[0].count;
-                log4.Info('查询总条数成功====' + count);
+            count = await new Promise((resolve, reject) => {
+                connection.query(countSql, (err, response) => {
+                    if (err) {
+                        log4.Warn(err);
+                        reject(err);
+                        return;
+                    } else {
+                        log4.Info('查询总条数成功====' + response[0].count);
+                        resolve(response[0].count)
+                    }
+                });
             });
-            await connection.query(querrySql, (err, response) => {
+            connection.query(querrySql, (err, response) => {
                 if (err) {
                     log4.Warn(err);
                     return;
@@ -70,15 +74,19 @@ module.exports = {
         const countSql = 'select COUNT(*) AS count from (' + sql + ') t';
         let count, allMsg;
         pool.getConnection(async(err, connection) => {
-            await connection.query(countSql, (err, response) => {
-                if (err) {
-                    log4.Warn(err);
-                    return;
-                }
-                count = response[0].count;
-                log4.Info('查询总条数成功====' + count);
+            count = await new Promise((resolve, reject) => {
+                connection.query(countSql, (err, response) => {
+                    if (err) {
+                        log4.Warn(err);
+                        reject(err);
+                        return;
+                    } else {
+                        log4.Info('查询总条数成功====' + response[0].count);
+                        resolve(response[0].count);
+                    }
+                });
             });
-            await connection.query(querrySql, (err, response) => {
+            connection.query(querrySql, (err, response) => {
                 if (err) {
                     log4.Warn(err);
                     return;
