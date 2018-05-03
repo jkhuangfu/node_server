@@ -116,32 +116,35 @@ module.exports = {
             countSql = 'SELECT COUNT(*) AS count from (' + sql + ') t';
         };
         pool.getConnection(async(err, connection) => {
-            if (err) {
-                log4.Warn(err);
-                return;
-            };
-            let count = 0;
-            await connection.query(countSql, (err, response) => {
-                if (err) {
-                    log4.Warn(err);
-                    return;
-                }
-                count = response[0].count;
-                log4.Info('模糊查询文章总条数成功====' + count);
-            });
-            await connection.query(querySql, (err, response) => {
-                if (err) {
-                    jsonWrite(res, { code: 9, msg: '搜索出错' });
-                    connection.release();
-                    return;
-                };
-                response.forEach(row => {
-                    row.createTime = moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
+            try {
+                let count = 0;
+                count = await new Promise((resolve, reject) => {
+                    connection.query(countSql, (err, response) => {
+                        if (err) {
+                            log4.Warn(err);
+                            reject(err);
+                            return;
+                        };
+                        resolve(response[0].count);
+                        log4.Info('模糊查询文章总条数成功====' + count);
+                    });
                 });
-                log4.Info('模糊查询文章成功====' + count);
-                jsonWrite(res, { code: 1, data: response, count: count });
-                connection.release();
-            })
+                connection.query(querySql, (err, response) => {
+                    if (err) {
+                        jsonWrite(res, { code: 9, msg: '搜索出错' });
+                        connection.release();
+                        return;
+                    };
+                    response.forEach(row => {
+                        row.createTime = moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
+                    });
+                    log4.Info('模糊查询文章成功====' + count);
+                    jsonWrite(res, { code: 1, data: response, count: count });
+                    connection.release();
+                })
+            } catch (error) {
+                jsonWrite(res, { code: 500, message: '系统错误' });
+            }
         })
     }
 }
