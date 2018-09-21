@@ -28,7 +28,6 @@ module.exports = {
                     } else {
                         delete req.session.img;
                         user.userName = param.nickName;
-                        delete req.session.img;
                         req.session.user = user;
                         result = { code: 6, msg: '登录成功' };
                         log4.Info({ code: 6, msg: '登录成功,用户名为:-->' + param.nickName });
