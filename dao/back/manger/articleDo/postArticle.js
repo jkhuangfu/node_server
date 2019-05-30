@@ -1,5 +1,5 @@
 /*
- *文章发布 Module 
+ *文章发布 Module
  */
 const OSS = require('ali-oss');
 const fs = require('fs');
@@ -17,14 +17,14 @@ const ali_oss = {
 module.exports = {
     postArticle: (req, res, next) => {
         //let param = req.query || req.params; //get请求
-        let param = req.body; //post
+        let {articleTitle,articleCon} = req.body; //post
         let sql = 'INSERT INTO article(articleTitle,articleCon,createTime) values(?,?,now())';
-        let insertData = [param.articleTitle, param.articleCon];
-        if (!param.articleTitle || !param.articleCon) {
+        let insertData = [articleTitle, articleCon];
+        if (!articleTitle || !articleCon) {
             log4.Warn('数据不全');
             jsonWrite(res, { code: 99, msg: '数据不全' });
             return;
-        };
+        }
         pool.getConnection((err, connection) => {
             if (err) {
                 log4.Warn('发布信息出错信息====' + err);
@@ -59,7 +59,7 @@ module.exports = {
             } else {
                 var localFile = './' + fileName;
                 var key = 'articleImg/' + fileName; //存放bucket子目录
-                // 阿里云 上传文件 
+                // 阿里云 上传文件
                 co(function*() {
                     client.useBucket(ali_oss.bucket);
                     var result = yield client.put(key, localFile);

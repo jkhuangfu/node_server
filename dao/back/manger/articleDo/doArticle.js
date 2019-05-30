@@ -1,20 +1,20 @@
 /*
- * 文章处理 Module 是否展示，删除 
+ * 文章处理 Module 是否展示，删除
  */
 const moment = require('moment');
 module.exports = {
     queryArticleByType: (req, res, next) => {
         //let param = req.query || req.params; //get请求
-        let param = req.body; //post
+        let { pageIndex,pageSize,type  } = req.body; //post
         let querySql = "";
         let queryCountSql = "";
-        if (param.type == 2) { //全部
-            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article limit ' + param.pageIndex + ',' + param.pageSize;
+        if (Number(type) === 2) { //全部
+            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article limit ' + pageIndex + ',' + pageSize;
             queryCountSql = 'SELECT COUNT(*) AS count from article';
         } else {
-            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE isShow = ' + Number(param.type) + ' limit ' + param.pageIndex + ', ' + param.pageSize;
-            queryCountSql = 'SELECT COUNT(*) AS count from article WHERE isShow = ' + Number(param.type);
-        };
+            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE isShow = ' + Number(type) + ' limit ' + pageIndex + ', ' + pageSize;
+            queryCountSql = 'SELECT COUNT(*) AS count from article WHERE isShow = ' + Number(type);
+        }
         /**
          * type:0 未展示,1已展示,2查询全部
          */
@@ -48,14 +48,12 @@ module.exports = {
     },
     changeArticleStatus: (req, res, next) => {
         //let param = req.query || req.params; //get请求
-        let param = req.body; //post
-        let id = param.id;
+        let {status,id} = req.body; //post
+        //let id = param.id;
         if (id.length > 1) {
             id = id.join(',');
-        } else {
-            id = id;
-        };
-        let sql = 'update article set isShow = ' + param.status + ' where id in(' + param.id + ')';
+        }
+        let sql = 'update article set isShow = ' + status + ' where id in(' + id + ')';
         pool.getConnection((err, connection) => {
             if (err) {
                 log4.writeErr(err);
@@ -75,14 +73,10 @@ module.exports = {
     },
     deleteArticle: (req, res, next) => {
         //let param = req.query || req.params; //get请求
-        let param = req.body; //post
-        let id = param.id;
+        let { id } = req.body; //post
         if (id.length > 1) {
             id = id.join(',');
-        } else {
-            id = id;
-        };
-        let data = { code: 500, msg: '服务出错' };
+        }
         let sql = 'DELETE FROM article WHERE id in(' + id + ')';
         pool.getConnection((err, connection) => {
             if (err) {
@@ -102,19 +96,19 @@ module.exports = {
     },
     queryArticleByTitleAndStatus: (req, res, next) => {
         //let param = req.query || req.params; //get请求
-        let param = req.body; //post
+        let {articleTitle,pageIndex,pageSize,type} = req.body; //post
         let querySql = '';
         let countSql = '';
         let sql = '';
-        if (param.type == 2) { //全部
-            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + param.articleTitle + '%" limit ' + param.pageIndex + ', ' + param.pageSize;
-            sql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + param.articleTitle + '%"';
+        if (type === 2) { //全部
+            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + articleTitle + '%" limit ' + pageIndex + ', ' + pageSize;
+            sql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + articleTitle + '%"';
             countSql = 'SELECT COUNT(*) AS count from (' + sql + ') t';
         } else {
-            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + param.articleTitle + '%"  AND isShow = ' + param.type + ' limit ' + param.pageIndex + ',' + param.pageSize;
-            sql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + param.articleTitle + '%"  AND isShow = ' + param.type;
+            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + articleTitle + '%"  AND isShow = ' + type + ' limit ' + pageIndex + ',' + pageSize;
+            sql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + articleTitle + '%"  AND isShow = ' + type;
             countSql = 'SELECT COUNT(*) AS count from (' + sql + ') t';
-        };
+        }
         pool.getConnection(async(err, connection) => {
             try {
                 let count = 0;
@@ -124,7 +118,7 @@ module.exports = {
                             log4.Warn(err);
                             reject(err);
                             return;
-                        };
+                        }
                         resolve(response[0].count);
                         log4.Info('模糊查询文章总条数成功====' + count);
                     });

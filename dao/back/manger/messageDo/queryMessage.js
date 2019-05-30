@@ -2,13 +2,10 @@ const moment = require('moment');
 module.exports = {
     deleteMessage: (req, res, next) => {
         //let param = req.query || req.params; //get请求
-        let param = req.body; //post
-        let id = param.id;
+        let { id } = req.body; //post
         if (id.length > 1) {
             id = id.join(',');
-        } else {
-            id = id;
-        };
+        }
         let data = { code: 500, msg: '服务出错' };
         let sql = 'DELETE FROM message WHERE id in(' + id + ')';
         pool.getConnection((err, connection) => {
@@ -28,9 +25,7 @@ module.exports = {
         });
     },
     getMsg: (req, res, next) => {
-        const param = req.body; //post
-        const pageIndex = param.pageIndex;
-        const pageSize = param.pageSize;
+        const { pageIndex, pageSize} = req.body; //post
         //const sql = 'select * from message order by createTime desc limit ' + pageIndex + ',' + pageSize;
         const querrySql = 'select * from message  limit ' + pageIndex + ',' + pageSize;
         const countSql = 'select COUNT(*) AS count from message';
@@ -65,10 +60,7 @@ module.exports = {
         })
     },
     getMsgByTitle: (req, res, next) => {
-        const param = req.body; //post
-        const pageIndex = param.pageIndex;
-        const pageSize = param.pageSize;
-        const articleTitle = param.articleTitle;
+        const { pageIndex, pageSize,articleTitle } = req.body; //post
         const querrySql = 'select * from message where articleTitle = "' + articleTitle + '" limit ' + pageIndex + ',' + pageSize;
         const sql = 'select * from message where articleTitle = "' + articleTitle + '"';
         const countSql = 'select COUNT(*) AS count from (' + sql + ') t';

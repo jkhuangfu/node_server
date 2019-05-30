@@ -6,13 +6,13 @@ module.exports = {
             if (err) {
                 throw new Error(err);
                 log4.Warn(err);
-                return flase;
+                return false;
             };
             connection.query(sql, (err, response) => {
                 if (err) {
                     throw new Error(err);
                     log4.Warn(err);
-                    return flase;
+                    return false;
                 };
                 connection.release();
                 callback(response)
