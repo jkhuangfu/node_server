@@ -7,11 +7,7 @@ const doMsg = require('../dao/back/manger/messageDo/queryMessage');
 const postMsg = require('../dao/front/message/message');
 const postArticle = require('../dao/back/manger/articleDo/postArticle');
 const doArticle = require('../dao/back/manger/articleDo/doArticle');
-const captchapng = require('captchapng2'); //验证码组件
-const pnglib = require('pnglib');
-const p = new pnglib(100, 80, 8);
-const signature = require('../dao/wxShare/signature');
-const request = require('request');
+const svgCaptcha = require('svg-captcha'); //验证码组件
 const multer = require('multer'); //文件上传
 const upload = multer({ dest: './tmmp/' });
 // 注册
@@ -20,13 +16,14 @@ router.post('/register', (req, res, next) => {
     register.register(req, res, next);
 });
 //验证码
-router.get('/cacp', (req, res, next) => {
-    let rand = parseInt(Math.random() * 9000 + 1000);
-    log4.Info('======获取验证码=====' + rand);
-    req.session.img = rand;
-    let png = new captchapng(100, 30, rand);
-    res.writeHead(200, { 'Content-Type': 'image/png' });
-    res.end(png.getBuffer());
+router.get('/cacp', (req, res) => {
+    let captcha = svgCaptcha.createMathExpr({
+        noise:3,
+        color:true
+    });
+    log4.Info('======获取验证码=====' + captcha.text);
+    res.type('svg');
+    res.status(200).send(captcha.data);
 });
 //登录
 router.post('/login', (req, res, next) => {
@@ -39,16 +36,12 @@ router.post('/changePwd', (req, res, next) => {
     changePwd.changePwd(req, res, next);
 });
 //注销
-router.post('/logout', (req, res, next) => {
+router.post('/logout', (req, res) => {
     log4.Info(req.session.user.userName + '======退出登录=====');
     delete req.session.user;
     res.send('1')
 });
-//微信分享
-router.post('/wx', (req, res, next) => {
-    log4.Info('======发送微信js-sdk数据=====');
-    signature.signature(req, res, next);
-});
+
 /* 留言管理接口 */
 router.post('/delMsg', (req, res, next) => {
     log4.Info('======删除留言=====');

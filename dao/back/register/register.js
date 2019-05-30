@@ -3,33 +3,33 @@ module.exports = {
     register: (req, res, next) => {
         const user = {}; //存放用户信息
         //let param = req.query || req.params; //get请求
-        let pram = req.body; //post
-        if (param.nickName === undefined || param.nickName === '') {
+        let { nickName,passWord,img } = req.body; //post
+        if (nickName === undefined || nickName === '') {
             result = {
                 code: 1,
                 msg: '用户名为空'
             };
             jsonWrite(res, result);
-        } else if (param.passWord === undefined || param.passWord === '') {
+        } else if (passWord === undefined || passWord === '') {
             result = {
                 code: 2,
                 msg: '密码为空'
             };
             jsonWrite(res, result);
-        } else if (param.img === '' || param.img === undefined) {
+        } else if (img === '' || img === undefined) {
             jsonWrite(res, { code: 3, msg: '验证码为空' });
-        } else if (param.img !== req.session.img && param.img !== '') {
+        } else if (img !== req.session.img && img !== '') {
             jsonWrite(res, { code: 0, msg: '验证码不正确' });
         } else {
             pool.getConnection((err, connection) => {
-                connection.query(sql.checkUser, [param.nickName], (err, result) => {
+                connection.query(sql.checkUser, [nickName], (err, result) => {
                     if (result.length > 0) {
                         jsonWrite(res, { code: 4, msg: '已存在' });
                     } else {
                         pool.getConnection((err, connection) => {
-                            connection.query(sql.insert, [param.nickName, param.passWord], (err, result) => {
+                            connection.query(sql.insert, [nickName, passWord], (err, result) => {
                                 if (result) {
-                                    user.userName = param.nickName;
+                                    user.userName = nickName;
                                     req.session.user = user;
                                     result = { code: 200, msg: '注册成功' };
                                 };

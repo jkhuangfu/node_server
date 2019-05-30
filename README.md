@@ -10,98 +10,114 @@ PS：运行方法 npm install 安装依赖
 
 ## 文件目录结构及说明
 <pre>
-├── app.js #入口配置文件
+├── app.js 程序入口配置文件
 ├── bin
-│   └── www #端口号配置文件,默认3330
+│   └── www 服务配置（端口）
 ├── conf
-│   └── mySql.js #数据库连接信息（账号密码及数据库名）
-├── dao
-│   ├── back #后台API
+│   └── mySql.js 数据库配置信息
+├── dao 程序业务模块
+│   ├── back
 │   │   ├── changePwd
-│   │   │   └── changePwd.js #修改密码API
+│   │   │   └── changePwd.js
 │   │   ├── login
-│   │   │   └── login.js  #登录API
+│   │   │   └── login.js
 │   │   ├── manger
 │   │   │   ├── articleDo
-│   │   │   │   ├── doArticle.js  #文章管理API
-│   │   │   │   └── postArticle.js  #文章发布API （包含阿里OSS APPID及secret配置）
+│   │   │   │   ├── doArticle.js
+│   │   │   │   └── postArticle.js
 │   │   │   └── messageDo
-│   │   │       └── queryMessage.js  #留言管理API
+│   │   │       └── queryMessage.js
 │   │   └── register
-│   │       └── register.js #注册API
-│   ├── common
-│   │   └── common.js #公共方法或变量信息
-│   ├── front #前端API
+│   │       └── register.js
+│   ├── common 公共信息模块
+│   │   └── common.js
+│   ├── front
 │   │   ├── articleController
-│   │   │   └── getArticle.js #文章获取API
+│   │   │   └── getArticle.js
 │   │   └── message
-│   │       └── message.js #消息获取API
-│   ├── sqlMap.js #简单sql语句
-│   └── wxShare #微信JS-SDK
-│       ├── access_token.js #获取token
-│       ├── jsapi_ticket.js #获取ticket
-│       ├── signature.js #签名
-│       └── wxconfig.js #微信公众号信息配置文件
-├── log4
-│   └── log4.js #日志配置文件
+│   │       └── message.js
+│   ├── sqlMap.js
+│   └── wechat
+│       ├── wx_opnid
+│       │   └── index.js
+│       └── wx_signature
+│           ├── access_token.js
+│           ├── jsapi_ticket.js
+│           ├── signature.js
+│           └── wxconfig.js
+├── log4 日志记录配置
+│   └── log4.js
+├── node_modules
 ├── package.json
-├── package-lock.json
-├── public #静态资源文件（js css img）
+├── public
 │   └── favicon.ico
-├── routes
-│   ├── backRouter.js #后端API路由
-│   ├── frontRouter.js #前端渲染路由
-│   └── viewRouter.js #PM2启动配置文件
-├── start.json #PM2启动配置文件
-├── tmmp #阿里OSS文件上传临时目录
+├── routes 路由模块
+│   ├── backRouter.js
+│   ├── frontRouter.js
+│   ├── viewRouter.js
+│   └── wechat.js
+├── start.json
+├── tmmp
 ├── util
 │   └── util.js
-└── views #前端页面（默认ejs引擎可在app.js配置修改）
+├── views
+│   ├── articlePage
+│   │   └── article.ejs
+│   ├── error.ejs
+│   ├── index.ejs
+│   └── users.ejs
+└── yarn.lock
 </pre>
 
 ## Mysql 表结构
 
 ### 1.user_main 用户信息表
 
-CREATE TABLE `user_main` (
-`userId` INT ( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-`nickName` VARCHAR ( 255 ) CHARACTER 
-SET utf8 NOT NULL COMMENT '用户名',
-`regTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '注册时间',
-`passWord` VARCHAR ( 255 ) CHARACTER 
-SET utf8 NOT NULL COMMENT '密码',
-PRIMARY KEY ( `userId` ) USING BTREE 
+<pre>
+CREATE TABLE user_main (
+	userId INT ( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+	nickName VARCHAR ( 255 ) CHARACTER 
+	SET utf8 NOT NULL COMMENT '用户名',
+	regTime datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '注册时间',
+	PASSWORD VARCHAR ( 255 ) CHARACTER 
+	SET utf8 NOT NULL COMMENT '密码',
+PRIMARY KEY ( userId ) USING BTREE 
 ) ENGINE = INNODB AUTO_INCREMENT = 2 DEFAULT CHARSET = latin1 ROW_FORMAT = DYNAMIC COMMENT = '管理员信息表';
+</pre>
 
 ### 2.article 博文表
 
+<pre>
 CREATE TABLE `article` (
-`id` INT ( 11 ) NOT NULL AUTO_INCREMENT COMMENT '博文ID',
-`articleTitle` VARCHAR ( 255 ) CHARACTER 
-SET utf8 NOT NULL COMMENT '文章标题',
-`articleCon` text CHARACTER 
-SET utf8 NOT NULL COMMENT '博文内容',
-`createTime` datetime NOT NULL COMMENT '发布时间',
-`isShow` INT ( 11 ) NOT NULL DEFAULT '1' COMMENT '是否展示，1代表展示，0代表不展示',
+	`id` INT ( 11 ) NOT NULL AUTO_INCREMENT COMMENT '博文ID',
+	`articleTitle` VARCHAR ( 255 ) CHARACTER 
+	SET utf8 NOT NULL COMMENT '文章标题',
+	`articleCon` text CHARACTER 
+	SET utf8 NOT NULL COMMENT '博文内容',
+	`createTime` datetime NOT NULL COMMENT '发布时间',
+	`isShow` INT ( 11 ) NOT NULL DEFAULT '1' COMMENT '是否展示，1代表展示，0代表不展示',
 PRIMARY KEY ( `id` ) USING BTREE 
 ) ENGINE = INNODB AUTO_INCREMENT = 7 DEFAULT CHARSET = latin1 ROW_FORMAT = DYNAMIC COMMENT = '文章内容';
+</pre>
 
 ### 3.message 用户留言信息
-
+<pre>
 CREATE TABLE `message` (
-`id` INT ( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '消息ID',
-`articleId` INT ( 10 ) NOT NULL COMMENT '对应文章的ID',
-`articleTitle` VARCHAR ( 255 ) CHARACTER 
-SET utf8 NOT NULL COMMENT '对应的文章标题',
-`msgCon` text CHARACTER 
-SET utf8 NOT NULL COMMENT '消息',
-`nickName` VARCHAR ( 255 ) CHARACTER 
-SET utf8 NOT NULL COMMENT '发布者',
-`createTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '上传或修改时间',
-`status` VARCHAR ( 255 ) CHARACTER 
-SET utf8 NOT NULL DEFAULT '0' COMMENT '信息状态：1代表显示，0代表不显示',
+	`id` INT ( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '消息ID',
+	`articleId` INT ( 10 ) NOT NULL COMMENT '对应文章的ID',
+	`articleTitle` VARCHAR ( 255 ) CHARACTER 
+	SET utf8 NOT NULL COMMENT '对应的文章标题',
+	`msgCon` text CHARACTER 
+	SET utf8 NOT NULL COMMENT '消息',
+	`nickName` VARCHAR ( 255 ) CHARACTER 
+	SET utf8 NOT NULL COMMENT '发布者',
+	`createTime` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '上传或修改时间',
+	`status` VARCHAR ( 255 ) CHARACTER 
+	SET utf8 NOT NULL DEFAULT '0' COMMENT '信息状态：1代表显示，0代表不显示',
 PRIMARY KEY ( `id` ) USING BTREE 
 ) ENGINE = INNODB DEFAULT CHARSET = latin1 ROW_FORMAT = DYNAMIC COMMENT = '文章留言信息';
+</pre>
+
 
 		
 

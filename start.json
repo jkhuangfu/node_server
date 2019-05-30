@@ -1,6 +1,6 @@
 {
     "apps": {
-        "name": "test",
+        "name": "server",
         "script": "./bin/www",
         "watch": ["dao", "views", "log4", "app.js", "routes"],
         "ignore_watch": [
