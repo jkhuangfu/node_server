@@ -165,8 +165,27 @@
 <pre>
     // post请求 不传参
     返回 1登录 0未登录
-    
 </pre>
+
+`20、微信 openid 获取 /wx/wx_openid`
+<pre>
+    // post请求
+    data:{
+        appid:'',
+        secret:'',
+        code:''微信登陆后的code'
+    }
+</pre>
+
+`21、微信签名获取 /wx/wx_signature`
+<pre>
+    // post请求
+    data:{
+        url:''
+    }
+</pre>
+
+[API接口介绍](./API.md)
 
 
 		
