@@ -1,4 +1,5 @@
-# node_express_mySQL
+
+[点击查看API接口介绍](./API.md)
 
 PS：运行方法 npm install 安装依赖
 	
@@ -117,9 +118,6 @@ CREATE TABLE `message` (
 PRIMARY KEY ( `id` ) USING BTREE 
 ) ENGINE = INNODB DEFAULT CHARSET = latin1 ROW_FORMAT = DYNAMIC COMMENT = '文章留言信息';
 </pre>
-
-
-[api 接口介绍](./API.md)
 
 
 		
