@@ -91,7 +91,6 @@ module.exports = {
                 log4.Info('查询所有信息成功');
                 connection.release();
             });
-
         })
     }
 }
