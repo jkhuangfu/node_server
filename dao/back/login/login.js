@@ -22,7 +22,7 @@ module.exports = {
                     if (result.length == 0) {
                         result = { code: 5, msg: '用户名或密码错误' };
                         log4.Info('用户名不存在');
-                    } else if (result[0].passWord.toLowerCase() != passWord.toLowerCase() || result.length == 0) {
+                    } else if (result[0].passWord != md5('node'+passWord.toUpperCase()+'reg') || result.length == 0) {
                         result = { code: 5, msg: '用户名或密码错误' };
                         log4.Info({ code: 5, msg: '用户名或密码错误' });
                     } else {

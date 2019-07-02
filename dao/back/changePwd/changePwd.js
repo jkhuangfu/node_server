@@ -29,8 +29,8 @@ module.exports = {
             } else {
                 connection.query(sql.queryUserPwdByNickName, [nickName], (err, result) => {
                     if (result) {
-                        if (oldPwd.toLowerCase() == result[0].passWord.toLowerCase()) {
-                            connection.query(sql.changePassWord, [newPwd, nickName], (err, result) => {
+                        if (md5('node'+oldPwd.toUpperCase()+'reg') == result[0].passWord) {
+                            connection.query(sql.changePassWord, [md5('node'+newPwd.toUpperCase()+'reg'), nickName], (err, result) => {
                                 if (result) {
                                     jsonWrite(res, { code: 3, message: '用户密码修改成功' });
                                     connection.release();

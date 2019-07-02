@@ -2,6 +2,7 @@
     ctrlCommon:数据库连接池及其他应用
 */
 const mysql = require('mysql');
+const md5 = require('md5');
 const sqlConf = require('../../conf/mySql');
 const util = require('../../util/util');
 const log4js = require('../../log4/log4');
@@ -17,6 +18,7 @@ module.exports = {
             mysqlConfig = sqlConf.mysqlOnline;
         };
         global.sql = require('../sqlMap');
+        global.md5 = md5;
         /* 使用连接池 */
         global.pool = mysql.createPool(util.extend({}, mysqlConfig));
         /* 向前台返回数据 方法*/
