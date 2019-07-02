@@ -16,6 +16,7 @@
         "express-session": "^1.15.5",
         "log4": "^1.2.0",
         "log4js": "^2.3.11",
+        "md5": "^2.2.1",
         "memory-cache": "^0.2.0",
         "memorystore": "^1.6.0",
         "moment": "^2.21.0",

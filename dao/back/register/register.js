@@ -27,7 +27,7 @@ module.exports = {
                         jsonWrite(res, { code: 4, msg: '已存在' });
                     } else {
                         pool.getConnection((err, connection) => {
-                            connection.query(sql.insert, [nickName, passWord], (err, result) => {
+                            connection.query(sql.insert, [nickName, md5('node'+passWord.toUpperCase()+'reg')], (err, result) => {
                                 if (result) {
                                     user.userName = nickName;
                                     req.session.user = user;
