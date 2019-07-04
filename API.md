@@ -185,6 +185,14 @@
     }
 </pre>
 
+`22、邮件发送 /users/sendMail`
+<pre>
+    // post请求
+    data:{
+        email:'接收邮箱'
+    }
+</pre>
+
 
 
 		
