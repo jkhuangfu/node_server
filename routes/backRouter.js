@@ -7,6 +7,7 @@ const doMsg = require('../dao/back/manger/messageDo/queryMessage');
 const postMsg = require('../dao/front/message/message');
 const postArticle = require('../dao/back/manger/articleDo/postArticle');
 const doArticle = require('../dao/back/manger/articleDo/doArticle');
+const sendMail = require('../dao/back/mail');//邮件发送
 const svgCaptcha = require('svg-captcha'); //验证码组件
 const multer = require('multer'); //文件上传
 const upload = multer({ dest: './tmmp/' });
@@ -131,4 +132,9 @@ router.post('/checkLogin', (req, res, next) => {
         res.send('0')
     };
 });
+//发送邮箱验证码
+router.post('/sendMail',(req,res,next)=>{
+    log4.Info('===发送邮件===')
+    sendMail(req,res,next)
+})
 module.exports = router;
