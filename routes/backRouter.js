@@ -133,8 +133,8 @@ router.post('/checkLogin', (req, res, next) => {
     };
 });
 //发送邮箱验证码
-router.post('/sendMail',(req,res,next)=>{
+router.post('/sendMail',(req,res)=>{
     log4.Info('===发送邮件===')
-    sendMail(req,res,next)
-})
+    sendMail(req,res)
+});
 module.exports = router;
