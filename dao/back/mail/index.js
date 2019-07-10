@@ -6,8 +6,8 @@ const randomCode = () => {
     return Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10);
 };
 const sendMail = (req, res) => {
-    //let param = req.query || req.params; //get请求
-    let { email } = req.body;
+    let param = req.query || req.params; //get请求
+    let { email } =  param //req.body;
     let code = randomCode();
     mailTransport.sendMail({
         from: `<${server_config.auth.user}>`,
@@ -30,9 +30,10 @@ const sendMail = (req, res) => {
             let t = Date.now();
             let getCount = await redisDb.get(0, email + '_count');
             let sendCounts = getCount ? getCount : 0;
+            console.log(sendCounts)
             if (sendCounts >= 5) {
                 res.json({ code: 201, msg: '超过发送次数，明日再试' });
-                return false;
+                return ;
             }
             let count = sendCounts - 0 + 1;
             let oneDay = 24*60*60 ;

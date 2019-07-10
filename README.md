@@ -1,3 +1,4 @@
+>此项目使用技术栈为 node express mysql express-session redis express-router
 
 [点击查看API接口介绍](./API.md)
 
