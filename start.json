@@ -2,7 +2,7 @@
     "apps": {
         "name": "server",
         "script": "./bin/www",
-        "watch": ["socket","dao", "views", "log4", "app.js", "routes"],
+        "watch": ["socket","dao", "views", "log4", "app.js", "routes","util"],
         "ignore_watch": [
             "tmmp"
         ],

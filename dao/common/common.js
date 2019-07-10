@@ -1,4 +1,4 @@
-/* 
+/*
     ctrlCommon:数据库连接池及其他应用
 */
 const mysql = require('mysql');
@@ -6,9 +6,11 @@ const md5 = require('md5');
 const sqlConf = require('../../conf/mySql');
 const util = require('../../util/util');
 const log4js = require('../../log4/log4');
+global.redisDb = require('../../util/redis');
 module.exports = {
     ctrlCommon: (app) => {
         global.log4 = log4js.log; //全局日志
+        //global.redisDb = redisDb;
         let mysqlConfig;
         if (app.get('env') == 'development') {
             log4.Info('测试环境');
