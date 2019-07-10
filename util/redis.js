@@ -26,33 +26,38 @@ redisDb.set =  (dbNum,key,value,expire,callback) => {
             client.set(key,value,(err,result) => {
                 if (err){
                     log4.error('redis插入失败：'+err);
-                    callback(err,false);
+                    callback && callback(err,false);
                     return
                 }
                 if (!isNaN(expire) && expire>0){
                     client.expire(key, parseInt(expire));
                 }
-                callback(result,true);
+                callback && callback(result,true);
             })
         }
     })
 };
 
-redisDb.get = (dbNum,key,callback) => {
-    client.select(dbNum, (err) => {
-        if (err){
-            log4.error('redis get 选库失败：'+err);
-        }else {
-            client.get(key,(err,result)=> {
-                if (err){
-                    log4.error('redis获取失败：'+err);
-                    callback(err,false);
-                    return
-                }
-                callback(result,true);
-            })
-        }
+redisDb.get = (dbNum,key) => {
+    return new Promise((res,rej)=>{
+        client.select(dbNum, (err) => {
+            if (err){
+                log4.error('redis get 选库失败：'+err);
+                res(err)
+            }else {
+                client.get(key,(_err,result)=> {
+                    if (_err){
+                        log4.error('redis获取失败：'+err);
+                        res(err)
+                        return
+                    }
+                    res(result)
+                })
+            }
+        })
     })
+    
+    //return res;
 };
 
 module.exports = redisDb;
