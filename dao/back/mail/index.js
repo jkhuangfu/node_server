@@ -7,7 +7,7 @@ const randomCode = () => {
 };
 const sendMail = (req, res) => {
     let param = req.query || req.params; //get请求
-    let { email } =  param //req.body;
+    let { email } = req.body;
     let code = randomCode();
     mailTransport.sendMail({
         from: `<${server_config.auth.user}>`,
