@@ -18,6 +18,7 @@ router.post('/register', (req, res, next) => {
 });
 //验证码
 router.get('/cacp', (req, res) => {
+    console.log(req.method)
     let captcha = svgCaptcha.createMathExpr({
         noise:3,
         color:true
