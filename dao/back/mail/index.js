@@ -38,7 +38,7 @@ const sendMail = (req, res) => {
             let count = sendCounts - 0 + 1;
             let oneDay = 24*60*60 ;
             let now = new Date();
-            let nowSecond = now.getHours()*60 + now.getMinutes()*60 + now.getSeconds();
+            let nowSecond = now.getHours()*60*60 + now.getMinutes()*60 + now.getSeconds();
             redisDb.set(0, email, code, 5 * 60, (result, flag) => {
                 if (flag) {
                     let _t = Date.now();
