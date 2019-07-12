@@ -4,7 +4,7 @@
 const request = require('request');
 module.exports = {
     getOpenid:(req,res)=>{
-        let {appid,secret,code} = req.body;
+        let {appid,secret,code} = reqBody(req);
         request({
             url:`https://api.weixin.qq.com/sns/jscode2session?appid=${appid}&secret=${secret}&js_code=${code}&grant_type=authorization_code`,
             method: "GET",

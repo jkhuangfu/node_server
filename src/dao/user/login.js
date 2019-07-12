@@ -2,8 +2,7 @@
 const user = {}; //存放用户信息
 module.exports = {
     login: (req, res) => {
-        //let param = req.query || req.params; //get请求
-        let { nickName,passWord,img } = req.body; //post
+        let { nickName,passWord,img } = reqBody(req);
         if (nickName === undefined || nickName === '') {
             res.json({ code: 1, msg: '用户名为空' });
             log4.Info({ code: 1, msg: '用户名为空' });

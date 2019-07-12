@@ -6,11 +6,10 @@ const randomCode = () => {
     return Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10);
 };
 const sendMailCode = (req, res) => {
-    let param = req.query || req.params; //get请求
-    let { email,type=0 } =  req.body;
+    let { email,type=0 } = reqBody(req);
     let code = randomCode();
     mailTransport.sendMail({
-        from: `<${server_config.auth.user}>`,
+        from: `Dr丶net<${server_config.auth.user}>`,
         to: email,//rescive_mail,
         subject: '邮件验证码(自动发送,勿回复)',
         //text:  '您的验证码是'+randomCode(),
@@ -53,7 +52,7 @@ const sendMailCode = (req, res) => {
     });
 };
 const sendMailNormal = (req,res)=> {
-    let { to, mailCon , mailType = 'text' } = req.body;
+    let { to, mailCon , mailType = 'text' } = reqBody(req);
     let con = {};
     if(mailType === 'text'){
         con = {

@@ -5,12 +5,15 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const common = require('./dao/common/common'); //全局使用方法及变量
+const common = require('./src/global'); //全局使用方法及变量
 const MemoryStore = require('memorystore')(session); //解决session内存溢出问题
 const view = require('./routes/viewRouter'); //页面渲染
 const backRouter = require('./routes/backRouter'); //后台管理接口
 const frontRouter = require('./routes/frontRouter'); //前端展示接口
 const wechat = require('./routes/wechat'); //前端展示接口
+
+const c = require('./routes/common')
+
 const cors = require('cors');
 const app = express();
 common.ctrlCommon(app);
@@ -52,6 +55,7 @@ app.use('/', view);
 app.use('/users', backRouter);
 app.use('/blog', frontRouter);
 app.use('/wx', wechat);
+app.use('/common', c);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -5,10 +5,8 @@ module.exports = {
         nickName : user name
         emailCode: 邮箱验证码
     */
-    changePwd: async(req, res, next) => {
-        //let param = req.query || req.params; //get请求
-        let { oldPwd,newPwd,email,emailCode } = req.body; //post
-        let redisMail = await redisDb.get(0,`${email}`);
+    changePwd: async(req, res) => {
+        let { oldPwd,newPwd } = reqBody(req);
         let { nickName } = req.session.user;
         if (!nickName) {
             res.json({ code: 99, message: 'session过期' });
@@ -18,13 +16,7 @@ module.exports = {
             res.json({ code: 1, message: '用户密码为空' });
             return;
         }
-        if(!redisMail){
-            res.json({ code: 4, message: '请先发送验证码' });
-            return;
-        }
-        if(redisMail !== emailCode){
-            res.json({code:5,message:'邮箱验证码不正确'})
-        }
+
         pool.getConnection((err, connection) => {
             if (err) {
                 jsonWrite(res, { code: 500, message: '服务器错误', errorMsg: err });

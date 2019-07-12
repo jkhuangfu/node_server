@@ -18,7 +18,7 @@ module.exports = {
     signature: async(req, res) => {
         log4.Info('===进入签名===');
         try {
-            let param = req.body;
+            let param = reqBody(req);
             let string1 = '';
             let timestamp = Math.floor(Date.now() / 1000); //时间戳
             if (cache.get('access_token') && cache.get('jsapi_ticket')) { //缓存中有token和jsapi_ticket
