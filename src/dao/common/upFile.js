@@ -1,47 +1,47 @@
 const OSS = require('ali-oss');
 const fs = require('fs');
 // 初始化Client
-const co = require('co');
 const client = new OSS({
-    region: 'oss-cn-beijing',
-    accessKeyId: 'LT********a',
-    accessKeySecret: 'N************************CW'
+    region: '',
+    accessKeyId: '',
+    accessKeySecret: '',
+    bucket: ''
 });
-const ali_oss = {
-    bucket: 'blog-manger',
-    endPoint: 'oss-cn-beijing.aliyuncs.com',
-};
 module.exports = {
-    upFile: (req, res, next) => {
-        // 文件路径;
-        var filePath = './' + req.file.path;
-        // 文件类型
-        var temp = req.file.originalname.split('.');
-        var fileType = temp[temp.length - 1];
-        var lastName = '.' + fileType;
-        // 构建图片名
-        var fileName = Date.now() + lastName;
-        // 图片重命名
-        fs.rename(filePath, fileName, (err) => {
-            if (err) {
-                res.end(JSON.stringify({ status: '102', msg: '文件写入失败' }));
-            } else {
-                var localFile = './' + fileName;
-                var key = 'articleImg/' + fileName; //存放bucket子目录
-                // 阿里云 上传文件
-                co(function*() {
-                    client.useBucket(ali_oss.bucket);
-                    var result = yield client.put(key, localFile);
-                    var imageSrc = 'http://img.drnet.xyz/' + result.name;
-                    // 上传之后删除本地文件
-                    fs.unlinkSync(localFile);
-                    res.end(JSON.stringify({ status: '100', msg: '上传成功', imageUrl: imageSrc }));
-                }).catch(function(err) {
-                    // 上传之后删除本地文件
-                    fs.unlinkSync(localFile);
-                    res.end(JSON.stringify({ status: '101', msg: '上传失败', error: JSON.stringify(err) }));
-                });
-            }
+    upFileForLocal: async (req, res) => {
+        let writeStream = [];
+        req.files.map(item=>{
+            let write_file = './fileTemp/'+item.originalname;
+            let local_file = './fileTemp/'+item.filename;
+            let origin_stream = fs.createReadStream(local_file);
+            let write_stream = fs.createWriteStream(write_file);
+            writeStream.push({
+                local_file,origin_stream,write_stream
+            });
         });
+        await Promise.all(writeStream.map(item=>{
+            item.origin_stream.pipe(item.write_stream);
+            fs.unlinkSync(item.local_file);
+        }));
+        res.json({code:200,message:'success'})
+    },
+    upFileForOss: async (req, res) => {
+        let file_arr = [],result_arr=[];
+        req.files.map(item => {
+            let key = 'articleImg/' + item.originalname;
+            let or_file = "./fileTemp/" + item.filename;
+            let stream = fs.createReadStream(or_file);
+            file_arr.push({
+                key, stream
+            });
+            fs.unlinkSync(or_file);
+        });
+        await Promise.all(
+            file_arr.map(async item => {
+                let result = await client.putStream(item.key, item.stream);
+                result_arr.push(result.url)
+            })
+        );
+        res.json({status: 200, msg: '上传成功', imageUrlArr: result_arr});
     }
-}
+};
