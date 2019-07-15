@@ -1,4 +1,3 @@
-const log4 = require('../../../log4/log4').log;
 module.exports = {
     queryArticleById: (id, callback) => {
         let sql = 'SELECT * FROM article WHERE id = ' + id;

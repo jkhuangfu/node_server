@@ -12,7 +12,7 @@ const backRouter = require('./routes/backRouter'); //后台管理接口
 const frontRouter = require('./routes/frontRouter'); //前端展示接口
 const wechat = require('./routes/wechat'); //前端展示接口
 
-const c = require('./routes/common')
+const commonRouter = require('./routes/common')
 
 const cors = require('cors');
 const app = express();
@@ -55,7 +55,7 @@ app.use('/', view);
 app.use('/users', backRouter);
 app.use('/blog', frontRouter);
 app.use('/wx', wechat);
-app.use('/common', c);
+app.use('/common', commonRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
