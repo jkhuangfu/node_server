@@ -10,6 +10,10 @@ const client = new OSS({
 module.exports = {
     upFileForLocal: async (req, res) => {
         let writeStream = [];
+        if(req.files.length<=0){
+            res.json({status: 400, msg: '未上传文件'});
+            return
+        }
         req.files.map(item=>{
             let write_file = './fileTemp/'+item.originalname;
             let local_file = './fileTemp/'+item.filename;
@@ -27,6 +31,10 @@ module.exports = {
     },
     upFileForOss: async (req, res) => {
         let file_arr = [],result_arr=[];
+        if(req.files.length<=0){
+            res.json({status: 400, msg: '未上传文件'});
+            return
+        }
         req.files.map(item => {
             let key = 'articleImg/' + item.originalname;
             let or_file = "./fileTemp/" + item.filename;
