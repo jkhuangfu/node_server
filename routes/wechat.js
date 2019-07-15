@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const signature = require('../dao/wechat/wx_signature/signature');
-const getOpenid = require('../dao/wechat/wx_opnid');
+const signature = require('../src/dao/wechat/wx_signature/signature');
+const getOpenid = require('../src/dao/wechat/wx_opnid/index');
 
 /* 微信txt文件验证专用 txt文件放置在public文件根目录 */
 const render = () => {
@@ -27,12 +27,13 @@ router.get('/MP_verify_tGmHaGktkQYkf6kr.txt', async(req, res, next) => {
 
 //微信分享获取签名
 router.post('/wx_signature', (req, res, next) => {
-    log4.Info('======发送微信签名=====');
+    console.log('======发送微信签名=====');
     signature.signature(req, res, next);
 });
 //获取微信 openid
 router.post('/wx_openid', (req, res, next) => {
-    log4.Info('======发送微信openid=====');
+    console.log('======发送微信openid=====');
     getOpenid.getOpenid(req, res, next);
 });
+
 module.exports = router;

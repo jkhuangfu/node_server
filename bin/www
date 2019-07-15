@@ -7,8 +7,8 @@
 const app = require('../app');
 const debug = require('debug')('node-express-mysql:server');
 const http = require('http');
-const createSocketIoServer = require('../socket/socket.io');
-const createWebSocketServer = require('../socket/websocket')
+const createSocketIoServer = require('../src/socket/socket.io');
+const createWebSocketServer = require('../src/socket/websocket')
 /**
  * 
  * Get port from environment and store in Express.

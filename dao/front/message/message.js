@@ -2,7 +2,6 @@
  *@DEC 留言 Module
  */
 const qs = require('qs');
-const log4 = require('../../../log4/log4').log;
 module.exports = {
     queryMessageByArticleId: (req, res, next) => {
         //let param = req.query || req.params; //get请求

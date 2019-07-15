@@ -1,12 +1,12 @@
 {
-    "name": "node-express-mysql",
+    "name": "node_server",
     "version": "1.0.0",
-    "private": true,
+    "private": false,
     "scripts": {
         "start": "node ./bin/www"
     },
     "dependencies": {
-        "ali-oss": "^4.11.2",
+        "ali-oss": "^6.1.1",
         "body-parser": "~1.17.1",
         "cookie-parser": "~1.4.3",
         "cors": "^2.8.4",
