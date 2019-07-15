@@ -2,10 +2,10 @@ const OSS = require('ali-oss');
 const fs = require('fs');
 // 初始化Client
 const client = new OSS({
-    region: '',
+    region: 'oss-cn-beijing',
     accessKeyId: '',
     accessKeySecret: '',
-    bucket: ''
+    bucket: 'blog-manger'
 });
 module.exports = {
     upFileForLocal: async (req, res) => {
