@@ -10,7 +10,7 @@ const http = require('http');
 const createSocketIoServer = require('../src/socket/socket.io');
 const createWebSocketServer = require('../src/socket/websocket')
 /**
- * 
+ *
  * Get port from environment and store in Express.
  */
 
@@ -26,10 +26,10 @@ const server = http.createServer(app);
 //socket 服务配置
 
 // socket.io 版本
-//createSocketIoServer(server);
+createSocketIoServer(server);
 
 //原生 websocket 版本
-createWebSocketServer(server)
+//createWebSocketServer(server)
 
 /**
  * Listen on provided port, on all network interfaces.

@@ -5,12 +5,21 @@
   <title>测试demo</title>
   <!--socket.io-->
   <script src="https://cdn.bootcss.com/socket.io/2.1.1/socket.io.js"></script>
+  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 </head>
 <body>
 <h1 style="text-align: center;">1</h1>
 <hr />
 <button onclick="a()">点击测试</button>
 <ul id="ultext"></ul>
+<input id="nickName" placeholder="name" type="text">
+<input id="pwd" placeholder="pwd" type="text">
+<input id="email" placeholder="email" type="text">
+<input id="emailcode" placeholder="emailcode" type="text">
+<input id="img" placeholder="img" type="text">
+<img src="/common/cacp" alt="">
+<button id="reg">注册</button>
+<button id="send">发送</button>
 </body>
 <script type="text/javascript">
     var socket=io.connect('http://localhost:3330');// 括号内参数为scoket服务器，若页面和其是同一服务则可省略
@@ -20,7 +29,7 @@
          * watchClient 为服务端自定义的事件名称
          * 123456 为传递的内容
          * */
-        socket.emit('watchClient','123456');
+        socket.emit('watchClient','123455656566');
     }
     /**
      * 监听服务器返回的数据
@@ -36,5 +45,33 @@
         }
         document.getElementById('ultext').innerHTML = html;
     })
+</script>
+<script>
+  $('#send').click(function(){
+    $.ajax({
+      url:'/common/sendMailCode',
+      type:'POST',
+      data:{
+        email:$('#email').val()
+      },
+      success:(data)=>{
+        console.log(data)
+      }
+    })
+  })
+  $('#reg').click(function(){
+    $.ajax({
+      url:'/users/reg',
+      type:'post',
+      data:{
+        nickName:$('#nickName').val(),
+        passWord:$('#pwd').val(),
+        email:$('#email').val(),
+        emailCode:$('#emailcode').val(),
+        img:$('#img').val(),
+        regType:0
+      }
+    })
+  })
 </script>
 </html>

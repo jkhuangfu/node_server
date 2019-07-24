@@ -5,7 +5,7 @@ const login = require('../src/dao/user/login');
 const changePwd = require('../src/dao/user/changePwd')
 
 router
-    .get('/reg', (req, res) => {
+    .post('/reg', (req, res) => {
         console.log('====进入注册流程====');
         register.register(req, res)
     })
