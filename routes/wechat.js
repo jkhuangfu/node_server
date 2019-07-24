@@ -20,20 +20,20 @@ const route = async () => {
     let html = await render();
     return html
 };
-router.get('/MP_verify_tGmHaGktkQYkf6kr.txt', async(req, res, next) => {
-    let html = await route();
-    res.render(html);
-});
-
-//微信分享获取签名
-router.post('/wx_signature', (req, res, next) => {
-    console.log('======发送微信签名=====');
-    signature.signature(req, res, next);
-});
-//获取微信 openid
-router.post('/wx_openid', (req, res, next) => {
-    console.log('======发送微信openid=====');
-    getOpenid.getOpenid(req, res, next);
-});
+router
+    .get('/MP_verify_tGmHaGktkQYkf6kr.txt', async (req, res, next) => {
+        let html = await route();
+        res.render(html);
+    })
+    //微信分享获取签名
+    .post('/wx_signature', (req, res, next) => {
+        console.log('======发送微信签名=====');
+        signature.signature(req, res, next);
+    })
+    //获取微信 openid
+    .post('/wx_openid', (req, res, next) => {
+        console.log('======发送微信openid=====');
+        getOpenid.getOpenid(req, res, next);
+    });
 
 module.exports = router;

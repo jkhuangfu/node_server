@@ -8,11 +8,11 @@ const session = require('express-session');
 const common = require('./src/global'); //全局使用方法及变量
 const MemoryStore = require('memorystore')(session); //解决session内存溢出问题
 const view = require('./routes/viewRouter'); //页面渲染
-const backRouter = require('./routes/backRouter'); //后台管理接口
-const frontRouter = require('./routes/frontRouter'); //前端展示接口
-const wechat = require('./routes/wechat'); //前端展示接口
+const user = require('./routes/user'); //后台管理接口
+const blog = require('./routes/blog'); //博客相关
+const wechat = require('./routes/wechat'); //微信相关
 
-const commonRouter = require('./routes/common')
+const commonRouter = require('./routes/common');
 
 const cors = require('cors');
 const app = express();
@@ -52,8 +52,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', view);
-app.use('/users', backRouter);
-app.use('/blog', frontRouter);
+app.use('/users', user);
+app.use('/blog', blog);
 app.use('/wx', wechat);
 app.use('/common', commonRouter);
 
