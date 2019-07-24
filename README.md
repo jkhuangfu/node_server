@@ -6,7 +6,7 @@ PS：运行方法 npm install 安装依赖
 
 	 (2) pm2 start start.json --env production (需要全局安装pm2---> npm install -g pm2;若不加参数env参数则默认开发环境加了则是线上环境)
 
-##文件结构说明
+## 文件结构说明
 ```
 ├── app.js //主程序配置
 ├── bin
