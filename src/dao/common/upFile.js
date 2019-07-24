@@ -3,8 +3,8 @@ const fs = require('fs');
 // 初始化Client
 const client = new OSS({
     region: 'oss-cn-beijing',
-    accessKeyId: 'LTAI1B20tWL79mBa',
-    accessKeySecret: 'NZIW37bBgMTMExG1V4O4129LrrfVCW',
+    accessKeyId: '*******',
+    accessKeySecret: '**********',
     bucket: 'blog-manger'
 });
 module.exports = {
