@@ -2,9 +2,9 @@
     "apps": {
         "name": "server",
         "script": "./bin/www",
-        "watch": ["socket","dao", "views", "log4", "app.js", "routes","util","src"],
+        "watch": ["bin", "views", "app.js", "routes","src","public"],
         "ignore_watch": [
-            "tmmp"
+            "fileTemp"
         ],
         "log_date_format": "YYYY-MM-DD HH:mm Z",
         "env": {
