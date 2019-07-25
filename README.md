@@ -16,6 +16,8 @@ PS：运行方法 npm install 安装依赖
 ├── public
 │   ├── favicon.ico
 │   └── test.txt
+├── sql
+│   ├── blog.sql //数据库结构文件
 ├── routes
 │   ├── blog.js //blog 路由
 │   ├── common.js //公用功能路由
