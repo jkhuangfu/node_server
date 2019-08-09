@@ -12,7 +12,7 @@ module.exports = {
         } else if (img === undefined || img === '') {
             res.json({ code: 4, msg: '验证码为空' });
             log4.Info({ code: 4, msg: '验证码为空' });
-        } else if (Number(img) !== 11) {
+        } else if (img !== req.session.img) {
             res.json({ code: 0, msg: '验证码不正确' });
             log4.Info({ code: 0, msg: '验证码不正确' });
         } else {
