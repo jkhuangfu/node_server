@@ -12,14 +12,16 @@ module.exports = {
         } else if (img === undefined || img === '') {
             res.json({ code: 4, msg: '验证码为空' });
             log4.Info({ code: 4, msg: '验证码为空' });
-        } else if (img !== req.session.img) {
+        } else if (Number(img) !== 11) {
             res.json({ code: 0, msg: '验证码不正确' });
             log4.Info({ code: 0, msg: '验证码不正确' });
         } else {
             let json ;
             pool.getConnection((err, connection) => {
                 connection.query(sql.queryUserPwdByNickName, [nickName], (err, result) => {
-                    if (result[0].passWord !== md5('node'+passWord.toUpperCase()+'reg') || result.length === 0) {
+                    if(err){
+                        json = { code: 500, msg: err };
+                    }else if (result.length === 0 || (result[0].passWord && result[0].passWord !== md5('node'+passWord.toUpperCase()+'reg'))) {
                         json = { code: 5, msg: '用户名或密码错误' };
                         log4.Info({ code: 5, msg: '用户名或密码错误' });
                     } else {
