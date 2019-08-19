@@ -18,9 +18,9 @@ router
     })
     //注销
     .post('/logout', (req, res) => {
-        log4.Info(req.session.user.userName + '======退出登录=====');
-        delete req.session.user;
-        res.send('1')
-    })
+        console.log('======退出登录=====');
+        req.session.user && delete req.session.user;
+        res.json({code:200})
+    });
 
 module.exports = router;
