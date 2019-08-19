@@ -18,7 +18,7 @@ const cors = require('cors');
 const app = express();
 common.ctrlCommon(app);
 const corsOptions = {
-    origin: '*', //此处设置允许访问的域名
+    origin: 'http://127.0.0.1:8080', //此处设置允许访问的域名
     optionsSuccessStatus: 200,
     credentials: true
 };

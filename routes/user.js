@@ -3,7 +3,6 @@ const router = express.Router();
 const register = require('../src/dao/user/register');
 const login = require('../src/dao/user/login');
 const changePwd = require('../src/dao/user/changePwd')
-
 router
     .post('/reg', (req, res) => {
         console.log('====进入注册流程====');
@@ -16,15 +15,6 @@ router
     .post('/changePassword', (req, res) => {
         console.log('====进入修改密码流程====');
         changePwd.changePwd(req, res)
-    })
-    //登陆验证
-    .post('/checkLogin', (req, res, next) => {
-        console.log('======查看登录态=====');
-        if (req.session.user) {
-            res.send('1')
-        } else {
-            res.send('0')
-        }
     })
     //注销
     .post('/logout', (req, res) => {

@@ -11,7 +11,6 @@ module.exports = {
     * */
     queryArticleByType: (req, res) => {
         let { pageIndex,pageSize,type  } = reqBody(req);
-        console.log(pageIndex,pageSize,type)
         let querySql,queryCountSql;
         if (Number(type) === 2) { //全部
             querySql = 'SELECT id,articleTitle,createTime,isShow FROM article limit ' + pageIndex + ',' + pageSize;

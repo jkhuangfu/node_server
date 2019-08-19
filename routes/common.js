@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const checklogin = require('../middlewares/checklogin');
 const captcha = require('../src/dao/common/cacp');
 const upFile = require('../src/dao/common/upFile');
 const {sendMailCode, sendMailNormal} = require('../src/dao/common/sendMail');
 const multer = require('multer');
 const upload = multer({dest: './fileTemp/'});
-
+router.use(checklogin);
 router
     .get('/cacp', (req, res) => {
         captcha(req, res)

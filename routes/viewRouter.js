@@ -14,16 +14,17 @@ const render = () => {
         })
     })
 };
-router.get('/test.txt', async (req, res) => {
-    let html = await render();
-    res.render(html);
-})
-/* GET home page. */
+router
+    .get('/test.txt', async (req, res) => {
+        let html = await render();
+        res.render(html);
+    })
+    /* GET home page. */
     .get('/', (req, res, next) => {
         res.render('index');
     })
     /* to 404 page */
     .get('/notFound', (req, res, next) => {
         res.render('error');
-    })
+    });
 module.exports = router;
