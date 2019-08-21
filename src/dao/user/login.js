@@ -26,7 +26,7 @@ module.exports = {
                         log4.Info({ code: 5, msg: '用户名或密码错误' });
                     } else {
                         delete req.session.img;
-                        user.userName = nickName;
+                        user.nickName = nickName;
                         req.session.user = user;
                         json = { code: 6, msg: '登录成功' };
                         log4.Info({ code: 6, msg: '登录成功,用户名为:-->' + nickName });

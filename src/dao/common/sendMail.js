@@ -1,13 +1,12 @@
 const nodemailer = require('nodemailer');
 const mail_config = require('../../config/mail');
-const { server_config } = mail_config;
+const {server_config} = mail_config;
 const mailTransport = nodemailer.createTransport(server_config);
 const randomCode = () => {
     return Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10);
 };
-const sendMailCode = (req, res) => {
-    let { email,type=0 } = reqBody(req);
-    let code = randomCode();
+
+const sendFunction = (email, code, res) => {
     mailTransport.sendMail({
         from: `Dr丶net<${server_config.auth.user}>`,
         to: email,//rescive_mail,
@@ -22,45 +21,61 @@ const sendMailCode = (req, res) => {
     }, async (err) => {
         if (err) {
             log4.Info('Unable to send email: ' + err);
-            res.json({ code: 400, msg: '发送失败' });
+            res.json({code: 400, msg: '发送失败'});
         } else {
-            let t = Date.now();
-            let getCount = await redisDb.get(0, `${email}_${type}_count`);
+            let getCount = await redisDb.get(0, `${email}_count`);
             let sendCounts = getCount ? getCount : 0;
             if (sendCounts >= 5) {
-                res.json({ code: 201, msg: '超过发送次数，明日再试' });
-                return ;
+                res.json({code: 201, msg: '超过发送次数，明日再试'});
+                return;
             }
             let count = sendCounts - 0 + 1;
-            let oneDay = 24*60*60 ;
+            let oneDay = 24 * 60 * 60;
             let now = new Date();
-            let nowSecond = now.getHours()*60*60 + now.getMinutes()*60 + now.getSeconds();
-            redisDb.set(0, email, code, 5 * 60, (result, flag) => {
-                if (flag) {
-                    let _t = Date.now();
-                    log4.Info(`Success------->${_t - t}`)
-                    redisDb.set(0, `${email}_${type}_count`, count, oneDay-nowSecond, (_result, _flag) => {
-                        if (_flag) {
-                            res.json({ code: 200, msg: '发送成功' });
-                        }
-                    })
-                } else {
-                    res.json({ code: 400, msg: '发送失败' });
-                }
-            })
+            let nowSecond = now.getHours() * 60 * 60 + now.getMinutes() * 60 + now.getSeconds();
+            let set_key = await redisDb.set(0, email, code, 5 * 60);
+            let set_count = await redisDb.set(0, `${email}_count`, count, oneDay - nowSecond);
+            if (set_key === 200 && set_count === 200) {
+                res.json({code: 200, msg: '发送成功'});
+            }
         }
     });
 };
-const sendMailNormal = (req,res)=> {
-    let { to, mailCon , mailType = 'text' } = reqBody(req);
-    let con = {};
-    if(mailType === 'text'){
-        con = {
-            text:mailCon
+
+const sendMailCode = (req, res) => {
+    let {email} = reqBody(req);
+    let {nickName} = req.session.user;
+    let code = randomCode();
+    let sql = 'select email from user_main where nickName = ?';
+    pool.getConnection((err, connection) => {
+        if (err) {
+            res.json({code: 500, msg: err});
+            return false;
         }
-    }else {
+        connection.query(sql, [nickName], (e, response) => {
+            if (e) {
+                res.json({code: 500, msg: e});
+            } else {
+                if (response[0].email === email) {
+                    sendFunction(email, code, res);
+                } else {
+                    res.json({code: 400, msg: '邮箱非用户绑定邮箱'});
+                }
+            }
+            connection.release();
+        })
+    });
+};
+const sendMailNormal = (req, res) => {
+    let {to, mailCon, mailType = 'text'} = reqBody(req);
+    let con = {};
+    if (mailType === 'text') {
         con = {
-            html:mailCon
+            text: mailCon
+        }
+    } else {
+        con = {
+            html: mailCon
         }
     }
     mailTransport.sendMail({
@@ -69,11 +84,11 @@ const sendMailNormal = (req,res)=> {
         subject: 'no reply(自动发送,勿回复)',
         ...con
     }, (err) => {
-        if(err){
-            res.json({code:500,msg:err})
-        }else{
-            res.json({code:200,msg:true})
+        if (err) {
+            res.json({code: 500, msg: err})
+        } else {
+            res.json({code: 200, msg: true})
         }
     })
 };
-module.exports = { sendMailCode,sendMailNormal };
+module.exports = {sendMailCode, sendMailNormal};

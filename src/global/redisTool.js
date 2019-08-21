@@ -24,28 +24,31 @@ const redisDb = (app) => {
      * @param expire 过期时间（单位：秒，可为空，为空则不过期）
      * @param callback 回调
      */
-    const set =  (dbNum,key,value,expire,callback) => {
-        client.select(dbNum, (err) =>{
-            if (err){
-                log4.error('redis set 选库失败：'+err);
-            }else {
+    const set =  (dbNum,key,value,expire) => {
+        return new Promise(res=>{
+            client.select(dbNum, (err) =>{
+                if (err){
+                    log4.error('redis set 选库失败：'+err);
+                    res(err);
+                    return false;
+                }
                 client.set(key,value,(err,result) => {
                     if (err){
                         log4.error('redis插入失败：'+err);
-                        callback && callback(err,false);
-                        return
+                        res(err);
+                        return false;
                     }
                     if (!isNaN(expire) && expire>0){
                         client.expire(key, parseInt(expire));
                     }
-                    callback && callback(result,true);
+                    res(200);
                 })
-            }
-        })
+            })
+        });
     };
 
     const get = (dbNum,key) => {
-        return new Promise((res,rej)=>{
+        return new Promise(res=>{
             client.select(dbNum, (err) => {
                 if (err){
                     log4.error('redis get 选库失败：'+err);
@@ -54,10 +57,10 @@ const redisDb = (app) => {
                     client.get(key,(_err,result)=> {
                         if (_err){
                             log4.error('redis获取失败：'+err);
-                            res(err)
+                            res(err);
                             return
                         }
-                        res(result)
+                        res(result);
                     })
                 }
             })
