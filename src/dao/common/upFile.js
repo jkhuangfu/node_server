@@ -44,7 +44,7 @@ module.exports = {
         }
         req.files.map(item => {
             let key = 'articleImg/' + item.originalname;
-            let or_file = "./fileTemp/" + item.filename;
+            let or_file = path.resolve("fileTemp",item.filename);
             let stream = fs.createReadStream(or_file);
             file_arr.push({
                 key, stream
