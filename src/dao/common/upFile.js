@@ -1,5 +1,7 @@
 const OSS = require('ali-oss');
 const fs = require('fs');
+const path = require('path');
+const { uuid } = require('../../util/inedx');
 // 初始化Client
 const client = new OSS({
     region: 'oss-cn-beijing',
@@ -9,25 +11,30 @@ const client = new OSS({
 });
 module.exports = {
     upFileForLocal: async (req, res) => {
-        let writeStream = [];
+        let writeStream = [],url = [];
         if(req.files.length<=0){
             res.json({status: 400, msg: '未上传文件'});
             return
         }
         req.files.map(item=>{
-            let write_file = './fileTemp/'+item.originalname;
-            let local_file = './fileTemp/'+item.filename;
+            let type = item.originalname.split('.')[1];
+            let id = uuid(36);
+            //创建真实文件
+            let write_file = path.resolve('fileTemp',`${id}.${type}`);
+            // 本地缓存数据
+            let local_file = path.resolve('fileTemp',item.filename);
             let origin_stream = fs.createReadStream(local_file);
             let write_stream = fs.createWriteStream(write_file);
             writeStream.push({
                 local_file,origin_stream,write_stream
             });
+            url.push(`/img/${id}.${type}`);
         });
         await Promise.all(writeStream.map(item=>{
             item.origin_stream.pipe(item.write_stream);
             fs.unlinkSync(item.local_file);
         }));
-        res.json({code:200,message:'success'})
+        res.json({code:200,message:'success',url})
     },
     upFileForOss: async (req, res) => {
         let file_arr = [],result_arr=[];

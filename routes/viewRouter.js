@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const path = require('path');
 
 /* 微信txt文件验证专用 txt文件放置在public文件根目录 */
 const render = () => {
@@ -26,5 +27,10 @@ router
     /* to 404 page */
     .get('/notFound', (req, res, next) => {
         res.render('error');
+    })
+    .get('/img/:filename',(req,res)=>{
+        const file = path.resolve('fileTemp',req.params.filename);
+        const stream = fs.createReadStream(file);
+        stream.pipe(res);
     });
 module.exports = router;

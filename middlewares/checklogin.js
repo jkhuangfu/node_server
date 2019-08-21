@@ -6,7 +6,7 @@
 
 module.exports = (req,res,next)=>{
     if(!req.session.user && req.method === 'POST'){
-        return res.send(401);
+        return res.status(401).end();
     }
     next();
 };

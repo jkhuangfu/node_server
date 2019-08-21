@@ -11,11 +11,8 @@ router
     .post('/deleteArticle', (req, res) => {
         articleManger.deleteArticle(req, res)
     })
-    .post('/queryArticleByType', (req, res) => {
-        articleManger.queryArticleByType(req, res)
-    })
-    .post('/queryArticleByTitleAndStatus',(req,res)=>{
-        articleManger.queryArticleByTitleAndStatus(req,res)
+    .post('/queryArticle',(req,res)=>{
+        articleManger.queryArticle(req,res)
     })
     .post('/publishArticle',(req,res)=>{
         articleManger.publishArticle(req,res)

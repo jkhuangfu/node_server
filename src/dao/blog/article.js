@@ -4,57 +4,6 @@
 const moment = require('moment');
 module.exports = {
     /*
-    * 根据类型（显示，隐藏）查询文章列表
-    * {pageIndex}:页码
-    * {pageSize}:每页条数
-    * {type}:文章显示类型 0 未展示,1已展示,2查询全部
-    * */
-    queryArticleByType: (req, res) => {
-        let { pageIndex,pageSize,type  } = reqBody(req);
-        let querySql,queryCountSql;
-        if (Number(type) === 2) { //全部
-            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article limit ' + pageIndex + ',' + pageSize;
-            queryCountSql = 'SELECT COUNT(*) AS count from article';
-        } else {
-            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE isShow = ' + Number(type) + ' limit ' + pageIndex + ', ' + pageSize;
-            queryCountSql = 'SELECT COUNT(*) AS count from article WHERE isShow = ' + Number(type);
-        }
-        /**
-         * type:0 未展示,1已展示,2查询全部
-         */
-        pool.getConnection(async(err, connection) => {
-            let count = 0;
-            count = await new Promise((resolve, reject) => {
-                connection.query(queryCountSql, (err, response) => {
-                    if (err) {
-                        log4.error(err);
-                        reject(err);
-                        res.json({code:500,msg:err});
-                        connection.release();
-                        return false;
-                    } else {
-                        resolve(response[0].count);
-                        log4.Info('查询文章总条数成功====' + response[0].count);
-                    }
-                });
-            });
-            connection.query(querySql, (err, response) => {
-                if (err) {
-                    log4.Error(err);
-                    res.json({code:500,msg:err});
-                    connection.release();
-                    return false;
-                }
-                response.forEach(row => {
-                    row.createTime = moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
-                });
-                log4.Info('查询文章成功====' + count);
-                res.json({ code: 200, data: response, count: count });
-                connection.release();
-            });
-        });
-    },
-    /*
     * 修改文章显示状态
     * {status}:显示状态 0隐藏 1 显示
     * {id}:文章 id（批量的话字符串以','分割）
@@ -85,9 +34,6 @@ module.exports = {
     * */
     deleteArticle: (req, res) => {
         let { id } = reqBody(req);
-        if (id.length > 1) {
-            id = id.join(',');
-        }
         let sql = 'DELETE FROM article WHERE id in(' + id + ')';
         pool.getConnection((err, connection) => {
             if (err) {
@@ -111,17 +57,17 @@ module.exports = {
     * {pageIndex,pageSize}:页码,条数
     * {type}:文章的显示类型
     * */
-    queryArticleByTitleAndStatus: (req, res) => {
-        let {articleTitle,pageIndex,pageSize,type} = reqBody(req);
+    queryArticle: (req, res) => {
+        let { articleTitle, pageIndex = 1, pageSize = 20, type } = reqBody(req);
         let querySql,countSql,sql;
         if (type == 2) { //全部
-            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + articleTitle + '%" limit ' + pageIndex + ', ' + pageSize;
-            sql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + articleTitle + '%"';
-            countSql = 'SELECT COUNT(*) AS count from (' + sql + ') t';
+            querySql = `SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%${articleTitle}%" limit ${(pageIndex - 1) * pageSize },${pageSize}`;
+            sql = `SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%${articleTitle}%"`;
+            countSql = `SELECT COUNT(*) AS count from (${sql}) t`;
         } else {
-            querySql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + articleTitle + '%"  AND isShow = ' + type + ' limit ' + pageIndex + ',' + pageSize;
-            sql = 'SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%' + articleTitle + '%"  AND isShow = ' + type;
-            countSql = 'SELECT COUNT(*) AS count from (' + sql + ') t';
+            querySql = `SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%${articleTitle}%"  AND isShow = ${type} limit ${(pageIndex - 1) * pageSize} , ${pageSize}`;
+            sql = `SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%${articleTitle}%"  AND isShow = ${type}`;
+            countSql = `SELECT COUNT(*) AS count from (${sql}) t`;
         }
         pool.getConnection(async(err, connection) => {
             try {
@@ -193,7 +139,7 @@ module.exports = {
     * 前端页面根据文章 id 获取文章内容
     * */
     queryArticleById: (req,res) => {
-        let { id } = reqBody(req)
+        let { id } = reqBody(req);
         let sql = 'SELECT * FROM article WHERE id = ' + id;
         pool.getConnection((err, connection) => {
             if (err) {
