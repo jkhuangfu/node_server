@@ -4,6 +4,7 @@ module.exports = {
     login: (req, res) => {
         let { nickName,passWord,img } = reqBody(req);
         if (nickName === undefined || nickName === '') {
+            writeResponse(res,1,'用户名为空');
             res.json({ code: 1, msg: '用户名为空' });
             log4.Info({ code: 1, msg: '用户名为空' });
         } else if (passWord === undefined || passWord === '') {
@@ -18,22 +19,30 @@ module.exports = {
         } else {
             let json ;
             pool.getConnection((err, connection) => {
-                connection.query(sql.queryUserPwdByNickName, [nickName], (err, result) => {
-                    if(err){
-                        json = { code: 500, msg: err };
-                    }else if (result.length === 0 || (result[0].passWord && result[0].passWord !== md5('node'+passWord.toUpperCase()+'reg'))) {
-                        json = { code: 5, msg: '用户名或密码错误' };
-                        log4.Info({ code: 5, msg: '用户名或密码错误' });
-                    } else {
-                        delete req.session.img;
-                        user.nickName = nickName;
-                        req.session.user = user;
-                        json = { code: 6, msg: '登录成功' };
-                        log4.Info({ code: 6, msg: '登录成功,用户名为:-->' + nickName });
-                    }
-                    res.json(json);
-                    connection.release();
-                });
+                if(err){
+                    res.json({code:500,msg:'数据库连接异常',err});
+                    return false;
+                }
+                try{
+                    connection.query(sql.queryUserPwdByNickName, [nickName], (err, result) => {
+                        if(err){
+                            json = { code: 500, msg: err };
+                        }else if (result.length === 0 || (result[0].passWord && result[0].passWord !== md5('node'+passWord.toUpperCase()+'reg'))) {
+                            json = { code: 5, msg: '用户名或密码错误' };
+                            log4.Info({ code: 5, msg: '用户名或密码错误' });
+                        } else {
+                            delete req.session.img;
+                            user.nickName = nickName;
+                            req.session.user = user;
+                            json = { code: 6, msg: '登录成功' };
+                            log4.Info({ code: 6, msg: '登录成功,用户名为:-->' + nickName });
+                        }
+                        res.json(json);
+                        connection.release();
+                    });
+                }catch (e) {
+                    res.json({code:500,msg:'登录失败',err});
+                }
             });
         }
     }

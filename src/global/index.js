@@ -21,7 +21,10 @@ module.exports = {
             mysqlConfig = sqlConf.mysqlOnline;
         }
         /* 使用连接池 */
-        global.pool = mysql.createPool(util.extend({}, mysqlConfig));
+        global.pool = mysql.createPool(Object.assign({}, mysqlConfig));
         global.redisDb = redisDb(app);
+        global.writeResponse = (res,response) => {
+            res.json({...response});
+        }
     }
 };

@@ -85,19 +85,24 @@ module.exports = {
                         log4.Info('模糊查询文章总条数成功====' + count);
                     });
                 });
-                connection.query(querySql, (err, response) => {
-                    if (err) {
-                        res.json({ code: 500, msg: err });
+                if(count){
+                    connection.query(querySql, (err, response) => {
+                        if (err) {
+                            res.json({ code: 500, msg: err });
+                            connection.release();
+                            return;
+                        }
+                        response.forEach(row => {
+                            row.createTime = moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
+                        });
+                        log4.Info('模糊查询文章成功====' + count);
+                        res.json({ code: 200,msg:'查询成功', data: response, count: count });
                         connection.release();
-                        return;
-                    }
-                    response.forEach(row => {
-                        row.createTime = moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
-                    });
-                    log4.Info('模糊查询文章成功====' + count);
-                    res.json({ code: 200, data: response, count: count });
+                    })
+                }else {
+                    res.json({ code: 400, msg:'查询失败' });
                     connection.release();
-                })
+                }
             } catch (error) {
                 res.json({ code: 500, message: error });
             }
@@ -123,16 +128,20 @@ module.exports = {
                 res.json({ code: 500, msg: '数据库连接池出错',info:err });
                 return;
             }
-            connection.query(sql, insertData, (err, response) => {
-                if (err) {
-                    log4.Error('发布文章出错信息====' + err);
-                    res.json({ code: 500, msg: err });
+            try{
+                connection.query(sql, insertData, (err, response) => {
+                    if (err) {
+                        log4.Error('发布文章出错信息====' + err);
+                        res.json({ code: 500, msg: err });
+                        connection.release();
+                        return false;
+                    }
+                    res.json({ code: 200, msg: '发布成功' })
                     connection.release();
-                    return false;
-                }
-                res.json({ code: 200, msg: '发布成功' })
-                connection.release();
-            })
+                })
+            }catch (e) {
+                res.json({ code: 500, msg: '发布失败',err });
+            }
         })
     },
     /*
@@ -144,19 +153,23 @@ module.exports = {
         pool.getConnection((err, connection) => {
             if (err) {
                 log4.Error(err);
-                res.json({code:500,msg:err})
+                res.json({code:500,msg:err});
                 return false;
             }
-            connection.query(sql, (err, response) => {
-                if (err) {
-                    log4.Error(err);
-                    res.json({code:500,msg:err});
+            try{
+                connection.query(sql, (err, response) => {
+                    if (err) {
+                        log4.Error(err);
+                        res.json({code:500,msg:err});
+                        connection.release();
+                        return false;
+                    }
+                    res.json({code:200,msg:'success',article:response})
                     connection.release();
-                    return false;
-                }
-                res.json({code:200,msg:'success',article:response})
-                connection.release();
-            });
+                });
+            }catch (e) {
+                res.json({ code: 500, msg: '查询服务异常',err });
+            }
         });
     }
 };

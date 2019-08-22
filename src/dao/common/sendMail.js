@@ -44,26 +44,32 @@ const sendFunction = (email, code, res) => {
 
 const sendMailCode = (req, res) => {
     let {email} = reqBody(req);
-    let {nickName} = req.session.user;
+    let {nickName1} = req.session.user;
     let code = randomCode();
     let sql = 'select email from user_main where nickName = ?';
+
+
     pool.getConnection((err, connection) => {
         if (err) {
             res.json({code: 500, msg: err});
             return false;
         }
-        connection.query(sql, [nickName], (e, response) => {
-            if (e) {
-                res.json({code: 500, msg: e});
-            } else {
-                if (response[0].email === email) {
-                    sendFunction(email, code, res);
+        try {
+            connection.query(sql, [nickName], (e, response) => {
+                if (e) {
+                    res.json({code: 500, msg: e});
                 } else {
-                    res.json({code: 400, msg: '邮箱非用户绑定邮箱'});
+                    if (response[0].email === email) {
+                        sendFunction(email, code, res);
+                    } else {
+                        res.json({code: 400, msg: '邮箱非用户绑定邮箱'});
+                    }
                 }
-            }
-            connection.release();
-        })
+                connection.release();
+            })
+        } catch (e) {
+            res.json({code: 500, msg: '程序异常，发送失败', e});
+        }
     });
 };
 const sendMailNormal = (req, res) => {
@@ -78,17 +84,21 @@ const sendMailNormal = (req, res) => {
             html: mailCon
         }
     }
-    mailTransport.sendMail({
-        from: `<${server_config.auth.user}>`,
-        to: to,
-        subject: 'no reply(自动发送,勿回复)',
-        ...con
-    }, (err) => {
-        if (err) {
-            res.json({code: 500, msg: err})
-        } else {
-            res.json({code: 200, msg: true})
-        }
-    })
+    try {
+        mailTransport.sendMail({
+            from: `<${server_config.auth.user}>`,
+            to: to,
+            subject: 'no reply(自动发送,勿回复)',
+            ...con
+        }, (err) => {
+            if (err) {
+                res.json({code: 500, msg: err})
+            } else {
+                res.json({code: 200, msg: true})
+            }
+        })
+    } catch (e) {
+        res.json({code: 500, msg: '程序异常，发送失败', e});
+    }
 };
 module.exports = {sendMailCode, sendMailNormal};
