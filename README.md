@@ -12,18 +12,20 @@ PS：运行方法 npm install 安装依赖
 ├── bin
 │   └── www //服务配置
 ├── fileTemp //文件上传（缓存）
+├── middlewares //中间件
+│   ├── checklogin.js //验证登录中间件
 ├── package.json
 ├── public
 │   ├── favicon.ico
 │   └── test.txt
-├── sql
-│   ├── blog.sql //数据库结构文件
 ├── routes
 │   ├── blog.js //blog 路由
 │   ├── common.js //公用功能路由
 │   ├── user.js //用户操作路由
 │   ├── viewRouter.js //前端页面路由(ejs模板)
 │   └── wechat.js //微信相关路由
+├── sql
+│   ├── blog.sql //数据库结构文件
 ├── src
 │   ├── config //相关配置信息(mysql,redis,邮箱,微信 appid 等)
 │   │   ├── mail.js
