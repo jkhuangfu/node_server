@@ -47,8 +47,6 @@ const sendMailCode = (req, res) => {
     let {nickName1} = req.session.user;
     let code = randomCode();
     let sql = 'select email from user_main where nickName = ?';
-
-
     pool.getConnection((err, connection) => {
         if (err) {
             res.json({code: 500, msg: err});

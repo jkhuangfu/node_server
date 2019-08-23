@@ -24,12 +24,12 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 //Session
-app.use(cookieParser('HFJKsession'));
+app.use(cookieParser('mRAewUjWeLopm0Hu8v'));
 app.use(session({
     store: new MemoryStore({
         checkPeriod: 1000 * 60 * 60 * 24 // prune expired entries every 24 h
     }),
-    secret: 'HFJKsession', //与cookieParser中的一致
+    secret: 'mRAewUjWeLopm0Hu8v', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
     saveUninitialized: true,
     HttpOnly: true,

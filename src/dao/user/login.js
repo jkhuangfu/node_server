@@ -36,6 +36,7 @@ module.exports = {
                             req.session.user = user;
                             json = { code: 6, msg: '登录成功' };
                             log4.Info({ code: 6, msg: '登录成功,用户名为:-->' + nickName });
+                            res.cookie('name', 'tobi', { signed: true });
                         }
                         res.json(json);
                         connection.release();

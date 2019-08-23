@@ -72,7 +72,5 @@ module.exports = {
                 regFunction(res, req, nickName, pwd, email, _sql);
             }
         }
-
-
     }
 };

@@ -20,20 +20,11 @@ router
     //上传文件到阿里OSS
     .post('/oss/upFile', upload.array('file', 9), (req, res) => {
         log4.Info('======开始上传文件至 OSS=====');
-        try {
-            upFile.upFileForOss(req, res);
-        } catch (err) {
-            log4.Error(err)
-        }
-
+        upFile.upFileForOss(req, res);
     })
     //上传文件到本地
     .post('/local/upFile', upload.array('file', 9), (req, res) => {
         log4.Info('======开始上传文件至服务器=====');
-        try {
-            upFile.upFileForLocal(req, res);
-        } catch (err) {
-            log4.Error(err)
-        }
+        upFile.upFileForLocal(req, res);
     });
 module.exports = router;

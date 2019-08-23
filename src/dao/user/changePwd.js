@@ -32,26 +32,25 @@ module.exports = {
         pool.getConnection((err, connection) => {
             if (err) {
                 res.json({ code: 500, message: '服务器错误', err });
-            } else {
-                try {
-                    connection.query(sql.queryUserPwdByNickName, [nickName], (err, result) => {
-                        if (result) {
-                            if (md5('node'+oldPassWord.toUpperCase()+'reg') === result[0].passWord) {
-                                connection.query(sql.changePassWord, [md5('node'+newPassWord.toUpperCase()+'reg'), nickName], (err, result) => {
-                                    if (result) {
-                                        res.json({ code: 200, message: '用户密码修改成功' });
-                                    }
-                                });
-                            } else {
-                                res.json({code: 6, message: '旧密码不匹配' });
-                            }
+                return false ;
+            }
+            try {
+                connection.query(sql.queryUserPwdByNickName, [nickName], (err, result) => {
+                    if (result) {
+                        if (md5('node'+oldPassWord.toUpperCase()+'reg') === result[0].passWord) {
+                            connection.query(sql.changePassWord, [md5('node'+newPassWord.toUpperCase()+'reg'), nickName], (err, result) => {
+                                if (result) {
+                                    res.json({ code: 200, message: '用户密码修改成功' });
+                                }
+                            });
+                        } else {
+                            res.json({code: 6, message: '旧密码不匹配' });
                         }
-                        connection.release();
-                    });
-                }catch (e) {
-                    res.json({code: 500, msg: '程序异常，修改密码失败', e});
-                }
-
+                    }
+                    connection.release();
+                });
+            }catch (e) {
+                res.json({code: 500, msg: '程序异常，修改密码失败', e});
             }
         });
     }

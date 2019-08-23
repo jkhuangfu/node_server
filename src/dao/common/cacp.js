@@ -7,6 +7,6 @@ const captcha = (req,res) => {
     log4.Info('======获取验证码=====' + captcha.text);
     req.session.img = captcha.text;
     res.type('svg');
-    res.status(200).send(captcha.data);
+    res.send(captcha.data);
 };
 module.exports = captcha;
