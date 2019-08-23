@@ -3,8 +3,8 @@ const router = express.Router();
 const checklogin = require('../middlewares/checklogin');
 const articleManger = require('../src/dao/blog/article');
 const messageDao = require('../src/dao/blog/message');
-router.use(checklogin);
 router
+    .use(checklogin)
     .post('/changeArticleStatus', (req, res) => {
         articleManger.changeArticleStatus(req, res)
     })

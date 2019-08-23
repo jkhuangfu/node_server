@@ -2,7 +2,7 @@
 let sqlMap = {
     checkUser: 'SELECT nickName FROM user_main WHERE nickName = ?', //检查用户
     insert: 'insert into user_main(nickName,regTime,passWord,email) values(?,now(),?)', //注册
-    queryUserPwdByNickName: 'SELECT passWord FROM user_main WHERE nickName = ?', //根据用户名查询密码
+    queryUserPwdByNickName: 'SELECT avatar,nickName,passWord FROM user_main WHERE nickName = ?', //根据用户名查询密码
     changePassWord: 'UPDATE user_main SET passWord = ? WHERE nickName = ?', //修改密码
     publishMessage: 'insert into message(msgCon,nickName,createTime,status) values(?,now(),?,?)', //发布信息
     showMessage: 'update message set status = ? where id = ?', //是否显示

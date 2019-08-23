@@ -6,8 +6,9 @@ const upFile = require('../src/dao/common/upFile');
 const {sendMailCode, sendMailNormal} = require('../src/dao/common/sendMail');
 const multer = require('multer');
 const upload = multer({dest: './fileTemp/'});
-router.use(checklogin);
+
 router
+    .use(checklogin)
     .get('/cacp', (req, res) => {
         captcha(req, res)
     })

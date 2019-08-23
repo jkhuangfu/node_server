@@ -33,8 +33,8 @@ const sendFunction = (email, code, res) => {
             let oneDay = 24 * 60 * 60;
             let now = new Date();
             let nowSecond = now.getHours() * 60 * 60 + now.getMinutes() * 60 + now.getSeconds();
-            let set_key = await redisDb.set(0, email, code, 5 * 60);
-            let set_count = await redisDb.set(0, `${email}_count`, count, oneDay - nowSecond);
+            let set_key = await redisDb.set(email, code, 5 * 60);
+            let set_count = await redisDb.set(`${email}_count`, count, oneDay - nowSecond);
             if (set_key === 200 && set_count === 200) {
                 res.json({code: 200, msg: '发送成功'});
             }
@@ -44,7 +44,7 @@ const sendFunction = (email, code, res) => {
 
 const sendMailCode = (req, res) => {
     let {email} = reqBody(req);
-    let {nickName1} = req.session.user;
+    let {nickName} = req.session.user;
     let code = randomCode();
     let sql = 'select email from user_main where nickName = ?';
     pool.getConnection((err, connection) => {

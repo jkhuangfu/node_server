@@ -32,11 +32,11 @@ module.exports = {
                             log4.Info({ code: 5, msg: '用户名或密码错误' });
                         } else {
                             delete req.session.img;
-                            user.nickName = nickName;
-                            req.session.user = user;
-                            json = { code: 6, msg: '登录成功' };
+                            req.session.user = result[0];
+                            let { nickName, avatar } = result[0];
+                            let data = { nickName, avatar } ;
+                            json = { code: 6, msg: '登录成功',data};
                             log4.Info({ code: 6, msg: '登录成功,用户名为:-->' + nickName });
-                            res.cookie('name', 'tobi', { signed: true });
                         }
                         res.json(json);
                         connection.release();
