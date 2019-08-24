@@ -6,19 +6,20 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const common = require('./src/global'); //全局使用方法及变量
-const MemoryStore = require('memorystore')(session); //解决session内存溢出问题
+const MemoryStore = require('memorystore')(session); //session存放在内存中
+const RedisStore = require('connect-redis')(session);//session 存放在redis中
 const view = require('./routes/viewRouter'); //页面渲染
 const user = require('./routes/user'); //后台管理接口
 const blog = require('./routes/blog'); //博客相关
 const wechat = require('./routes/wechat'); //微信相关
-
 const commonRouter = require('./routes/common');
 
 const cors = require('cors');
 const app = express();
+const redisOption = require('./src/config/redis')[app.get('env') === 'development' ? 'configDev' : 'configProd'];
 common.ctrlCommon(app);
 const corsOptions = {
-    origin: 'http://127.0.0.1:8081', //此处设置允许访问的域名
+    origin: 'http://127.0.0.1:8080', //此处设置允许访问的域名
     optionsSuccessStatus: 200,
     credentials: true
 };
@@ -26,14 +27,19 @@ app.use(cors(corsOptions));
 //Session
 app.use(cookieParser('mRAewUjWeLopm0Hu8v'));
 app.use(session({
-    store: new MemoryStore({
-        checkPeriod: 1000 * 60 * 60 * 24 // prune expired entries every 24 h
+    // store: new MemoryStore({
+    //     checkPeriod: 1000 * 60 * 60 * 24 // prune expired entries every 24 h
+    // }),
+    store:new RedisStore({
+        ...redisOption,
+        db: 0,
+        prefix: 'drnet'
     }),
     secret: 'mRAewUjWeLopm0Hu8v', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
     saveUninitialized: true,
     HttpOnly: true,
-    cookie: { maxAge: 30 * 60 * 1000 } //过期时间
+    cookie: { maxAge: 30 * 60 * 1000, secure: false } //过期时间
 }));
 //全局session
 app.use(function(req, res, next) {

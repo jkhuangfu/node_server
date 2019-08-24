@@ -46,11 +46,25 @@ const redisDb = (app) => {
                     res(err);
                     return false;
                 }
+                client.quit();
                 res(result);
             })
         })
     };
-    return {set, get}
+
+    const del = (key) =>{
+        return new Promise(reslove=>{
+            client.del(key,(err,val)=>{
+                if(err){
+                    reslove(false)
+                }else if(val === 1){
+                    reslove(true)
+                }
+            });
+        });
+    }
+
+    return {set, get, del}
 };
 
 module.exports = redisDb;

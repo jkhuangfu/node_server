@@ -58,8 +58,6 @@ module.exports = {
     * {type}:文章的显示类型
     * */
     queryArticle: (req, res) => {
-        console.log(req.signedCookies)
-
         let { articleTitle, pageIndex = 1, pageSize = 20, type } = reqBody(req);
         let querySql,countSql,sql;
         if (type == 2) { //全部

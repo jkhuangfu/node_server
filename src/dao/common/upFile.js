@@ -12,15 +12,16 @@ const client = new OSS({
 module.exports = {
     upFileForLocal: async (req, res) => {
         let writeStream = [],url = [];
+        let { type } = reqBody(req);
         if(req.files.length<=0){
             res.json({status: 400, msg: '未上传文件'});
-            return
+            return false;
         }
         req.files.map(item=>{
-            let type = item.originalname.split('.')[1];
+            let file_type = item.originalname.split('.')[1];
             let id = uuid(36);
             //创建真实文件
-            let write_file = path.resolve('fileTemp',`${id}.${type}`);
+            let write_file = path.resolve('fileTemp',`${type ? type : id}.${file_type}`);
             // 本地缓存数据
             let local_file = path.resolve('fileTemp',item.filename);
             let origin_stream = fs.createReadStream(local_file);
@@ -28,10 +29,10 @@ module.exports = {
             writeStream.push({
                 local_file,origin_stream,write_stream
             });
-            url.push(`/img/${id}.${type}`);
+            url.push(`/img/${type ? type : id}.${file_type}`);
         });
         await Promise.all(writeStream.map(item=>{
-            item.origin_stream.pipe(item.write_stream);
+            !fs.existsSync(item.write_file) && item.origin_stream.pipe(item.write_stream);
             fs.unlinkSync(item.local_file);
         }));
         res.json({code:200,message:'success',url})

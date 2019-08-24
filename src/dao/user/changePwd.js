@@ -19,7 +19,7 @@ module.exports = {
             res.json({ code: 3, message: '请输入邮箱验证码' });
             return false;
         }else if(email) {
-            let redis_code = await redisDb.get(0,`${email}`);
+            let redis_code = await redisDb.get(`${email}`);
             if(!redis_code){
                 res.json({ code: 4, message: '请先发送验证码' });
                 return  false;
