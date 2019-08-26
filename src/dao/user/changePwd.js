@@ -40,9 +40,7 @@ module.exports = {
                         if (md5('node'+oldPassWord.toUpperCase()+'reg') === result[0].passWord) {
                             connection.query(sql.changePassWord, [md5('node'+newPassWord.toUpperCase()+'reg'), nickName], async (err, result) => {
                                 if (result) {
-                                    const f = await redisDb.del([email,`${email}_count`]);
-                                    console.log(f)
-                                    // await redisDb.del(`${email}_count`);
+                                    await redisDb.del([email,`${email}_count`]);
                                     res.json({ code: 200, message: '用户密码修改成功' });
                                 }
                             });
