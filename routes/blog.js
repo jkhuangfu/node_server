@@ -1,36 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const checklogin = require('../middlewares/checklogin');
-const articleManger = require('../src/dao/blog/article');
-const messageDao = require('../src/dao/blog/message');
+const {publishArticle,queryArticle,queryArticleById,deleteArticle,changeArticleStatus} = require('../src/dao/blog/article');
+const { publishMessage,deleteMessage,getMsgByTitle,getMsgList } = require('../src/dao/blog/message');
 router
     .use(checklogin)
     .post('/changeArticleStatus', (req, res) => {
-        articleManger.changeArticleStatus(req, res)
+        changeArticleStatus(req, res);
     })
     .post('/deleteArticle', (req, res) => {
-        articleManger.deleteArticle(req, res)
+        deleteArticle(req, res);
     })
     .post('/queryArticle',(req,res)=>{
-        articleManger.queryArticle(req,res)
+        queryArticle(req,res);
     })
     .post('/publishArticle',(req,res)=>{
-        articleManger.publishArticle(req,res)
+        publishArticle(req,res);
     })
     .post('/queryArticleById',(req,res)=>{
-        articleManger.queryArticleById(req,res)
+        queryArticleById(req,res);
     })
     .post('/publishMessage',(req,res)=>{
-        messageDao.publishMessage(req,res)
+        publishMessage(req,res);
     })
     .post('/deleteMessage',(req,res)=>{
-        messageDao.deleteMessage(req,res)
+        deleteMessage(req,res);
     })
     .post('/postMsgList',(req,res)=>{
-        messageDao.getMsgList(req,res)
+        getMsgList(req,res);
     })
     .post('/postMsgByTitle',(req,res)=>{
-        messageDao.getMsgByTitle(req,res)
+        getMsgByTitle(req,res);
     })
 
 module.exports = router;

@@ -15,7 +15,6 @@ module.exports = {
                             connection.release();
                             return false;
                         }
-                        console.log(response)
                         res.json({code:200,msg:'修改成功'});
                         connection.release();
                     })

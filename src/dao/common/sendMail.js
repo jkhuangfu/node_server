@@ -23,7 +23,7 @@ const sendFunction = (email, code, res) => {
             log4.Info('Unable to send email: ' + err);
             res.json({code: 400, msg: '发送失败'});
         } else {
-            let getCount = await redisDb.get(0, `${email}_count`);
+            let getCount = await redisDb.get(`${email}_count`);
             let sendCounts = getCount ? getCount : 0;
             if (sendCounts >= 5) {
                 res.json({code: 201, msg: '超过发送次数，明日再试'});

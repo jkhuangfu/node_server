@@ -4,8 +4,9 @@
  * @return 401鉴权状态码
  */
 
-module.exports = (req,res,next)=>{
-    if(!req.session.user && req.method === 'POST'){
+module.exports = async (req, res, next) => {
+    const isLogin = await redisDb.get('drnet' + req.signedCookies['connect.sid']);
+    if (isLogin && !JSON.parse(isLogin).user && req.method === 'POST') {
         return res.status(401).end();
     }
     next();

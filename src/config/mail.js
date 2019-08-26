@@ -4,7 +4,7 @@ module.exports = {
         port: 25,
         auth: {
             user: 'hfjk1993@163.com',
-            pass: '******'
+            pass: '****'
         }
     }
 };

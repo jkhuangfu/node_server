@@ -18,8 +18,10 @@ const cors = require('cors');
 const app = express();
 const redisOption = require('./src/config/redis')[app.get('env') === 'development' ? 'configDev' : 'configProd'];
 common.ctrlCommon(app);
+// 跨域白名单
+const whitelist = ['http://127.0.0.1:8080', 'http://127.0.0.1:8081', 'http://localhost:8080', 'http://localhost:8081'];
 const corsOptions = {
-    origin: 'http://127.0.0.1:8080', //此处设置允许访问的域名
+    origin: whitelist,
     optionsSuccessStatus: 200,
     credentials: true
 };
@@ -30,19 +32,18 @@ app.use(session({
     // store: new MemoryStore({
     //     checkPeriod: 1000 * 60 * 60 * 24 // prune expired entries every 24 h
     // }),
-    store:new RedisStore({
+    store: new RedisStore({
         ...redisOption,
-        db: 0,
         prefix: 'drnet'
     }),
     secret: 'mRAewUjWeLopm0Hu8v', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
     saveUninitialized: true,
     HttpOnly: true,
-    cookie: { maxAge: 30 * 60 * 1000, secure: false } //过期时间
+    cookie: {maxAge: 30 * 60 * 1000, secure: false} //过期时间
 }));
 //全局session
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.locals.session = req.session;
     next();
 });
@@ -54,7 +55,7 @@ app.set('view engine', 'ejs');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', view);
@@ -64,21 +65,21 @@ app.use('/wx', wechat);
 app.use('/common', commonRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     const err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     //res.locals.message = err.message;
     //res.locals.error = req.app.get('env') === 'development' ? err : {};
 
     // render the error page
-    res.status(err.status || 500).send('service is err：\n\n'+err);
-   // res.render('error');
+    res.status(err.status || 500).send('service is err：\n\n' + err);
+    // res.render('error');
     next();
 });
 module.exports = app;

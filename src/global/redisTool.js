@@ -1,14 +1,7 @@
 const redis = require("redis");
 const redisConfig = require('../config/redis');
 const redisDb = (app) => {
-    let env = app.get('env');
-    let _redisConfig = {};
-    if (env === 'development') {
-        _redisConfig = redisConfig.configDev
-    } else {
-        _redisConfig = redisConfig.configProd
-    }
-    let {ip, port} = _redisConfig;
+    let {ip, port} = app.get('env') === 'development' ? redisConfig.configDev : redisConfig.configProd;
     const client = redis.createClient(port, ip);
     client.on('error', (err) => {
         log4.Info('redis error：' + err);
@@ -17,16 +10,17 @@ const redisDb = (app) => {
         log4.Info('redis连接成功...')
     });
     /**
-     *
+     * @description 设置键值对
      * @param key 键
      * @param value 值
      * @param expire 过期时间（单位：秒，可为空，为空则不过期）
+     * @return 200
      */
     const set = (key, value, expire) => {
         return new Promise(res => {
             client.set(key, value, (err, result) => {
                 if (err) {
-                    log4.error('redis插入失败：' + err);
+                    log4.Info('redis插入失败：' + err);
                     res(err);
                     return false;
                 }
@@ -38,33 +32,65 @@ const redisDb = (app) => {
         });
     };
 
-    const get = (key) => {
+    /**
+     * @description 获取对应value
+     * @param key 键
+     * @return Promise<Boolean>
+     */
+    const get = key => {
         return new Promise(res => {
             client.get(key, (err, result) => {
                 if (err) {
-                    log4.error('redis获取失败：' + err);
+                    log4.Info('redis获取失败：' + err);
                     res(err);
                     return false;
                 }
-                client.quit();
                 res(result);
             })
         })
     };
 
-    const del = (key) =>{
-        return new Promise(reslove=>{
-            client.del(key,(err,val)=>{
-                if(err){
-                    reslove(false)
-                }else if(val === 1){
-                    reslove(true)
+    /**
+     * @description 判断是否存在该key
+     * @param key
+     * @return Promise<unknown>
+     */
+
+    const exits = key => {
+        return new Promise(resolve => {
+            client.exists(key, (err, reply) => {
+                if (err) {
+                    resolve(err);
+                    return false;
+                }
+                if (reply === 1) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        })
+    };
+
+    /**
+     * @description 根据key值删除数据
+     * @param keys 要删除的key 单个为String 多个为Array[key1,key2]
+     * @return Promise<unknown>
+     */
+
+    const del = keys => {
+        return new Promise(resolve => {
+            client.del(keys, (err, val) => {
+                if (err) {
+                    resolve(false)
+                } else if (val >= 1) {
+                    resolve(true)
                 }
             });
         });
-    }
+    };
 
-    return {set, get, del}
+    return {set, get, del, exits}
 };
 
 module.exports = redisDb;
