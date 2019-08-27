@@ -85,7 +85,7 @@ module.exports = {
                         log4.Info('模糊查询文章总条数成功====' + count);
                     });
                 });
-                if(count){
+                if(count >= 0){
                     connection.query(querySql, (err, response) => {
                         if (err) {
                             res.json({ code: 500, msg: err });

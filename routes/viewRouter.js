@@ -22,7 +22,7 @@ router
     })
     /* GET home page. */
     .get('/', (req, res, next) => {
-        res.render('index');
+        res.render('articlePage/article',{articleCon:req+''});
     })
     /* to 404 page */
     .get('/notFound', (req, res, next) => {

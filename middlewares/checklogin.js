@@ -5,7 +5,7 @@
  */
 
 module.exports = async (req, res, next) => {
-    const isLogin = await redisDb.get('drnet' + req.signedCookies['connect.sid']);
+    const isLogin = await redisDb.get('drnet' + req.sessionID);
     if (isLogin && !JSON.parse(isLogin).user && req.method === 'POST') {
         return res.status(401).end();
     }

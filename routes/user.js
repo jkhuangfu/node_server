@@ -16,7 +16,7 @@ router
     })
     .post('/logout', async (req, res) => {
         console.log('======退出登录=====');
-        const flag = await redisDb.del('drnet'+req.signedCookies['connect.sid']);
+        const flag = await redisDb.del('drnet'+req.sessionID);
         delete req.session;
         flag ? res.json({code:200}) : res.json({code:400});
     })
