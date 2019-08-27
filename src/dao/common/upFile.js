@@ -11,13 +11,14 @@ const client = new OSS({
 });
 module.exports = {
     upFileForLocal: async (req, res) => {
-        let writeStream = [],url = [];
+        let writeStream = [],url = [],promise = [], max_size = 600*1024, up_flag;
         let { type } = reqBody(req);
         if(req.files.length<=0){
             res.json({status: 400, msg: '未上传文件'});
             return false;
         }
         req.files.map(item=>{
+            up_flag = item.size > max_size;
             let file_type = item.originalname.split('.')[1];
             let id = uuid(36);
             //创建真实文件
@@ -31,11 +32,21 @@ module.exports = {
             });
             url.push(`/img/${type ? type : id}.${file_type}`);
         });
-        await Promise.all(writeStream.map(item=>{
-            !fs.existsSync(item.write_file) && item.origin_stream.pipe(item.write_stream);
-            fs.unlinkSync(item.local_file);
-        }));
-        res.json({code:200,message:'success',url})
+        writeStream.map(item=>{
+            promise.push( new Promise(resolve => {
+                item.origin_stream.pipe(item.write_stream);
+                item.origin_stream.on('end',()=>{
+                        resolve(true);
+                    });
+            }))
+        });
+        const flag = await Promise.all(promise);
+        if(!flag.includes('false')){
+            writeStream.map(item=>{
+                fs.unlinkSync(item.local_file);
+            });
+            res.json({code:200,message:'success',url})
+        }
     },
     upFileForOss: async (req, res) => {
         let file_arr = [],result_arr=[];
