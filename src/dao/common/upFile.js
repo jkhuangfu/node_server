@@ -46,12 +46,15 @@ module.exports = {
     },
     upFileForOss: (req, res) => {
         let file_arr = [], result_arr = [], promise = [];
+        let {type} = reqBody(req);
         if (req.files.length <= 0) {
             res.json({status: 400, msg: '未上传文件'});
             return false;
         }
         req.files.map(item => {
-            let key = 'articleImg/' + item.originalname;
+            let file_type = item.originalname.split('.')[1];
+            let fileName = type ? `${type}.${file_type}` : item.originalname ;
+            let key = `articleImg/${fileName}`;
             let or_file = path.resolve("fileTemp", item.filename);
             let stream = fs.createReadStream(or_file);
             promise.push(client.putStream(key, stream));
