@@ -2,73 +2,69 @@ const OSS = require('ali-oss');
 const fs = require('fs');
 const path = require('path');
 const { uuid } = require('../../util/inedx');
+const oss_config = require('../../config/ali_oss');
 // 初始化Client
-const client = new OSS({
-    region: 'oss-cn-beijing',
-    accessKeyId: '*******',
-    accessKeySecret: '**********',
-    bucket: 'blog-manger'
-});
+const client = new OSS(oss_config);
 module.exports = {
     upFileForLocal: async (req, res) => {
-        let writeStream = [],url = [],promise = [], max_size = 600*1024, up_flag;
-        let { type } = reqBody(req);
-        if(req.files.length<=0){
+        let writeStream = [], url = [], promise = [], max_size = 600 * 1024, up_flag;
+        let {type} = reqBody(req);
+        if (req.files.length <= 0) {
             res.json({status: 400, msg: '未上传文件'});
             return false;
         }
-        req.files.map(item=>{
+        req.files.map(item => {
             up_flag = item.size > max_size;
             let file_type = item.originalname.split('.')[1];
             let id = uuid(36);
             //创建真实文件
-            let write_file = path.resolve('fileTemp',`${type ? type : id}.${file_type}`);
+            let write_file = path.resolve('fileTemp', `${type ? type : id}.${file_type}`);
             // 本地缓存数据
-            let local_file = path.resolve('fileTemp',item.filename);
+            let local_file = path.resolve('fileTemp', item.filename);
             let origin_stream = fs.createReadStream(local_file);
             let write_stream = fs.createWriteStream(write_file);
             writeStream.push({
-                local_file,origin_stream,write_stream
+                local_file, origin_stream, write_stream
             });
             url.push(`/img/${type ? type : id}.${file_type}`);
         });
-        writeStream.map(item=>{
-            promise.push( new Promise(resolve => {
+        writeStream.map(item => {
+            promise.push(new Promise(resolve => {
                 item.origin_stream.pipe(item.write_stream);
-                item.origin_stream.on('end',()=>{
-                        resolve(true);
-                    });
+                item.origin_stream.on('end', () => {
+                    resolve(true);
+                });
             }))
         });
         const flag = await Promise.all(promise);
-        if(!flag.includes('false')){
-            writeStream.map(item=>{
+        if (!flag.includes('false')) {
+            writeStream.map(item => {
                 fs.unlinkSync(item.local_file);
             });
-            res.json({code:200,message:'success',url})
+            res.json({code: 200, message: 'success', url})
         }
     },
-    upFileForOss: async (req, res) => {
-        let file_arr = [],result_arr=[];
-        if(req.files.length<=0){
+    upFileForOss: (req, res) => {
+        let file_arr = [], result_arr = [], promise = [];
+        if (req.files.length <= 0) {
             res.json({status: 400, msg: '未上传文件'});
-            return
+            return false;
         }
         req.files.map(item => {
             let key = 'articleImg/' + item.originalname;
-            let or_file = path.resolve("fileTemp",item.filename);
+            let or_file = path.resolve("fileTemp", item.filename);
             let stream = fs.createReadStream(or_file);
-            file_arr.push({
-                key, stream
-            });
-            fs.unlinkSync(or_file);
+            promise.push(client.putStream(key, stream));
+            file_arr.push(or_file);
         });
-        await Promise.all(
-            file_arr.map(async item => {
-                let result = await client.putStream(item.key, item.stream);
-                result_arr.push(result.url)
-            })
-        );
-        res.json({status: 200, msg: '上传成功', imageUrlArr: result_arr});
+        Promise.all(promise).then(data => {
+            data.map((item,index) => {
+                result_arr.push(item.url);
+                fs.unlinkSync(file_arr[index]);
+            });
+            res.json({status: 200, msg: '上传成功', imageUrlArr: result_arr});
+        }).catch(e => {
+            console.log(e)
+        });
     }
 };
