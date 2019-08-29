@@ -19,7 +19,7 @@ const app = express();
 const redisOption = require('./src/config/redis')[app.get('env') === 'development' ? 'configDev' : 'configProd'];
 common.ctrlCommon(app);
 // 跨域白名单
-const whitelist = ['http://127.0.0.1:8080', 'http://127.0.0.1:8081', 'http://localhost:8080', 'http://localhost:8081'];
+const whitelist = [/^http/];
 const corsOptions = {
     origin: whitelist,
     optionsSuccessStatus: 200,
@@ -73,8 +73,7 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-    res.status(err.status || 500).send('service is err：\n' + err);
-    // res.render('error');
+    res.json({code:err.status || 500, err});
     next();
 });
 module.exports = app;

@@ -5,7 +5,12 @@ const captcha = require('../src/dao/common/cacp');
 const {upFileForOss, upFileForLocal} = require('../src/dao/common/upFile');
 const {sendMailCode, sendMailNormal} = require('../src/dao/common/sendMail');
 const multer = require('multer');
-const upload = multer({dest: './fileTemp/'});
+const upload = multer({
+    limits:{
+        fileSize: 600 * 1024 // 限制文件为600kb
+    },
+    dest: './fileTemp/'
+});
 
 router
     .use(checklogin)
@@ -20,12 +25,10 @@ router
     })
     //上传文件到阿里OSS
     .post('/oss/upFile', upload.array('file', 9), (req, res) => {
-        log4.Info('======开始上传文件至 OSS=====');
         upFileForOss(req, res);
     })
     //上传文件到本地
     .post('/local/upFile', upload.array('file', 9), (req, res) => {
-        log4.Info('======开始上传文件至服务器=====');
         upFileForLocal(req, res);
     });
 module.exports = router;
