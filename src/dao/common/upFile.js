@@ -7,17 +7,12 @@ const oss_config = require('../../config/ali_oss');
 const client = new OSS(oss_config);
 module.exports = {
     upFileForLocal: async (req, res) => {
-        let writeStream = [], url = [], promise = [], max_size = 600 * 1024;
+        let writeStream = [], url = [], promise = [];
         let {type} = reqBody(req);
         if (req.files.length <= 0) {
             res.json({status: 400, msg: '未上传文件'});
             return false;
         }
-        // const checkSize = req.files.filter(item => item.size > max_size);
-        // if(checkSize.length>0){
-        //   res.json({code: 300, message: '文件有超出600kb的'});
-        //   return  false;
-        // }
         req.files.map(item => {
             let file_type = item.originalname.split('.')[1];
             let id = uuid(36);
@@ -50,16 +45,11 @@ module.exports = {
         }
     },
     upFileForOss: (req, res) => {
-        let file_arr = [], result_arr = [], promise = [],max_size = 600 * 1024;
+        let file_arr = [], result_arr = [], promise = [];
         let {type} = reqBody(req);
-        // if (req.files.length <= 0) {
-        //     res.json({status: 400, msg: '未上传文件'});
-        //     return false;
-        // }
-        const checkSize = req.files.filter(item => item.size > max_size);
-        if(checkSize.length>0){
-          res.json({code: 300, message: '文件有超出600kb的'});
-          return  false;
+        if (req.files.length <= 0) {
+            res.json({status: 400, msg: '未上传文件'});
+            return false;
         }
         req.files.map(item => {
             let file_type = item.originalname.split('.')[1];
@@ -77,7 +67,10 @@ module.exports = {
             });
             res.json({code: 200, msg: '上传成功', imageUrlArr: result_arr});
         }).catch(e => {
-            console.log(e)
+            file_arr.map(item => {
+                fs.unlinkSync(item);
+            });
+            res.json({code:500,e});
         });
     }
 };
