@@ -11,7 +11,7 @@ router
         register.register(req, res)
     })
     .post('/checkLogin',async (req,res)=>{
-        const isLogin = await redisDb.get('drnet' + req.sessionID);
+        const isLogin = await redisDb.get('dr_net' + req.sessionID);
         if (isLogin && JSON.parse(isLogin).user) {
             res.json({code:200});
         }else{
@@ -24,7 +24,7 @@ router
     })
     .post('/logout', async (req, res) => {
         console.log('======退出登录=====');
-        const flag = await redisDb.del('drnet'+req.sessionID);
+        const flag = await redisDb.del('dr_net'+req.sessionID);
         delete req.session;
         flag ? res.json({code:200}) : res.json({code:400});
     })

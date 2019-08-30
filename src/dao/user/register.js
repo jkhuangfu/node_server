@@ -25,8 +25,7 @@ const regFunction = (res, req, nickName, pwd, email, _sql) => {
                     if (err) {
                         res.json({code: 500, msg: err});
                     } else if (result) {
-                        user.userName = nickName;
-                        req.session.user = user;
+                        req.session.user = nickName;
                         res.json({code: 200, msg: '注册成功'});
                     }
                     connection.release();

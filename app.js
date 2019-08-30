@@ -19,7 +19,7 @@ const app = express();
 const redisOption = require('./src/config/redis')[app.get('env') === 'development' ? 'configDev' : 'configProd'];
 common.ctrlCommon(app);
 // 跨域白名单
-const whitelist = [/^http/];
+const whitelist = [/^http:\/\/localhost|^http:\/\/127.0.1|drnet.xyz$/];
 const corsOptions = {
     origin: whitelist,
     optionsSuccessStatus: 200,
@@ -34,11 +34,11 @@ app.use(session({
     // }),
     store: new RedisStore({
         ...redisOption,
-        prefix: 'drnet'
+        prefix: 'dr_net'
     }),
     secret: 'mRAewUjWeLopm0Hu8v', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
-    saveUninitialized: true,
+    saveUninitialized: false,
     HttpOnly: true,
     cookie: {maxAge: 30 * 60 * 1000, secure: false} //过期时间
 }));

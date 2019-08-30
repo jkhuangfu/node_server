@@ -1,5 +1,4 @@
 /* 逻辑处理模块 */
-const user = {}; //存放用户信息
 module.exports = {
     login: (req, res) => {
         let { nickName,passWord,img } = reqBody(req);
@@ -32,7 +31,7 @@ module.exports = {
                             log4.Info({ code: 5, msg: '用户名或密码错误' });
                         } else {
                             delete req.session.img;
-                            req.session.user = result[0];
+                            req.session.user = result[0].nickName;
                             let { nickName, avatar } = result[0];
                             let data = { nickName, avatar } ;
                             json = { code: 6, msg: '登录成功',data};
