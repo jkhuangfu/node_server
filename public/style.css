@@ -1,0 +1,508 @@
+/*
+Luck - Resposive Coming Soon Page
+Author: ProwebTheme
+Version: 1.0
+Email: Masudzakaria2@gmail.com
+*/
+
+@charset "utf-8";
+
+/*===================================================*/
+/*
+[Table Of Contents]
+----------------------
+  1.RESET.
+  2.COMMON CUSTOM STYLE.
+  3.TYPOGRAPHY.
+  4.HEADER WELCOME SECTION.
+  5.ABOUT US SECTION.
+  6.SERVICES SECTION.
+  7.CONTACT US. 
+  7.FOOTER SECTION. 
+  8.PRELODER.
+  
+*/
+/*************************************************************
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+............................ RESET ......................
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+*************************************************************/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;letter-spacing:2px
+}
+img {
+  max-width: 100%;
+  height: auto;
+  border: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+*:active, *:focus {
+outline: none !important;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fix {overflow: hidden;}
+.float_left {float: left;}
+.float_right {float: right;}
+/*************************************************************
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+..................... COMMON CUSTOM STYLE ......................
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+*************************************************************/
+body{color:#fff;line-height: 25px;background: #0f0a09 none repeat scroll 0 0 !important;}
+#ascrail2001{display:none !important;}
+.inner-border-box, .box-shap, .nav-wrapper, .color-warpper, .socail-icon-warpper, .copyright{position: fixed;}
+body, .welcome-section, .sparator-main, .sparator, .sparator-border, .welcome-text h1, .subscribe-fild .email-file, .welcome-text, #count-down-wrapper ul li, .main-wrapper, .main-page-content, .subscribe-btn, .navmenu, .service-title{
+  position: relative;
+}
+.welcome-banner, .sparator:before, .sparator:after, .sparator-border:before, .sparator-border:after, .sparator-border, .welcome-text h1:before, .welcome-text h1:after, .welcome-overlay-center, .welcome-banner:before, #count-down-wrapper ul li:before, #count-down-wrapper ul li:after, .subscribe-fild .email-file:before, .subscribe-fild .email-file:after, .subscribe-btn:before, .navmenu:before, .navmenu:after, .service-title span.service-icon, .red .progress p:before, #pixie{position: absolute;}
+body, html, .welcome-section, .main-wrapper, .content-table, .sparator-border:before, .sparator-border:after, .content-tab-wrapper, .tab-pane-container, .tab-pane-container section, .main-cotainer, .color-warpper, .socail-icon-warpper, .box-shap.box-left, .box-shap.box-right{height:100%}
+.content-table, .sparator-border, .subscribe-fild .email-file:before, .subscribe-fild .email-file:after, .service-title h4, #submit, .soical-icon ul li a, .copyright, .box-shap.box-top, .box-shap.box-bottom, .nav-wrapper{width: 100%;}
+.welcome-banner, .welcome-banner:before, .welcome-overlay-center, .subscribe-fild .email-file input, .subscribe-btn:before, .main-page-content, .main-wrapper, .inner-border-box, .inner-border, .box-shap .inside-box, #pixie{height: 100%; width: 100%;}
+.sparator:after, .welcome-overlay-center, #pixie{right:0;top:0}
+.welcome-banner, .sparator:before, .welcome-banner:before, #count-down-wrapper ul li:after{left: 0;top: 0;}
+.sparator, .sparator-border, .welcome-text h1:before, .welcome-text h1:after{display: block;}
+.subscribe-fild .email-file, .subscribe-btn{display:inline-block;}
+.content-table{display: table;}
+.content-table-call{display: table-cell;
+vertical-align: middle;}
+.welcome-banner {
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -ms-background-size: cover !important;
+  -o-background-size: cover !important;
+  background-size: cover !important;
+}
+/*************************************************************
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+..................... TYPOGRAPHY ......................
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+*************************************************************/
+body{font-family: "ralewayregular",sans-serif;
+font-size: 15px;
+line-height: 27px;}
+.welcome-text h1, .subscribe-btn button, .section-title h2, .service-title h4{font-family: 'ralewaybold',sans-serif;
+font-size: 50px;}
+#count-down-wrapper h2{font-family: "robotobold",sans-serif;}
+.about-skill ul li h4, .progress p{font-family: "open_sansregular",sans-serif;
+font-size: 11px;
+font-weight: 600;}
+.logo a h2{font-family: "park_lane_nfregular",sans-serif;font-size: 40px;
+font-weight: 700;
+letter-spacing: 5px;}
+#count-down-wrapper h2{
+font-size: 42px;
+line-height: 35px;}
+.subscribe-btn button{font-size: 16px;}
+#count-down-wrapper h3{font-size: 15px;}
+.navmenu ul li a{font-size: 11px;
+line-height: 17px;}
+.welcome-text h1, #count-down-wrapper h3, nav.navmenu.tab-nav ul li a{text-transform: uppercase;}
+.service-title h4{font-size: 18px;font-weight:500;}
+#submit, .subscribe-btn button{letter-spacing:2px}
+/*************************************************************
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+...........................HEADER WELCOME SECTION................
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+*************************************************************/
+.tab-pane-container > section{display:none;}
+.tab-pane-container > section.tab-active{display:block;}
+.tab-pane-container > section.tab-active > .content-table >.main-content{ -webkit-animation-name: fadeInUp;
+    -moz-animation-name: fadeInUp;
+    -o-animation-name: fadeInUp;
+    animation-name: fadeInUp;}
+.section-title h2 {
+  margin-top: 0;
+}
+.welcome-banner {z-index:-1}
+.welcome-banner:before{background: rgba(0, 0, 0, 0.2) url("img/welcome-overly-dottet.png") repeat scroll 0 0;
+content: "";}
+.welcome-overlay-center {
+  background: none !important;
+}
+.main-page-content {
+border: 50px solid rgba(0, 0, 0, 0);
+z-index: 2;
+}
+.inner-border-box {
+  z-index: 1;
+  padding: 50px;
+}
+.box-shap .inside-box{background: rgba(0, 0, 0,0.3) none repeat scroll 0 0;}
+.box-shap.box-top, .box-shap.box-bottom{height: 50px;
+left: 0;
+padding: 0 50px;}
+.box-shap.box-left, .box-shap.box-right{width:50px;padding: 50px 0;top:0}
+.box-shap.box-left{left:0}
+.box-shap.box-right{right:0}
+.box-shap.box-top{top:0}
+.box-shap.box-bottom{bottom:0}
+.box-shap.box-left .inside-box{border-right:1px solid}
+.box-shap.box-right .inside-box{border-left:1px solid}
+.box-shap.box-top .inside-box{border-bottom:1px solid}
+.box-shap.box-bottom .inside-box{border-top:1px solid}
+.box-shap.box-top .inside-box, .box-shap.box-bottom .inside-box{}
+.logo a h2 {
+color: #ffffff;
+margin: 0;
+}
+.sparator-main {
+margin: 30px auto;
+width: 250px;
+}
+.sparator{
+height: 20px;
+margin: 0 auto;
+width: 18px;}
+.sparator:before{
+border-right: 15px solid rgba(0, 0, 0, 0);
+border-top: 15px solid;
+content: "";
+top: -4px;}
+.sparator:after{
+border-bottom: 1px solid rgb(255, 255, 255);
+border-right: 1px solid rgb(255, 255, 255);
+content: "";
+height: 13px;
+width: 14px;}
+.sparator-border{
+height: 1px;
+top: 6px;}
+.sparator-border:before, .sparator-border:after{content:"";background: rgb(255, 255, 255) none repeat scroll 0 0;
+width: 40%;} 
+.sparator-border:before{left: 0;} 
+.sparator-border:after{right: 0;}
+.welcome-text {
+margin: 50px 0;
+}
+.welcome-text h1 {
+color: #ffffff;
+padding-bottom: 10px;
+margin: 0;
+padding: 0;
+}
+.fade-text{display: none;}
+#count-down-wrapper h3{
+margin-top: 12px;}
+#count-down-wrapper ul{margin-left:-40px;}
+#count-down-wrapper ul li{
+	margin-left: 40px;
+}
+#count-down-wrapper ul li:before{content:"";}
+.welcome-subscribe-wrapper {
+	padding-top: 50px;
+}
+#count-down-wrapper h2 {
+margin-top: 0;
+}
+.subscribe-fild .email-file{background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+border: medium none;
+display: inline-block;
+border-left:1px solid #fff;
+height: 45px;
+width: 320px;}
+.subscribe-fild .email-file input{background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+border: medium none;
+padding: 4px 28px 0 20px;}
+.subscribe-fild .email-file:before, .subscribe-fild .email-file:after{background: #fff none repeat scroll 0 0;
+content: "";
+height: 1px;
+left: 0;}
+.subscribe-fild .email-file:before{top: 0;}
+.subscribe-fild .email-file:after{bottom: 0;
+width: 91.6%;}
+.subscribe-btn button{
+background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+border: medium none;
+height: 45px;
+padding: 10px 25px 10px 46px;
+text-transform: uppercase;
+vertical-align: middle;}
+.subscribe-btn {
+margin-left: -33px;
+top: 0;
+}
+.subscribe-btn:before{
+content: "";
+left: 15px;
+top: 0;
+-webkit-transform: skewX(-32deg);
+    -ms-transform: skewX(-32deg);
+        transform: skewX(-32deg);
+z-index: -1;-webkit-transition: opacity 0.3s ease 0s;transition: opacity 0.3s ease 0s}
+.subscribe-btn:hover:before{opacity:0.7;filter:alpha(opacity=70)}
+.nav-wrapper {
+left: 0;
+top: -2px;
+height: 50px;
+}
+.navmenu{
+z-index: 1;}
+.navmenu ul{}
+.navmenu ul li{}
+.navmenu ul li a{
+}
+.navmenu ul li a:hover{border:none}
+.navmenu ul li  .m-sparator{border: 1px solid rgb(255, 255, 255);
+display: inline-block;
+height: 5px;
+transform: rotate(45deg);
+width: 5px;}
+#ascrail2000-hr.nicescroll-rails.nicescroll-rails-hr {
+  display: none !important;
+}
+#ascrail2000 .nicescroll-cursors {
+right:-1.5px !important;
+}
+.tab-pane-container {
+padding: 0 10px;	
+}
+.content-table {
+padding: 40px 0;
+}
+.nav-wrapper, .socail-icon-warpper{
+  z-index: 99;
+}
+/*************************************************************
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+............................ ABOUT US SECTION .................
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+*************************************************************/
+.section-title{}
+.section-title h2 {
+  font-size: 40px;
+  text-transform: uppercase;
+}
+.about-row{padding: 20px 0;}
+.about-text {
+  border-right: 1px solid #fff;
+  padding-right: 30px;
+}
+.about-text   p {
+line-height: 28px;
+margin: 0 0 20px;
+text-align: justify;
+}
+
+.about-skill {
+  margin-top: 7px;
+}
+.progress {
+border-radius: 0;
+height: 8px;
+}
+.about-skill ul li h4 {
+font-size: 13px;
+font-weight: 700;
+margin-top: 0;
+}
+.red .progress p {
+top: -30px;
+}
+.red .progress p:before{content: "";
+width: 14px;
+height:3px;
+left: 50%;
+margin-left: -7px;
+top: 100%;}
+/*************************************************************
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+............................SERVICES SECTION .................
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+*************************************************************/
+.single-service{padding: 10px 15px;}
+.service-title {
+width: 90%;
+}
+.service-title h4{border-bottom: 1px solid;
+margin-bottom: 30px;
+padding-bottom: 15px;
+text-transform: uppercase;}
+.color-warpper, .socail-icon-warpper{
+  display: table;
+  right: 0;
+  top: 0;
+  width: 50px;
+}
+.color-list, .soical-icon{
+  display: table-cell;
+  vertical-align: middle;
+}
+.service-title span.service-icon{
+border: 1px solid rgb(255, 255, 255);
+height: 30px;
+left: 101.5%;
+padding-top:1px;
+text-align: center;
+top: 20px;
+transform: rotate(45deg);
+transition: all 0.3s ease 0s;
+width: 30px;}
+.service-icon span{transform: rotate(-45deg);}
+.single-service:hover span{color:#fff}
+.single-service p{}
+/*************************************************************
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+..................... CONTACT US .............................
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+*************************************************************/
+
+.form-control{background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+border: 1px solid #ffffff;
+border-radius: 0;
+color: #ffffff;
+height: 45px;
+padding-left: 20px;}
+textarea.form-control {
+  padding-top: 15px;
+}
+.contact-content p{padding: 10px 0 25px;}
+#submit{
+border: medium none;
+border-radius: 0;
+font-size: 18px;
+font-weight: 600;
+margin-top: 20px;
+opacity: 1;
+padding: 12px 60px;
+text-transform: uppercase;
+transition: opacity 0.3s ease 0s;}
+#submit:hover{opacity:0.8}
+/* sidebar  */
+.socail-icon-warpper {
+  left: 0;
+  opacity: 0.8;
+}
+.soical-icon ul li a{color: rgb(255, 255, 255);
+display: inline-block;
+font-size: 22px;
+padding-right: 1px;
+padding-top: 8px;
+transition: color 0.3s ease 0s;
+height: 30px;}
+.soical-icon ul li:first-child a{padding-top:0}
+/*************************************************************
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+..................... FOOTER SECTION ..........
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+*************************************************************/
+.copyright {
+  height: 50px;
+  left: 0;
+  text-align: center;
+}
+.copyright > p {
+font-family: 'open_sansregular';
+margin-top: 13px;
+font-size: 15px;
+}
+
+.color-list ul{}
+.color-list ul li{
+cursor: pointer;
+display: block;
+height: 18px;
+margin-left: 17px;
+margin-top: 15px;
+width: 18px;}
+.color-list ul li.defult{background:#20C0B3}
+.color-list ul li.yellow{background:#ffc400}
+.color-list ul li.lilac{background:#8C42BA}
+.color-list ul li.green{background:#76b600}
+.color-list ul li.blue{background:#0066dc}
+.color-list ul li.orange{background:#f36510}
+/*************************************************************
+--------------------------------------------------------------
+..................... PRELODER .................
+--------------------------------------------------------------
+*************************************************************/
+body.preloder_priview{overflow:hidden}
+#loader-wrapper {
+background: rgba(255, 255, 255, 0.95) none repeat scroll 0 0;
+height: 100%;
+left: 0;
+position: fixed;
+top: 0;
+width: 100%;
+z-index: 1000;
+}
+#loader {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #3498db;
+    -webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+    animation: spin 2s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+}
+ 
+#loader:before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #e74c3c;
+    -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+      animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+}
+ 
+#loader:after {
+    content: "";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #f9c922;
+    -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+      animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+}
+ 
+@-webkit-keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(0deg);  /* IE 9 */
+        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+    100% {
+        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(360deg);  /* IE 9 */
+        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+}
+@keyframes spin {
+    0%   {
+        -webkit-transform: rotate(0deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(0deg);  /* IE 9 */
+        transform: rotate(0deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+    100% {
+        -webkit-transform: rotate(360deg);  /* Chrome, Opera 15+, Safari 3.1+ */
+        -ms-transform: rotate(360deg);  /* IE 9 */
+        transform: rotate(360deg);  /* Firefox 16+, IE 10+, Opera */
+    }
+}

@@ -1,0 +1,108 @@
+@font-face {
+    font-family: 'open_sansregular';
+    src: url('opensans-regular-webfont.eot');
+    src: url('opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('opensans-regular-webfont.woff2') format('woff2'),
+         url('opensans-regular-webfont.woff') format('woff'),
+         url('opensans-regular-webfont.ttf') format('truetype'),
+         url('opensans-regular-webfont.svg#open_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotoregular';
+    src: url('Roboto-Regular-webfont.eot');
+    src: url('Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Roboto-Regular-webfont.woff2') format('woff2'),
+         url('Roboto-Regular-webfont.woff') format('woff'),
+         url('Roboto-Regular-webfont.ttf') format('truetype'),
+         url('Roboto-Regular-webfont.svg#robotoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+@font-face {
+    font-family: 'robotolight';
+    src: url('Roboto-Light-webfont.eot');
+    src: url('Roboto-Light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Roboto-Light-webfont.woff2') format('woff2'),
+         url('Roboto-Light-webfont.woff') format('woff'),
+         url('Roboto-Light-webfont.ttf') format('truetype'),
+         url('Roboto-Light-webfont.svg#robotolight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'robotobold';
+    src: url('Roboto-Bold-webfont.eot');
+    src: url('Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Roboto-Bold-webfont.woff2') format('woff2'),
+         url('Roboto-Bold-webfont.woff') format('woff'),
+         url('Roboto-Bold-webfont.ttf') format('truetype'),
+         url('Roboto-Bold-webfont.svg#robotobold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'robotothin';
+    src: url('roboto.thin-webfont.eot');
+    src: url('roboto.thin-webfont.eot?#iefix') format('embedded-opentype'),
+         url('roboto.thin-webfont.woff2') format('woff2'),
+         url('roboto.thin-webfont.woff') format('woff'),
+         url('roboto.thin-webfont.ttf') format('truetype'),
+         url('roboto.thin-webfont.svg#robotothin') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'ralewaybold';
+    src: url('raleway-bold-webfont.eot');
+    src: url('raleway-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('raleway-bold-webfont.woff2') format('woff2'),
+         url('raleway-bold-webfont.woff') format('woff'),
+         url('raleway-bold-webfont.ttf') format('truetype'),
+         url('raleway-bold-webfont.svg#ralewaybold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'ralewayregular';
+    src: url('raleway-regular-webfont.eot');
+    src: url('raleway-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('raleway-regular-webfont.woff2') format('woff2'),
+         url('raleway-regular-webfont.woff') format('woff'),
+         url('raleway-regular-webfont.ttf') format('truetype'),
+         url('raleway-regular-webfont.svg#ralewayregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'park_lane_nfregular';
+    src: url('parklanenf-webfont.eot');
+    src: url('parklanenf-webfont.eot?#iefix') format('embedded-opentype'),
+         url('parklanenf-webfont.woff2') format('woff2'),
+         url('parklanenf-webfont.woff') format('woff'),
+         url('parklanenf-webfont.ttf') format('truetype'),
+         url('parklanenf-webfont.svg#park_lane_nfregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

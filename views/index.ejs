@@ -1,77 +1,148 @@
+<!doctype html>
+<html class="no-js" lang="en">
 
-<!DOCTYPE html>
-<html>
 <head>
-  <title>测试demo</title>
-  <!--socket.io-->
-  <script src="https://cdn.bootcss.com/socket.io/2.1.1/socket.io.js"></script>
-  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Luck -Resposive Coming Soon Page</title>
+    <meta name="description" content="Luck - Resposive Coming Soon Page">
+    <meta name="keywords" content="HTML,CSS,JavaScript,jQuery">
+    <meta name="author" content="Pro web">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="./favicon-icon.png" sizes="16x16">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <link rel="stylesheet" href="./fonts/site-font/fonts.css">
+    <link rel="stylesheet" href="./css/progress.css"><!-- / progress css -->
+    <link rel="stylesheet" href="./css/bootstrap.min.css"><!-- / Bootstrap  css Version -3.3.6 -->
+    <link id="colors_option" rel="stylesheet" href="./css/colors/yellow-color.css">
+    <!-- / Colors css for template main color -->
+    <link rel="stylesheet" href="./style.css"><!-- / Template main style css -->
 </head>
-<body>
-<h1 style="text-align: center;">1</h1>
-<hr />
-<button onclick="a()">点击测试</button>
-<ul id="ultext"></ul>
-<input id="nickName" placeholder="name" type="text">
-<input id="pwd" placeholder="pwd" type="text">
-<input id="email" placeholder="email" type="text">
-<input id="emailcode" placeholder="emailcode" type="text">
-<input id="img" placeholder="img" type="text">
-<img src="/common/cacp" alt="">
-<button id="reg">注册</button>
-<button id="send">发送</button>
+
+<body class="preloder_priview">
+<!-- preloder  start/-->
+<div id="loader-wrapper">
+    <div id="loader"></div>
+</div>
+<!--/ preloder  end-->
+<div class="fix header-area welcome-section">
+    <!-- =======TEMPLATHEADER WELCOME SECTIONLEMENT START==== \-->
+    <!-- Welcome Background  Images start \-->
+    <div class="welcome-banner" style="background:url(./img/welcome.jpg) no-repeat scroll center center">
+        <div class="welcome-overlay-center"></div>
+    </div>
+    <!--/ Welcome Background Images End-->
+    <div class="main-page-content">
+        <!-- Template Box shap start \-->
+        <div class="box-shap-main">
+            <div class="box-shap box-top">
+                <div class="inner-border inside-box"></div>
+            </div>
+            <div class="box-shap box-right">
+                <div class="inner-border inside-box"></div>
+            </div>
+            <div class="box-shap box-left">
+                <div class="inner-border inside-box"></div>
+            </div>
+            <div class="box-shap box-bottom">
+                <div class="inner-border inside-box"></div>
+            </div>
+        </div>
+        <!--/ Template Box shap end-->
+        <div class="nice-scoll main-wrapper">
+            <canvas id="pixie"></canvas>
+            <div class="text-center main-cotainer container">
+                <div class="content-tab-wrapper">
+                    <header class="nav-wrapper">
+                        <div class="container">
+                        </div>
+                    </header>
+                    <!--/ Template header end-->
+
+                    <div class="tab-pane-container">
+
+                        <!-- ======= TEMPLATE HOME SECTION ELEMENT START==== \-->
+                        <section class="tab-active" id="home">
+                            <div class="content-table">
+                                <div class="animated  home-content content-table-call main-content">
+                                    <!-- Logo text start \-->
+                                    <div class="logo">
+
+                                        <a href="">
+                                            <h2><span>L</span>uck</h2>
+                                        </a>
+
+                                        <!-- Logo sparator start \-->
+                                        <div class="sparator-main">
+                                            <span class="sparator"></span>
+                                            <span class="sparator-border"></span>
+                                        </div>
+                                        <!--/ Logo sparator end-->
+                                    </div>
+                                    <!--/ Logo text end-->
+
+                                    <!-- Home section main text start \-->
+                                    <div class="welcome-text">
+                                        <h1 class="fade-text"><span>We</span> have been together</h1>
+                                        <h1 class="fade-text"><span>Luck</span> is coming very soon </h1>
+                                    </div>
+                                    <!--/ Home section main text end-->
+
+                                    <!--Count down start \-->
+                                    <div class="count-down">
+                                        <div id="count-down-wrapper">
+                                            <ul class="list-inline text-center">
+                                                <li class="days-count">
+                                                    <h2 class="days">00</h2>
+                                                    <h3 class="timeRefDays">days</h3>
+                                                </li>
+                                                <li class="hours-count">
+                                                    <h2 class="hours">00</h2>
+                                                    <h3 class="timeRefHours">hours</h3>
+                                                </li>
+                                                <li class="minutes-count">
+                                                    <h2 class="minutes">00</h2>
+                                                    <h3 class="timeRefMinutes">minutes</h3>
+                                                </li>
+                                                <li class="seconds-count">
+                                                    <h2 class="seconds">00</h2>
+                                                    <h3 class="timeRefSeconds">seconds</h3>
+                                                </li>
+                                            </ul>
+                                        </div><!-- /Count down end-->
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+
+                    <!-- Footer copyright text start \-->
+                    <footer class="copyright">
+                        <p>&copy; 2019 <a href="/">Dr丶net</a> All
+                            Rights Reserved</p>
+                    </footer>
+                    <!--/ Footer copyright text end-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="./js/bootstrap.min.js"></script><!-- / Bootstrap  js Version -3.3.6 -->
+<script src="./js/waypoints.min.js"></script><!-- / Jquery Waypoints  js Version -2.0.3 -->
+<script src="./js/jquery.counterup.min.js"></script><!-- / Jquery counterup min  js Version -1.0 -->
+<script src="./js/appear.js"></script> <!-- / Jquery appear Js -->
+<script src="./js/count-down.js"></script>
+<!--/ jquery count-down js -->
+<script src="./js/Firefly.js"></script>
+<script src="./js/plugins.js"></script>
+<script src="./js/main.js"></script>
+
 </body>
-<script type="text/javascript">
-    var socket=io.connect('http://localhost:3330');// 括号内参数为scoket服务器，若页面和其是同一服务则可省略
-    function a(){
-        /**
-         * emit 向服务端发送信息
-         * watchClient 为服务端自定义的事件名称
-         * 123456 为传递的内容
-         * */
-        socket.emit('watchClient','123455656566');
-    }
-    /**
-     * 监听服务器返回的数据
-     * send 为服务端自定义的事件名称
-     * 回调函数处理得到的额服务信息
-     * */
-    socket.on('send', function(data){
-        var htmldatas = data.data;
-        var html = '';
-        for (var i = 0; i < htmldatas.length; i++) {
-            var htmldata = htmldatas[i];
-            html += '<li>'+htmldata+'</li>';
-        }
-        document.getElementById('ultext').innerHTML = html;
-    })
-</script>
-<script>
-  $('#send').click(function(){
-    $.ajax({
-      url:'/common/sendMailCode',
-      type:'POST',
-      data:{
-        email:$('#email').val()
-      },
-      success:(data)=>{
-        console.log(data)
-      }
-    })
-  })
-  $('#reg').click(function(){
-    $.ajax({
-      url:'/users/reg',
-      type:'post',
-      data:{
-        nickName:$('#nickName').val(),
-        passWord:$('#pwd').val(),
-        email:$('#email').val(),
-        emailCode:$('#emailcode').val(),
-        img:$('#img').val(),
-        regType:0
-      }
-    })
-  })
-</script>
+
 </html>

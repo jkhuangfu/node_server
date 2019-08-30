@@ -2,6 +2,7 @@
     "apps": {
         "name": "server",
         "script": "./bin/www",
+        "args": "--abort-on-uncaught-exception",
         "watch": ["bin", "views", "app.js", "routes","src","public","middlewares"],
         "ignore_watch": [
             "fileTemp"

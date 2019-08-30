@@ -1,0 +1,11 @@
+#count-down-wrapper ul li:after, .service-title  span.service-icon:before, .single-service:hover span.service-icon, .progress-bar2 .progress-bar, .red .progress p, .red .progress p:before, .subscribe-btn:before{background:#ffc400}
+#ascrail2000 .nicescroll-cursors, #submit{background:#ffc400 !important}
+.button-submit:before{background:rgba(32, 192, 179,0.5)}
+.welcome-text h1 span, #count-down-wrapper h2, .navmenu ul li a.active, .navmenu:before, .navmenu:after, .section-title h2 span, .service-title span, .soical-icon ul li a:hover, .navmenu ul li a:hover, .logo a h2 span, .copyright p a{color:#ffc400}
+.sparator:before{border-top-color:#ffc400 !important}
+.service-title h4{border-color:#ffc400 !important}
+.inner-border {border-color: rgba(255, 196, 0, 0.2) !important;}
+.welcome-overlay-center{background:rgba(255, 196, 0, 0.1) none repeat scroll 0 0;}
+.single-service:hover span.service-icon{box-shadow: 0 0 10px #ffc400}
+input:focus, textarea:focus{box-shadow: 0 0 15px #ffc400 inset !important;}
+.service-title span.service-icon{border-left-color:#ffc400 !important;border-bottom-color:#ffc400 !important}

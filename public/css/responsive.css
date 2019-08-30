@@ -1,0 +1,162 @@
+/* Medium screen */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+.container{width: 920px;}	
+
+.navmenu:before {
+  left:13%;
+}
+.navmenu:after {
+  right:13%;
+}
+	
+
+}
+
+/* Tablet Layout: 768px. */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+.container{width: 630px;}	
+
+.navmenu:before {
+  left:0;
+}
+.navmenu:after {
+  right:0
+}
+.about-img{margin-bottom:30px}
+.welcome-text h1{
+  font-size: 42px;
+}
+.about-text {
+  border-bottom: 1px solid #fff;
+  border-right: medium none;
+  margin-bottom: 30px;
+  padding-right: 0;
+}
+
+
+}
+
+
+
+/* Mobile Layout: 320px. */
+@media only screen and (max-width: 767px) {
+body{min-height:100%;height:auto}	
+.container {
+  width: 100%;
+  padding: 0 5px;
+}
+.navmenu:before, .navmenu:after {
+display:none
+}
+.color-warpper, .socail-icon-warpper {
+  width: 30px;
+}
+.inner-border-box {
+  padding: 30px;
+}
+.box-shap.box-top, .box-shap.box-bottom {
+  height: 30px;
+  padding: 0 30px;
+}
+.box-shap.box-left, .box-shap.box-right {
+  padding: 30px 0;
+  top: 0;
+  width: 30px;
+}
+.main-page-content {
+  border: 30px solid rgba(0, 0, 0, 0);
+}
+.section-title h2 {
+  font-size: 30px;
+}
+.color-warpper{
+  right:5px
+}
+.tab-pane-container{
+	padding:0
+}
+.navmenu ul li a {
+  margin: 12px 0;
+  font-size: 9px;
+line-height: 0px;padding: 5px 0 5.5px;
+}
+.navmenu ul li .m-sparator, .navmenu.cl-effect-21 a:before, .navmenu.cl-effect-21 a:after, .subscribe-fild .email-file:before, .subscribe-fild .email-file:after{display:none !important}
+.welcome-text h1{
+  font-size:30px;
+}
+#count-down-wrapper ul, #count-down-wrapper ul li {
+  margin-left:0;
+}
+#count-down-wrapper h2 {
+font-size: 35px;
+}
+#count-down-wrapper h3 {
+  font-size: 12px;
+}
+.subscribe-fild .email-file {
+  border:1px solid #fff;
+  width: 100%;
+}
+.subscribe-btn:before{-webkit-transform: skewX(0);-moz-transform: skewX(0);-ms-transform: skewX(0);-o-transform: skewX(0);transform: skewX(0);}
+.subscribe-btn {
+  margin-left: 0;
+  text-align: center;
+  width: 80%;
+}
+.subscribe-btn button {
+  padding: 10px 25px 10px 28px;
+}
+.subscribe-btn:before {
+  left: 0;
+}
+.about-text {
+  border-right: 0px solid rgb(255, 255, 255);
+  padding-right: 0;
+}
+.about-text p {
+  text-align: center;
+}
+.about-row {
+  padding: 0;
+}
+.about-skill {
+  margin-top: 7px;
+  padding: 28px;
+}
+.content-table {
+  padding: 20px 0;
+}
+.about-skill {
+  padding: 0 21px;
+}
+.service-title {
+  width: 100%;
+  text-align: center;
+}
+.service-title {
+  padding-right:40px;
+}
+.service-title span.service-icon {
+  left: 100%;
+  margin-left: -34px;
+}
+.copyright > p {
+  font-size: 11px;
+  margin-top: 4px;
+}
+.red .progress p{
+  display: none;
+}
+.copyright{bottom:-17px}
+
+}
+
+
+
+/* Wide Mobile Layout: 480px. */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+.red .progress p{
+  display: inline-block;
+}
+}
+

@@ -10,6 +10,14 @@ router
         console.log('====进入注册流程====');
         register.register(req, res)
     })
+    .post('/checkLogin',async (req,res)=>{
+        const isLogin = await redisDb.get('drnet' + req.sessionID);
+        if (isLogin && JSON.parse(isLogin).user) {
+            res.json({code:200});
+        }else{
+            res.json({code:400})
+        }
+    })
     .post('/login', (req, res) => {
         console.log('====进入登陆流程====');
         login.login(req, res)
