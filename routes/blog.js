@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const checklogin = require('../middlewares/checklogin');
 const {publishArticle,queryArticle,queryArticleById,deleteArticle,changeArticleStatus} = require('../src/dao/blog/article');
-const { publishMessage,deleteMessage,getMsgByTitle,getMsgList } = require('../src/dao/blog/message');
+const { publishMessage,deleteMessage,queryMessage,changeMessageStatus } = require('../src/dao/blog/message');
 router
     .use(checklogin)
     .post('/changeArticleStatus', (req, res) => {
@@ -26,11 +26,11 @@ router
     .post('/deleteMessage',(req,res)=>{
         deleteMessage(req,res);
     })
-    .post('/postMsgList',(req,res)=>{
-        getMsgList(req,res);
+    .post('/changeMessageStatus',(req,res)=>{
+        changeMessageStatus(req,res)
     })
-    .post('/postMsgByTitle',(req,res)=>{
-        getMsgByTitle(req,res);
-    })
+    .post('/queryMessage',(req,res)=>{
+        queryMessage(req,res);
+    });
 
 module.exports = router;
