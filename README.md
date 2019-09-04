@@ -11,7 +11,6 @@ PS：运行方法 npm install 安装依赖
 ├── app.js //主程序配置
 ├── bin
 │   └── www //服务配置
-├── fileTemp //文件上传（缓存）
 ├── middlewares //中间件
 │   ├── checklogin.js //验证登录中间件
 ├── package.json
