@@ -17,15 +17,15 @@ module.exports = {
             let file_type = item.originalname.split('.')[1];
             let id = uuid(36);
             //创建真实文件
-            let write_file = path.resolve('fileTemp', `${type ? type : id}.${file_type}`);
+            let write_file = path.resolve('public/upload', `${type ? type : id}.${file_type}`);
             // 本地缓存数据
-            let local_file = path.resolve('fileTemp', item.filename);
+            let local_file = path.resolve('public/upload', item.filename);
             let origin_stream = fs.createReadStream(local_file);
             let write_stream = fs.createWriteStream(write_file);
             writeStream.push({
                 local_file, origin_stream, write_stream
             });
-            url.push(`/img/${type ? type : id}.${file_type}`);
+            url.push(`/upload/${type ? type : id}.${file_type}`);
         });
 
         writeStream.map(item => {
@@ -55,7 +55,7 @@ module.exports = {
             let file_type = item.originalname.split('.')[1];
             let fileName = type ? `${type}.${file_type}` : item.originalname ;
             let key = `articleImg/${fileName}`;
-            let or_file = path.resolve("fileTemp", item.filename);
+            let or_file = path.resolve("public/upload", item.filename);
             let stream = fs.createReadStream(or_file);
             promise.push(client.putStream(key, stream));
             file_arr.push(or_file);

@@ -39,7 +39,7 @@ app.use(session({
     secret: 'mRAewUjWeLopm0Hu8v', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
     rolling:true, //保证每次请求都会重置客户端cookie有效期
-    saveUninitialized: false,
+    saveUninitialized: true,
     HttpOnly: true,
     cookie: {maxAge: 30 * 60 * 1000, secure: false} //过期时间
 }));

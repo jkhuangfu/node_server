@@ -9,7 +9,7 @@ const upload = multer({
     limits: {
         fileSize: 600 * 1024 // 限制文件为600kb
     },
-    dest: './fileTemp/'
+    dest: './public/upload'
 }).array('file', 9);
 
 router
