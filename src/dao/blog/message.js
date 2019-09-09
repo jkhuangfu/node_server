@@ -1,5 +1,5 @@
 const moment = require('moment');
-const requestIp = require('request-ip');
+const { getClientIp } = require('../../util');
 module.exports = {
 
     /*
@@ -121,7 +121,7 @@ module.exports = {
     * */
     publishMessage: (req, res) => {
         const {id, messageCon, articleTitle} = reqBody(req);
-        const clientIp = requestIp.getClientIp(req);
+        const clientIp = getClientIp(req);
         let sql = `INSERT INTO message(articleId,articleTitle,msgCon,status,createTime,ip) VALUES(?,?,?,?,now(),?) `;
         pool.getConnection((err, connection) => {
             if (err) {

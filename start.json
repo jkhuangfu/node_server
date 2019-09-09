@@ -3,9 +3,10 @@
         "name": "server",
         "script": "./bin/www",
         "args": "--abort-on-uncaught-exception",
-        "watch": ["bin", "views", "app.js", "routes","src","public","middlewares"],
+        "watch": ["bin", "views", "app.js", "routes","src","middlewares"],
+        "watch_delay": 1000,
         "ignore_watch": [
-            "fileTemp"
+            "public/upload"
         ],
         "log_date_format": "YYYY-MM-DD HH:mm Z",
         "env": {
