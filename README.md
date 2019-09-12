@@ -59,7 +59,7 @@ PS：运行方法 npm install 安装依赖
 │   ├── sql //抽离出的 sql 语句
 │   │   └── sqlMap.js
 │   └── util //工具类
-│       ├── inedx.js
+│       ├── index.js
 │       └── log4.js
 ├── start.json //pm2启动配置文件
 ├── views //前端 ejs 文件

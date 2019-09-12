@@ -1,5 +1,5 @@
 const moment = require('moment');
-const { getClientIp } = require('../../util');
+const { getClientIp } = require('../../util/inedx');
 module.exports = {
 
     /*

@@ -1,7 +1,7 @@
 const OSS = require('ali-oss');
 const fs = require('fs');
 const path = require('path');
-const { uuid } = require('../../util/inedx');
+const {uuid} = require('../../util/inedx');
 const oss_config = require('../../config/ali_oss');
 // 初始化Client
 const client = new OSS(oss_config);
@@ -53,7 +53,7 @@ module.exports = {
         }
         req.files.map(item => {
             let file_type = item.originalname.split('.')[1];
-            let fileName = type ? `${type}.${file_type}` : item.originalname ;
+            let fileName = type ? `${type}.${file_type}` : item.originalname;
             let key = `articleImg/${fileName}`;
             let or_file = path.resolve("public/upload", item.filename);
             let stream = fs.createReadStream(or_file);
@@ -61,8 +61,8 @@ module.exports = {
             file_arr.push(or_file);
         });
         Promise.all(promise).then(data => {
-            data.map((item,index) => {
-                result_arr.push(item.url);
+            data.map((item, index) => {
+                result_arr.push(item.url.replace('http:', ''));
                 fs.unlinkSync(file_arr[index]);
             });
             res.json({code: 200, msg: '上传成功', imageUrlArr: result_arr});
@@ -70,7 +70,7 @@ module.exports = {
             file_arr.map(item => {
                 fs.unlinkSync(item);
             });
-            res.json({code:500,e});
+            res.json({code: 500, e});
         });
     }
 };
