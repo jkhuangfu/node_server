@@ -1,6 +1,4 @@
 module.exports = {
-    config: {
-        'APPID': '',
-        'APPSECRET': ''
-    }
-}
+    'APP_ID': '',
+    'APP_SECRET': ''
+};
