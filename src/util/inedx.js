@@ -16,11 +16,10 @@ const uuid = (c = 48, prefix = '', toLower = false) => {
     return r;
 };
 
-const getClientIp = (req) => {
-    let ip = req.headers['x-real-ip']
-        || req.headers['x-forwarded-for']
-        || req.connection.remoteAddres
-        || req.socket.remoteAddress
+const getClientIp = ctx => {
+    let ip = ctx.headers['x-real-ip']
+        || ctx.headers['x-forwarded-for']
+        || ctx.socket.remoteAddress
         || '';
     if (ip.split(',').length > 0) {
         ip = ip.split(',')[0];
@@ -29,11 +28,9 @@ const getClientIp = (req) => {
 };
 
 module.exports = {
-    reqBody: (req) => {
-        let method = req.method;
-        let param = req.query || req.params;
-        let body = req.body;
-        return method === 'GET' ? param : body;
+    reqBody: ctx => {
+        const method = ctx.method;
+        return method === 'GET' ? ctx.request.query : ctx.request.body;
     },
     uuid,
     getClientIp

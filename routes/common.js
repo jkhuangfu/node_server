@@ -1,9 +1,9 @@
-const express = require('express');
-const router = express.Router();
+const router = require('koa-router')();
+
 const checklogin = require('../middlewares/checklogin');
 const captcha = require('../src/dao/common/cacp');
-const {upFileForOss, upFileForLocal} = require('../src/dao/common/upFile');
-const {sendMailCode, sendMailNormal} = require('../src/dao/common/sendMail');
+// const {upFileForOss, upFileForLocal} = require('../src/dao/common/upFile');
+// const {sendMailCode, sendMailNormal} = require('../src/dao/common/sendMail');
 const multer = require('multer');
 const upload = multer({
     limits: {
@@ -14,8 +14,8 @@ const upload = multer({
 
 router
     .use(checklogin)
-    .get('/cacp', (req, res) => {
-        captcha(req, res);
+    .get('/cacp', ctx => {
+        captcha(ctx);
     })
     .post('/sendMailCode', (req, res) => {
         sendMailCode(req, res);
@@ -33,7 +33,7 @@ router
                 res.json({code:101,mag:err});
                 return false;
             }
-            upFileForOss(req, res);
+            // upFileForOss(req, res);
         })
     })
     //上传文件到本地
@@ -46,7 +46,7 @@ router
                 res.json({code:101,mag:err});
                 return false;
             }
-            upFileForLocal(req, res);
+            // upFileForLocal(req, res);
         })
     });
-module.exports = router;
+module.exports = router.routes();

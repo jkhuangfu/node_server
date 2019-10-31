@@ -1,85 +1,56 @@
-const express = require('express');
+const koa = require('koa');
+const Router = require('koa-router');
+const views = require('koa-views');
 const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const common = require('./src/global'); //全局使用方法及变量
-const MemoryStore = require('memorystore')(session); //session存放在内存中
-const RedisStore = require('connect-redis')(session);//session 存放在redis中
-const view = require('./routes/viewRouter'); //页面渲染
-const user = require('./routes/user'); //后台管理接口
-const blog = require('./routes/blog'); //博客相关
-const wechat = require('./routes/wechat'); //微信相关
-const commonRouter = require('./routes/common');
-
-const cors = require('cors');
-const app = express();
-const redisOption = require('./src/config/redis')[app.get('env') === 'development' ? 'configDev' : 'configProd'];
-common.ctrlCommon(app);
-// 跨域白名单
-const whitelist = [/^http:\/\/localhost|^http:\/\/127.0.0.1|drnet.xyz$/];
-const corsOptions = {
-    origin: whitelist,
-    optionsSuccessStatus: 200,
-    credentials: true
+const bodyParser = require('koa-bodyparser');
+const session = require('koa-session');
+const koaStatic = require('koa-static');
+const app = new koa();
+const router = new Router();
+const {ctrlCommon} = require('./src/global/index');
+const user = require('./routes/u');
+const common = require('./routes/common');
+const viewRouter = require('./routes/common');
+ctrlCommon(app);
+//session cookie 加密信息
+app.keys = ['W@7712duagdb6hddhgW!'];
+const sessionConfig = {
+    key: 'session',
+    maxAge: 30 * 60 * 1000,//session 有效期 30Min
+    autoCommit: true,
+    overwrite: true,
+    rolling: true,//设置为 true 刷新页面重新计时
+    signed: true
 };
-app.use(cors(corsOptions));
-//Session
-app.use(cookieParser('mRAewUjWeLopm0Hu8v'));
-app.use(session({
-    // store: new MemoryStore({
-    //     checkPeriod: 1000 * 60 * 60 * 24 // prune expired entries every 24 h
-    // }),
-    store: new RedisStore({
-        ...redisOption,
-        prefix: 'dr_net'
-    }),
-    secret: 'mRAewUjWeLopm0Hu8v', //与cookieParser中的一致
-    resave: true, //每次会话重新设置过期时间
-    rolling:true, //保证每次请求都会重置客户端cookie有效期
-    saveUninitialized: true,
-    HttpOnly: true,
-    cookie: {maxAge: 30 * 60 * 1000, secure: false} //过期时间
-}));
-//全局session
-app.use(function (req, res, next) {
-    res.locals.session = req.session;
-    next();
-});
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', view);
-app.use('/users', user);
-app.use('/blog', blog);
-app.use('/wx', wechat);
-app.use('/common', commonRouter);
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    const err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
+//处理错误信息,发送错误码
+const err = async (ctx) => {
+    if (ctx.response.status === 404) {
+        await ctx.render('index')
+    } else {
+        ctx.body = {code: ctx.response.status, msg: 'fail'}
+    }
+};
 
-// error handler
-app.use(function (err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
+//路由
+router.use('/', viewRouter);
+router.use('/t', user);
+router.use('/common', common);
+app
+//session 中间件
+    .use(session(sessionConfig, app))
+    //渲染前端页面 模板引擎为 ejs | html
+    .use(views(path.join(__dirname, 'views'), {
+        extension: 'ejs'// html
+    }))
+    // 配置静态资源加载中间件
+    .use(koaStatic(
+        path.join(__dirname, 'public')
+    ))
 
-    // render the error page
-    res.status(err.status || 500);
-    res.render('error');
-});
+    .use(bodyParser())
+    .use(router.routes())
+    .use(err);
+
 module.exports = app;

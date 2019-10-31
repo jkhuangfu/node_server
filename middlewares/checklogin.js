@@ -4,10 +4,10 @@
  * @return 401鉴权状态码
  */
 
-module.exports = async (req, res, next) => {
-    const isLogin = await redisDb.get('dr_net' + req.sessionID);
-    if ((isLogin === null && req.method === 'POST') || (isLogin && !JSON.parse(isLogin).user && req.method === 'POST')) {
-        return res.status(401).end();
-    }
+module.exports = async (ctx, next) => {
+    // // const isLogin = await redisDb.get('dr_net' + req.sessionID);
+    // if ((isLogin === null && req.method === 'POST') || (isLogin && !JSON.parse(isLogin).user && req.method === 'POST')) {
+    //     return ctx.throw(401,'access_denied', { user: 111 });
+    // }
     next();
 };

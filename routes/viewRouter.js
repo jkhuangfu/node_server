@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const router = require('koa-router')();
 const fs = require('fs');
 const path = require('path');
 
@@ -16,21 +15,21 @@ const render = () => {
     })
 };
 router
-    .get('/test.txt', async (req, res) => {
+    .get('/test.txt', async (ctx, next) => {
         let html = await render();
-        res.render(html);
+        ctx.render(html);
     })
     /* GET home page. */
-    .get('/', (req, res, next) => {
-        res.render('index',{articleCon:req+''});
+    .get('/', (ctx, next) => {
+        ctx.render('index',{articleCon:req+''});
     })
     /* to 404 page */
-    .get('/notFound', (req, res, next) => {
-        res.render('error');
+    .get('/notFound', (ctx, next) => {
+        ctx.render('error');
     });
     // .get('/img/:filename',(req,res)=>{
     //     const file = path.resolve('fileTemp',req.params.filename);
     //     const stream = fs.createReadStream(file);
     //     stream.pipe(res);
     // });
-module.exports = router;
+module.exports = router.routes();
