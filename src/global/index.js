@@ -2,7 +2,6 @@
     全局变量
 */
 const mysql = require('mysql');
-const crypto = require('crypto');
 const {mysqlDev, mysqlOnline} = require('../config/mySql');
 const util = require('../util/inedx');
 const log4js = require('../util/log4');

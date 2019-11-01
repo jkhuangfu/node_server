@@ -6,14 +6,14 @@ const oss_config = require('../../config/ali_oss');
 // 初始化Client
 const client = new OSS(oss_config);
 module.exports = {
-    upFileForLocal: async (req, res) => {
+    upFileForLocal: async (ctx, data) => {
         let writeStream = [], url = [], promise = [];
-        let {type} = reqBody(req);
-        if (req.files.length <= 0) {
-            res.json({status: 400, msg: '未上传文件'});
+        let {type = null,files} = data;
+        if (files.length <= 0) {
+            ctx.body = {status: 400, msg: '未上传文件'};
             return false;
         }
-        req.files.map(item => {
+        files.map(item => {
             let file_type = item.originalname.split('.')[1];
             let id = uuid(36);
             //创建真实文件
@@ -41,17 +41,17 @@ module.exports = {
             writeStream.map(item => {
                 fs.unlinkSync(item.local_file);
             });
-            res.json({code: 200, message: 'success', url})
+            ctx.body = {code: 200, message: 'success', url};
         }
     },
-    upFileForOss: (req, res) => {
+    upFileForOss: (ctx, data) => {
         let file_arr = [], result_arr = [], promise = [];
-        let {type} = reqBody(req);
-        if (req.files.length <= 0) {
-            res.json({status: 400, msg: '未上传文件'});
+        let {type,files} = data ;
+        if (files.length <= 0) {
+            ctx.body = {status: 400, msg: '未上传文件'};
             return false;
         }
-        req.files.map(item => {
+        files.map(item => {
             let file_type = item.originalname.split('.')[1];
             let fileName = type ? `${type}.${file_type}` : item.originalname;
             let key = `articleImg/${fileName}`;
@@ -65,12 +65,12 @@ module.exports = {
                 result_arr.push(item.url.replace('http:', ''));
                 fs.unlinkSync(file_arr[index]);
             });
-            res.json({code: 200, msg: '上传成功', imageUrlArr: result_arr});
+            ctx.body = {code: 200, msg: '上传成功', imageUrlArr: result_arr};
         }).catch(e => {
             file_arr.map(item => {
                 fs.unlinkSync(item);
             });
-            res.json({code: 500, e});
+            ctx.body = {code: 500, e};
         });
     }
 };

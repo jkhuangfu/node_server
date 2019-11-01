@@ -17,17 +17,17 @@ const redisDb = (app) => {
      * @return 200
      */
     const set = (key, value, expire) => {
-        return new Promise(res => {
+        return new Promise(reslove => {
             client.set(key, value, (err, result) => {
                 if (err) {
                     log4.Info('redis插入失败：' + err);
-                    res(err);
+                    reslove(err);
                     return false;
                 }
                 if (!isNaN(expire) && expire > 0) {
                     client.expire(key, parseInt(expire));
                 }
-                res(200);
+                reslove(200);
             })
         });
     };
@@ -38,14 +38,14 @@ const redisDb = (app) => {
      * @return Promise<Boolean>
      */
     const get = key => {
-        return new Promise(res => {
+        return new Promise(reslove => {
             client.get(key, (err, result) => {
                 if (err) {
                     log4.Info('redis获取失败：' + err);
-                    res(err);
+                    reslove(err);
                     return false;
                 }
-                res(result);
+                reslove(result);
             })
         })
     };

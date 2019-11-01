@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const router = require('koa-router')();
 const register = require('../src/dao/user/register');
 const login = require('../src/dao/user/login');
 const { changePwd } = require('../src/dao/user/changePwd');
@@ -9,14 +8,6 @@ router
     .post('/reg', (req, res) => {
         console.log('====进入注册流程====');
         register.register(req, res)
-    })
-    .post('/checkLogin',async (req,res)=>{
-        const isLogin = await redisDb.get('dr_net' + req.sessionID);
-        if (isLogin && JSON.parse(isLogin).user) {
-            res.json({code:200});
-        }else{
-            res.json({code:400})
-        }
     })
     .post('/login', (req, res) => {
         console.log('====进入登陆流程====');

@@ -6,7 +6,7 @@ const randomCode = () => {
     return Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10);
 };
 
-const sendFunction = (email, code, res) => {
+const sendFunction = (email, code, ctx) => {
     mailTransport.sendMail({
         from: `Dr丶net<${server_config.auth.user}>`,
         to: email,//rescive_mail,
@@ -21,12 +21,12 @@ const sendFunction = (email, code, res) => {
     }, async (err) => {
         if (err) {
             log4.Info('Unable to send email: ' + err);
-            res.json({code: 400, msg: '发送失败'});
+            ctx.body = {code: 400, msg: '发送失败'};
         } else {
             let getCount = await redisDb.get(`${email}_count`);
             let sendCounts = getCount ? getCount : 0;
             if (sendCounts >= 5) {
-                res.json({code: 201, msg: '超过发送次数，明日再试'});
+                ctx.body = {code: 201, msg: '超过发送次数，明日再试'};
                 return;
             }
             let count = sendCounts - 0 + 1;
@@ -36,42 +36,42 @@ const sendFunction = (email, code, res) => {
             let set_key = await redisDb.set(email, code, 5 * 60);
             let set_count = await redisDb.set(`${email}_count`, count, oneDay - nowSecond);
             if (set_key === 200 && set_count === 200) {
-                res.json({code: 200, msg: '发送成功'});
+                ctx.body = {code: 200, msg: '发送成功'};
             }
         }
     });
 };
 
-const sendMailCode = (req, res) => {
-    let {email} = reqBody(req);
+const sendMailCode = ctx => {
+    let {email} = reqBody(ctx);
     let {nickName} = req.session.user;
     let code = randomCode();
     let sql = 'select email from user_main where nickName = ?';
     pool.getConnection((err, connection) => {
         if (err) {
-            res.json({code: 500, msg: err});
+            ctx.body = {code: 500, msg: err};
             return false;
         }
         try {
             connection.query(sql, [nickName], (e, response) => {
                 if (e) {
-                    res.json({code: 500, msg: e});
+                    ctx.body = {code: 500, msg: e};
                 } else {
                     if (response[0].email === email) {
-                        sendFunction(email, code, res);
+                        sendFunction(email, code, ctx);
                     } else {
-                        res.json({code: 400, msg: '邮箱非用户绑定邮箱'});
+                        ctx.body = {code: 400, msg: '邮箱非用户绑定邮箱'};
                     }
                 }
                 connection.release();
             })
         } catch (e) {
-            res.json({code: 500, msg: '程序异常，发送失败', e});
+            ctx.body = {code: 500, msg: '程序异常，发送失败', e};
         }
     });
 };
-const sendMailNormal = (req, res) => {
-    let {to, mailCon, mailType = 'text'} = reqBody(req);
+const sendMailNormal = ctx => {
+    let {to, mailCon, mailType = 'text'} = reqBody(ctx);
     let con = {};
     if (mailType === 'text') {
         con = {
@@ -90,13 +90,13 @@ const sendMailNormal = (req, res) => {
             ...con
         }, (err) => {
             if (err) {
-                res.json({code: 500, msg: err})
+                ctx.body = {code: 500, msg: err};
             } else {
-                res.json({code: 200, msg: true})
+                ctx.body = {code: 200, msg: true};
             }
         })
     } catch (e) {
-        res.json({code: 500, msg: '程序异常，发送失败', e});
+        ctx.body = {code: 500, msg: '程序异常，发送失败', e};
     }
 };
 module.exports = {sendMailCode, sendMailNormal};

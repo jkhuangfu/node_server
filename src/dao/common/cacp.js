@@ -1,5 +1,5 @@
 const svgCaptcha = require('svg-captcha'); //验证码组件
-const captcha = (ctx) => {
+const captcha = async ctx => {
     let captcha = svgCaptcha.createMathExpr({
         noise: 3,
         color: true
