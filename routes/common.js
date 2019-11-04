@@ -4,29 +4,22 @@ const checklogin = require('../middlewares/checklogin');
 const captcha = require('../src/dao/common/cacp');
 const {upFileForOss, upFileForLocal} = require('../src/dao/common/upFile');
 const {sendMailCode, sendMailNormal} = require('../src/dao/common/sendMail');
-const multer = require('multer');
-const upload = multer({
-    limits: {
-        fileSize: 600 * 1024 // 限制文件为600kb
-    },
-    dest: './public/upload'
-});
-// 上传文件中间件
-const uploadMidleware = ctx => new Promise(resolve => {
-    upload.array('file', 9)(ctx.req, ctx.res, err => {
-        if (err instanceof multer.MulterError) {
-            resolve({code: 102, msg: err.message});
-        } else if (err) {
-            resolve({code: 101, mag: err});
-        } else {
-            resolve({code: 200, files: ctx.req.files, type: ctx.req.body.type || null})
-        }
-    });
-});
+
+const checkFile = async ctx => {
+    if (!ctx.request.files) {
+        ctx.body = {status: 400, msg: '未上传文件'};
+        return false;
+    }
+    if ((Object.keys(ctx.request.files.file).length === 0)) {
+        ctx.body = {status: 401, msg: '未上传文件'};
+        return false;
+    }
+    return true;
+};
 
 router
 // .use(checklogin)
-    .get('/cacp', async ctx => {
+    .get('/captcha', async ctx => {
         await captcha(ctx);
     })
     .post('/sendMailCode', async ctx => {
@@ -37,20 +30,22 @@ router
     })
     //上传文件到阿里OSS
     .post('/oss/upFile', async ctx => {
-        const data = await uploadMidleware(ctx);
-        if (data.code !== 200) {
-            ctx.body = data;
-            return false;
+        try {
+            const flag = await checkFile(ctx);
+            if (!flag) return;
+            await upFileForOss(ctx);
+        } catch (e) {
+            ctx.body = {status: 500, msg: '未上传文件'};
         }
-        await upFileForOss(ctx, data.files || []);
     })
     //上传文件到本地
     .post('/local/upFile', async ctx => {
-        const data = await uploadMidleware(ctx);
-        if (data.code !== 200) {
-            ctx.body = data;
-            return false;
+        try {
+            const flag = await checkFile(ctx);
+            if (!flag) return;
+            await upFileForLocal(ctx);
+        } catch (e) {
+            ctx.body = {status: 500, msg: '上传出错', e};
         }
-        await upFileForLocal(ctx, {files: data.files || [], type: data.type});
     });
 module.exports = router.routes();

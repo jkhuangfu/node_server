@@ -70,7 +70,7 @@ const sendMailCode = ctx => {
         }
     });
 };
-const sendMailNormal = ctx => {
+const sendMailNormal = async ctx => {
     let {to, mailCon, mailType = 'text'} = reqBody(ctx);
     let con = {};
     if (mailType === 'text') {
@@ -83,7 +83,7 @@ const sendMailNormal = ctx => {
         }
     }
     try {
-        mailTransport.sendMail({
+        await mailTransport.sendMail({
             from: `<${server_config.auth.user}>`,
             to: to,
             subject: 'no reply(自动发送,勿回复)',
@@ -94,7 +94,7 @@ const sendMailNormal = ctx => {
             } else {
                 ctx.body = {code: 200, msg: true};
             }
-        })
+        });
     } catch (e) {
         ctx.body = {code: 500, msg: '程序异常，发送失败', e};
     }
