@@ -1,102 +1,98 @@
 const nodemailer = require('nodemailer');
 const mail_config = require('../../config/mail');
-const {server_config} = mail_config;
+const { server_config } = mail_config;
 const mailTransport = nodemailer.createTransport(server_config);
 const randomCode = () => {
     return Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10);
 };
-
-const sendFunction = (email, code, ctx) => {
-    mailTransport.sendMail({
-        from: `Dr丶net<${server_config.auth.user}>`,
-        to: email,//rescive_mail,
-        subject: '邮件验证码(自动发送,勿回复)',
-        //text:  '您的验证码是'+randomCode(),
-        html:
+console.log(dbquery)
+const sendFunction = async (email, code, ctx) => {
+    return new Promise(resolve => {
+        mailTransport.sendMail({
+            from: `Dr丶net<${server_config.auth.user}>`,
+            to: email,//rescive_mail,
+            subject: '邮件验证码(自动发送,勿回复)',
+            //text:  '您的验证码是'+randomCode(),
+            html:
+                `
+                <span style="color:#666;">您的验证码是:</span>
+                <span style="color:red;font-size:38px;font-weight:500;margin:0 15px;">${code}</span>
+                <span style="color:#666;">5分钟内有效</span>
             `
-            <span style="color:#666;">您的验证码是:</span>
-            <span style="color:red;font-size:38px;font-weight:500;margin:0 15px;">${code}</span>
-            <span style="color:#666;">5分钟内有效</span>
-        `
-    }, async (err) => {
-        if (err) {
-            log4.Info('Unable to send email: ' + err);
-            ctx.body = {code: 400, msg: '发送失败'};
-        } else {
-            let getCount = await redisDb.get(`${email}_count`);
-            let sendCounts = getCount ? getCount : 0;
-            if (sendCounts >= 5) {
-                ctx.body = {code: 201, msg: '超过发送次数，明日再试'};
-                return;
+        }, async err => {
+            if (err) {
+                log4.Info('Unable to send email: ' + err);
+                resolve({ code: 400, msg: '发送失败' });
+            } else {
+                const getCount = await redisDb.get(`${email}_count`);
+                const sendCounts = getCount ? getCount : 0;
+                if (sendCounts >= 5) {
+                    resolve({ code: 201, msg: '超过发送次数，明日再试' });
+                    return;
+                }
+                const count = sendCounts - 0 + 1;
+                const oneDay = 24 * 60 * 60;
+                const now = new Date();
+                const nowSecond = now.getHours() * 60 * 60 + now.getMinutes() * 60 + now.getSeconds();
+                const set_key = await redisDb.set(email, code, 5 * 60);
+                const set_count = await redisDb.set(`${email}_count`, count, oneDay - nowSecond);
+                if (set_key === 200 && set_count === 200) {
+                    resolve({ code: 200, msg: '发送成功' });
+                }
             }
-            let count = sendCounts - 0 + 1;
-            let oneDay = 24 * 60 * 60;
-            let now = new Date();
-            let nowSecond = now.getHours() * 60 * 60 + now.getMinutes() * 60 + now.getSeconds();
-            let set_key = await redisDb.set(email, code, 5 * 60);
-            let set_count = await redisDb.set(`${email}_count`, count, oneDay - nowSecond);
-            if (set_key === 200 && set_count === 200) {
-                ctx.body = {code: 200, msg: '发送成功'};
-            }
-        }
+        });
     });
+
 };
 
-const sendMailCode = ctx => {
-    let {email} = reqBody(ctx);
-    let {nickName} = req.session.user;
-    let code = randomCode();
-    let sql = 'select email from user_main where nickName = ?';
-    pool.getConnection((err, connection) => {
-        if (err) {
-            ctx.body = {code: 500, msg: err};
-            return false;
-        }
-        try {
-            connection.query(sql, [nickName], (e, response) => {
-                if (e) {
-                    ctx.body = {code: 500, msg: e};
-                } else {
-                    if (response[0].email === email) {
-                        sendFunction(email, code, ctx);
-                    } else {
-                        ctx.body = {code: 400, msg: '邮箱非用户绑定邮箱'};
-                    }
-                }
-                connection.release();
-            })
-        } catch (e) {
-            ctx.body = {code: 500, msg: '程序异常，发送失败', e};
-        }
-    });
+const sendMailCode = async ctx => {
+    const { email } = reqBody(ctx);
+    let data = null;
+    // const { nickName } = ctx.session.user;
+    const nickName = 'Admin';
+    const code = randomCode();
+    const sql = 'select email from user_main where nickName = ?';
+    const db = await dbquery(sql, [nickName]);
+    if (db.code !== 200) {
+        ctx.body = db;
+        return false;
+    }
+    const res = db.data[0].email;
+    if (res === email) data = await sendFunction(email, code, ctx);
+    ctx.body = data;
 };
 const sendMailNormal = async ctx => {
-    let {to, mailCon, mailType = 'text'} = reqBody(ctx);
-    let con = {};
+    const { to, mailCon, mailType = 'text' } = reqBody(ctx);
+    let con = {
+        html: mailCon
+    };
     if (mailType === 'text') {
         con = {
             text: mailCon
         }
-    } else {
-        con = {
-            html: mailCon
-        }
     }
     try {
-        await mailTransport.sendMail({
-            from: `<${server_config.auth.user}>`,
-            to: to,
-            subject: 'no reply(自动发送,勿回复)',
-            ...con
-        }, (err) => {
-            if (err) {
-                ctx.body = {code: 500, msg: err};
-            } else {
-                ctx.body = {code: 200, msg: true};
-            }
-        });
+        const flag = await new Promise(resolve => {
+            mailTransport.sendMail({
+                from: `<${server_config.auth.user}>`,
+                to: to,
+                subject: 'no reply(自动发送,勿回复)',
+                ...con
+            }, (err) => {
+                if (err) {
+                    resolve(err);
+                } else {
+                    resolve(200)
+                }
+            });
+        })
+        if (flag === 200) {
+            ctx.body = { code: 200, msg: 'success' };
+            return false;
+        }
+        ctx.body = { code: 500, msg: flag };
     } catch (e) {
-        ctx.body = {code: 500, msg: '程序异常，发送失败', e};
+        ctx.body = { code: 500, msg: '程序异常，发送失败', e };
     }
 };
-module.exports = {sendMailCode, sendMailNormal};
+module.exports = { sendMailCode, sendMailNormal };

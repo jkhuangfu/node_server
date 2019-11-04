@@ -7,13 +7,10 @@
         "pm": "pm2 start ./start.json"
     },
     "dependencies": {
-        "@koa/multer": "^2.0.0",
         "ali-oss": "^6.1.1",
         "ejs": "^2.7.1",
         "koa": "^2.11.0",
-        "koa-better-body": "^3.1.13",
         "koa-body": "^4.1.1",
-        "koa-bodyparser": "^4.2.1",
         "koa-router": "^7.4.0",
         "koa-session": "^5.12.3",
         "koa-static": "^5.0.0",

@@ -60,12 +60,13 @@ app
         path.join(__dirname, 'public')
     ))
     .use(koaBody)
-    .use(err)
+    // .use(err)
     // 路由配置
     .use(router.routes())
     .use(err);
 
 app.on('error', async (err, ctx) => {
+    console.log(err)
     ctx.throw(500, err);
 });
 

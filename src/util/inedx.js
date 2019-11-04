@@ -1,7 +1,12 @@
+
+const _dbquery = require('./dbquery');
+const log4js = require('./log4');
+const redisDb = require('./redisTool');
 const CHARS = '0123456789abcdefghijklmnopqrstuvwxyz';
 const get_char = (n) => {
     return CHARS.charAt((n >> 0) % CHARS.length);
 };
+console.log(_dbquery)
 
 const uuid = (c = 48, prefix = '', toLower = false) => {
     let r = '';
@@ -33,5 +38,8 @@ module.exports = {
         return method === 'GET' ? ctx.request.query : ctx.request.body;
     },
     uuid,
-    getClientIp
+    getClientIp,
+    _dbquery,
+    log4js,
+    redisDb
 };
