@@ -29,7 +29,7 @@ module.exports = {
             }
         }
         // 验证旧密码是否正确
-        const old_data = dbquery(sql.queryUserPwdByNickName, [nickName]);
+        const old_data = await dbquery(sql.queryUserPwdByNickName, [nickName]);
         if (old_data.code !== 200) {
             ctx.body = old_data;
             return false;

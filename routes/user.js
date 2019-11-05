@@ -16,11 +16,12 @@ router
     .post('/logout', async ctx => {
         console.log('======退出登录=====');
         // const flag = await redisDb.del('dr_net' + ctx.sessionID);
-        delete ctx.session;
-        ctx.body = {code: flag ? 200 : 400};
+        ctx.session = null;
+        ctx.body = {code:  200 };
     })
     .post('/checkLogin', async ctx => {
         const {user = null} = ctx.session;
+        console.log(ctx.session)
         ctx.body = {code: user ? 200 : 401};
     })
     .use(check_login)
