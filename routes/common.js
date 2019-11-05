@@ -18,7 +18,7 @@ const checkFile = async ctx => {
 };
 
 router
-// .use(checklogin)
+    .use(checklogin)
     .get('/captcha', async ctx => {
         await captcha(ctx);
     })

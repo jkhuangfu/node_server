@@ -1,0 +1,66 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>微信测试页面</title>
+    <script src="//res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+
+<body class="preloder_priview">
+微信分享测试
+<h2 id="t"></h2>
+</body>
+<script>
+    $.ajax({
+        type: 'post',
+        url: '/wx/wx_signature',
+        data: {
+            url: encodeURIComponent(window.location.href)
+        },
+        success: function (data) {
+            var result = data;
+            wx.config({
+                debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: result.appId, // 必填，公众号的唯一标识
+                timestamp: result.timestamp, // 必填，生成签名的时间戳
+                nonceStr: result.nonceStr, // 必填，生成签名的随机串
+                signature: result.signature, // 必填，签名
+                jsApiList: [
+                    'closeWindow',
+                    'updateAppMessageShareData',
+                    'onMenuShareAppMessage',
+                    'onMenuShareQQ',
+                    'onMenuShareWeibo',
+                    'onMenuShareQZone'
+                ] // 必填，需要使用的JS接口列表
+            });
+        }
+    });
+    wx.ready(function () {
+        var shareConfig = {
+            title: '为您提供“农银AI健康”服务',
+            link: encodeURIComponent(window.location.href), // 不能 encodeURIComponent
+            desc: '关心健康 更关心你',
+            imgUrl: '/img/welcome.jpg'
+            // success: reslove,
+            // cancel: reject
+        };
+        // 分享朋友圈
+        wx.onMenuShareTimeline(shareConfig);
+        // 分享给好友
+        wx.updateAppMessageShareData(shareConfig);
+        // wx.onMenuShareQQ(shareConfig);
+        wx.onMenuShareQZone(shareConfig);
+        wx.getNetworkType({
+            success: function (res) {
+                var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+                $('#t').html(networkType)
+            }
+        });
+    });
+</script>
+
+</html>

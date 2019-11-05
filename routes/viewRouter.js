@@ -1,11 +1,10 @@
 const router = require('koa-router')();
 const fs = require('fs');
-const path = require('path');
 
 /* 微信txt文件验证专用 txt文件放置在public文件根目录 */
-const render = () => {
+const render = file => {
     return new Promise((resolve, reject) => {
-        fs.readFile('/test.txt', "binary", (err, data) => {
+        fs.readFile(`/${file}`, "binary", (err, data) => {
             if (err) {
                 reject(err);
             } else {
@@ -15,21 +14,25 @@ const render = () => {
     })
 };
 router
-    .get('/test.txt', async (ctx, next) => {
-        let html = await render();
-        ctx.render(html);
+    // 微信txt文件验证
+    .get('/*.txt', async ctx => {
+        const html = await render(ctx.request.url);
+        await ctx.render(html);
     })
     /* GET home page. */
-    .get('/', (ctx, next) => {
-        ctx.render('index',{articleCon:req+''});
+    .get('/', async ctx => {
+        await ctx.render('index');
+    })
+    .get('/wx', async ctx => {
+        await ctx.render('wx');
     })
     /* to 404 page */
-    .get('/notFound', (ctx, next) => {
-        ctx.render('error');
+    .get('/notFound', async ctx => {
+        await ctx.render('error');
     });
-    // .get('/img/:filename',(req,res)=>{
-    //     const file = path.resolve('fileTemp',req.params.filename);
-    //     const stream = fs.createReadStream(file);
-    //     stream.pipe(res);
-    // });
+// .get('/img/:filename',(req,res)=>{
+//     const file = path.resolve('fileTemp',req.params.filename);
+//     const stream = fs.createReadStream(file);
+//     stream.pipe(res);
+// });
 module.exports = router.routes();

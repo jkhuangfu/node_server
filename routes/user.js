@@ -1,33 +1,36 @@
 const router = require('koa-router')();
-const register = require('../src/dao/user/register');
-const login = require('../src/dao/user/login');
-const { changePwd } = require('../src/dao/user/changePwd');
+const {register} = require('../src/dao/user/register');
+const {login} = require('../src/dao/user/login');
+const {changePwd} = require('../src/dao/user/changePwd');
 const check_login = require('../middlewares/checklogin');
-const { changeUserAvatar } = require('../src/dao/user/changeUserAvatar');
+const {changeUserAvatar} = require('../src/dao/user/changeUserAvatar');
 router
-    .post('/reg', (req, res) => {
+    .post('/reg', async ctx => {
         console.log('====进入注册流程====');
-        register.register(req, res)
+        await register(ctx);
     })
-    .post('/login', (req, res) => {
+    .post('/login', async (ctx,next) => {
         console.log('====进入登陆流程====');
-        login.login(req, res)
+        await login(ctx,next);
     })
-    .post('/logout', async (req, res) => {
+    .post('/logout', async ctx => {
         console.log('======退出登录=====');
-        const flag = await redisDb.del('dr_net'+req.sessionID);
-        delete req.session;
-        flag ? res.json({code:200}) : res.json({code:400});
+        // const flag = await redisDb.del('dr_net' + ctx.sessionID);
+        delete ctx.session;
+        ctx.body = {code: flag ? 200 : 400};
+    })
+    .post('/checkLogin', async ctx => {
+        const {user = null} = ctx.session;
+        ctx.body = {code: user ? 200 : 401};
     })
     .use(check_login)
-    .post('/changePassword', (req, res) => {
+    .post('/changePassword', async ctx => {
         console.log('====进入修改密码流程====');
-        changePwd(req, res);
+        await changePwd(ctx);
     })
-    .post('/changeUserAvatar', (req, res) => {
+    .post('/changeUserAvatar', async ctx => {
         console.log('====进入修改头像流程====');
-        changeUserAvatar(req, res);
+        await changeUserAvatar(ctx);
     });
 
-
-module.exports = router;
+module.exports = router.routes();

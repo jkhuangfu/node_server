@@ -1,36 +1,35 @@
-const express = require('express');
-const router = express.Router();
+const router = require('koa-router')();
 const checklogin = require('../middlewares/checklogin');
-const {publishArticle,queryArticle,queryArticleById,deleteArticle,changeArticleStatus} = require('../src/dao/blog/article');
-const { publishMessage,deleteMessage,queryMessage,changeMessageStatus } = require('../src/dao/blog/message');
+const {publishArticle, queryArticle, queryArticleById, deleteArticle, changeArticleStatus} = require('../src/dao/blog/article');
+const {publishMessage, deleteMessage, queryMessage, changeMessageStatus} = require('../src/dao/blog/message');
 router
     .use(checklogin)
-    .post('/changeArticleStatus', (req, res) => {
-        changeArticleStatus(req, res);
+    .post('/changeArticleStatus', async ctx => {
+        await changeArticleStatus(ctx);
     })
-    .post('/deleteArticle', (req, res) => {
-        deleteArticle(req, res);
+    .post('/deleteArticle', async ctx => {
+        await deleteArticle(ctx);
     })
-    .post('/queryArticle',(req,res)=>{
-        queryArticle(req,res);
+    .post('/queryArticle', async ctx => {
+        await queryArticle(ctx);
     })
-    .post('/publishArticle',(req,res)=>{
-        publishArticle(req,res);
+    .post('/publishArticle', async ctx => {
+        await publishArticle(ctx);
     })
-    .post('/queryArticleById',(req,res)=>{
-        queryArticleById(req,res);
+    .post('/queryArticleById', async ctx => {
+        await queryArticleById(ctx);
     })
-    .post('/publishMessage',(req,res)=>{
-        publishMessage(req,res);
+    .post('/publishMessage', async ctx => {
+        await publishMessage(ctx);
     })
-    .post('/deleteMessage',(req,res)=>{
-        deleteMessage(req,res);
+    .post('/deleteMessage', async ctx => {
+        await deleteMessage(ctx);
     })
-    .post('/changeMessageStatus',(req,res)=>{
-        changeMessageStatus(req,res)
+    .post('/changeMessageStatus', async ctx => {
+        await changeMessageStatus(ctx)
     })
-    .post('/queryMessage',(req,res)=>{
-        queryMessage(req,res);
+    .post('/queryMessage', async ctx => {
+        await queryMessage(ctx);
     });
 
-module.exports = router;
+module.exports = router.routes();

@@ -1,18 +1,17 @@
-const express = require('express');
-const router = express.Router();
+const router = require('koa-router')();
 const {signature} = require('../src/dao/wechat/wx_signature/signature');
 const {getOpenid} = require('../src/dao/wechat/wx_opnid/index');
 
 router
     //微信分享获取签名
-    .post('/wx_signature', (req, res, next) => {
+    .post('/wx_signature', async ctx => {
         console.log('======发送微信签名=====');
-        signature(req, res, next);
+        await signature(ctx);
     })
     //获取微信 openid
-    .post('/wx_openid', (req, res, next) => {
+    .post('/wx_openid', async ctx => {
         console.log('======发送微信openid=====');
-        getOpenid(req, res, next);
+        await getOpenid(ctx);
     });
 
-module.exports = router;
+module.exports = router.routes();

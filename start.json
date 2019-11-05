@@ -1,19 +1,17 @@
 {
-    "apps": {
-        "name": "server",
-        "script": "./bin/www",
-        "args": "--abort-on-uncaught-exception",
-        "watch": ["bin", "views", "app.js", "routes","src","middlewares"],
-        "watch_delay": 1000,
-        "ignore_watch": [
-            "public/upload"
-        ],
-        "log_date_format": "YYYY-MM-DD HH:mm Z",
-        "env": {
-            "NODE_ENV": "development"
-        },
-        "env_production": {
-            "NODE_ENV": "production"
-        }
+  "apps": {
+    "name": "server",
+    "script": "./bin/www",
+    "args": "--abort-on-uncaught-exception",
+    "watch": ["bin", "views", "app.js", "routes", "src", "middlewares"],
+    "watch_delay": 1000,
+    "ignore_watch": ["public/upload"],
+    "log_date_format": "YYYY-MM-DD HH:mm Z",
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "env_production": {
+      "NODE_ENV": "production"
     }
+  }
 }

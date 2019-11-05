@@ -5,9 +5,9 @@
  */
 
 module.exports = async (ctx, next) => {
-    const isLogin = await redisDb.get('dr_net' + ctx.sessionID);
-    if ((isLogin === null && ctx.method === 'POST') || (isLogin && !JSON.parse(isLogin).user && ctx.method === 'POST')) {
-        return ctx.throw(401,'access_denied');
-    }
+    // const {user} = ctx.session;
+    // if (ctx.method === 'POST' && !user) {
+    //     ctx.throw(401, 'access_denied');
+    // }
     await next();
 };

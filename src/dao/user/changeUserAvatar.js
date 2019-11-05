@@ -1,29 +1,16 @@
 module.exports = {
-    changeUserAvatar:(req,res)=>{
-        const { avatar } = reqBody(req);
+    changeUserAvatar: async ctx => {
+        const {avatar} = reqBody(ctx);
         const sql = `update user_main set avatar = ? where nickName = ?`;
-        if(avatar){
-            pool.getConnection((err,connection)=>{
-                if(err){
-                    res.json({code:500,msg:'数据库连接失败',err});
-                    return false;
-                }
-                try{
-                    connection.query(sql,[avatar,req.session.user.nickName],(err,response)=>{
-                        if(err){
-                            res.json({code:500,msg:'头像修改程序错误',err});
-                            connection.release();
-                            return false;
-                        }
-                        res.json({code:200,msg:'修改成功'});
-                        connection.release();
-                    })
-                }catch(e){
-                    res.json({code:500,msg:'头像修改程序错误',e});
-                }
-            })
-        }else {
-            res.json({code:300,msg:'请传入头像地址'})
+        if (!avatar) {
+            ctx.body = {code: 300, msg: '请传入头像地址'};
+            return false;
         }
+        const data = await dbquery(sql, [avatar, ctx.session.user.nickName]);
+        if (data.code !== 200) {
+            ctx.body = data;
+            return false;
+        }
+        ctx.body = {code: 200, msg: '修改成功'};
     }
 };
