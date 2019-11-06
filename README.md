@@ -1,5 +1,7 @@
 >此项目使用技术栈为 node express mysql express-session redis express-router socket.io websocket
 
+>koa版本: [点击查看koa版本](https://github.com/jkhuangfu/node_server/tree/koa-version)
+
 PS：运行方法 npm install 安装依赖
 	
 	 (1) npm run start
