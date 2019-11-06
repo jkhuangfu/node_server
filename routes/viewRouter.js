@@ -24,6 +24,9 @@ router
     .get('/', (req, res, next) => {
         res.render('index',{articleCon:req+''});
     })
+    .get('/wx', (req, res, next) => {
+        res.render('wx');
+    })
     /* to 404 page */
     .get('/notFound', (req, res, next) => {
         res.render('error');

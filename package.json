@@ -4,7 +4,7 @@
     "private": false,
     "scripts": {
         "start": "node ./bin/www",
-        "pm2":"pm2 start ./start.json"
+        "pm2": "pm2 start ./start.json"
     },
     "dependencies": {
         "ali-oss": "^6.1.1",
@@ -25,11 +25,13 @@
         "mysql": "^2.17.1",
         "nodemailer": "^6.3.0",
         "pnglib": "0.0.1",
+        "raw-body": "^2.4.1",
         "redis": "^2.8.0",
         "request": "^2.88.0",
         "serve-favicon": "~2.5.0",
         "socket.io": "^2.2.0",
         "svg-captcha": "^1.4.0",
-        "websocket": "^1.0.29"
+        "websocket": "^1.0.29",
+        "xml2js": "^0.4.22"
     }
 }

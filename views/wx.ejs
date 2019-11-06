@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta
+            name="viewport"
+            content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width,viewport-fit=cover"
+    />
+    <!-- qq分享显示的标题-->
+    <meta itemprop="name" content="为您提供“农银AI健康”服务"/>
+    <!-- 分享显示的缩略图-->
+    <!-- qq 必须是http开头 -->
+    <!-- name="share-image" 兼容微信分享 -->
+    <meta name="share-image" itemprop="image" content="http://activity.jxbrty.com/abcchinasdk/img/ai_share.jpeg"/>
+    <!-- 分享显示的简介-->
+    <meta name="description" itemprop="description" content="关心健康 更关心你"/>
+    <title>微信测试页面</title>
+    <script src="https://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/eruda/1.5.8/eruda.min.js"></script>
+    <script>
+        eruda.init();
+    </script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.5.0.js"></script>
+</head>
+
+<body>
+微信分享测试
+<h2 id="t"></h2>
+</body>
+<script>
+    setTimeout(() => {
+        $.ajax({
+            type: 'post',
+            url: '/wx/wx_signature',
+            data: {
+                url: encodeURIComponent(location.href)
+            },
+            success: function (data) {
+                var result = data;
+                wx.config({
+                    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: result.appId, // 必填，公众号的唯一标识
+                    timestamp: result.timestamp, // 必填，生成签名的时间戳
+                    nonceStr: result.nonceStr, // 必填，生成签名的随机串
+                    signature: result.signature, // 必填，签名
+                    jsApiList: [
+                        'closeWindow',
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage'
+                    ] // 必填，需要使用的JS接口列表
+                });
+                wx.ready(function () {
+                    var shareConfig = {
+                        title: '为您提供“农银AI健康”服务',
+                        link: window.location.href, // 不能 encodeURIComponent
+                        desc: '关心健康 更关心你',
+                        imgUrl: 'https://www.drnet.xyz/img/welcome.jpg',
+                        success: function (res) {
+                            alert('朋友分享成功');
+                        },
+                        fail: function (res) {
+                            alert(JSON.stringify(res));
+                        }
+                    };
+                    // 分享朋友圈
+                    wx.onMenuShareAppMessage(shareConfig);
+                    wx.onMenuShareTimeline(shareConfig);
+                    wx.getNetworkType({
+                        success: function (res) {
+                            var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+                            $('#t').html(networkType)
+                        }
+                    });
+                });
+            }
+
+        });
+
+    }, 5000)
+
+</script>
+
+</html>
