@@ -25,9 +25,9 @@ module.exports = {
         /*
          * regType 0:图片验证 1:邮箱验证
          * */
-        let {nickName, passWord, email = null, img, emailCode, regType = 0} = reqBody(ctx);
-        let pwd = hash('node' + passWord.toUpperCase() + 'reg', 'md5');
-        let _sql = `insert into user_main(nickName,regTime,passWord,email) values(?,now(),?,?)`;
+        const {nickName, passWord, email = null, img, emailCode, regType = 0} = reqBody(ctx);
+        const pwd = hash('node' + passWord.toUpperCase() + 'reg', 'md5');
+        const _sql = `insert into user_main(nickName,regTime,passWord,email) values(?,now(),?,?)`;
         if (nickName === undefined || nickName === '') {
             ctx.body = {code: 1, msg: '用户名为空'};
         } else if (passWord === '') {
@@ -38,7 +38,7 @@ module.exports = {
             } else if (ctx.session.img !== img) {
                 ctx.body = {code: 5, msg: '图片验证码不正确'};
             } else {
-                delete ctx.session.img;
+                ctx.session.img = null;
                 await regFunction(ctx, nickName, pwd, email, _sql);
             }
         } else if (Number(regType) === 1) {
