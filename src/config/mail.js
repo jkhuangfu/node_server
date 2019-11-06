@@ -5,7 +5,7 @@ module.exports = {
         secureConnection: true,
         auth: {
             user: 'no-replay@drnet.xyz',
-            pass: 'pwd'
+            pass: 'huangfu@1993'
         }
     }
 };

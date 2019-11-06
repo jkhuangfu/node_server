@@ -1,23 +1,16 @@
 /*
     全局变量
 */
-const mysql = require('mysql');
-const { mysqlDev, mysqlOnline } = require('../config/mySql');
-const util = require('../util/inedx');
-const log4js = require('../util/log4');
-const redisDb = require('./redisTool');
+const { log4js, dbquery, redisDb, reqBody, fetchData, hash } = require('../util/inedx');
+
 global.log4 = log4js.log; //全局日志
 global.sql = require('../sql/sqlMap');
-global.md5 = require('md5');
-global.reqBody = (req) => util.reqBody(req);
+global.hash = hash;
+global.reqBody = ctx => reqBody(ctx);
+global.fetchData = fetchData;
 module.exports = {
-    ctrlCommon: (app) => {
-        const mysqlConfig = app.get('env') === 'development' ? mysqlDev : mysqlOnline;
-        /* 使用连接池 */
-        global.pool = mysql.createPool(Object.assign({}, mysqlConfig));
+    ctrlCommon: app => {
+        global.dbquery = dbquery(app);
         global.redisDb = redisDb(app);
-        global.writeResponse = (res,response) => {
-            res.json({...response});
-        }
     }
 };

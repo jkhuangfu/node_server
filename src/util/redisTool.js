@@ -1,13 +1,13 @@
-const redis = require("redis");
+const redis = require('redis');
 const redisConfig = require('../config/redis');
-const redisDb = (app) => {
-    let {ip, port} = app.get('env') === 'development' ? redisConfig.configDev : redisConfig.configProd;
+const redisDb = app => {
+    const { ip, port } = app.get('env') === 'development' ? redisConfig.configDev : redisConfig.configProd;
     const client = redis.createClient(port, ip);
-    client.on('error', (err) => {
+    client.on('error', err => {
         log4.Info('redis error：' + err);
     });
     client.on('connect', () => {
-        log4.Info('redis连接成功...')
+        log4.Info('redis连接成功...');
     });
     /**
      * @description 设置键值对
@@ -17,18 +17,18 @@ const redisDb = (app) => {
      * @return 200
      */
     const set = (key, value, expire) => {
-        return new Promise(res => {
+        return new Promise(reslove => {
             client.set(key, value, (err, result) => {
                 if (err) {
                     log4.Info('redis插入失败：' + err);
-                    res(err);
+                    reslove(err);
                     return false;
                 }
                 if (!isNaN(expire) && expire > 0) {
                     client.expire(key, parseInt(expire));
                 }
-                res(200);
-            })
+                reslove(200);
+            });
         });
     };
 
@@ -38,16 +38,16 @@ const redisDb = (app) => {
      * @return Promise<Boolean>
      */
     const get = key => {
-        return new Promise(res => {
+        return new Promise(reslove => {
             client.get(key, (err, result) => {
                 if (err) {
                     log4.Info('redis获取失败：' + err);
-                    res(err);
+                    reslove(err);
                     return false;
                 }
-                res(result);
-            })
-        })
+                reslove(result);
+            });
+        });
     };
 
     /**
@@ -69,7 +69,7 @@ const redisDb = (app) => {
                     resolve(false);
                 }
             });
-        })
+        });
     };
 
     /**
@@ -82,15 +82,15 @@ const redisDb = (app) => {
         return new Promise(resolve => {
             client.del(keys, (err, val) => {
                 if (err) {
-                    resolve(false)
+                    resolve(false);
                 } else if (val >= 1) {
-                    resolve(true)
+                    resolve(true);
                 }
             });
         });
     };
 
-    return {set, get, del, exits}
+    return { set, get, del, exits };
 };
 
 module.exports = redisDb;

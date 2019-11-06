@@ -6,68 +6,65 @@ const randomCode = () => {
     return Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10) + "" + Math.floor(Math.random() * 10);
 };
 
-const sendFunction = (email, code, res) => {
-    mailTransport.sendMail({
-        from: `Dr丶net<${server_config.auth.user}>`,
-        to: email,//rescive_mail,
-        subject: '邮件验证码(自动发送,勿回复)',
-        //text:  '您的验证码是'+randomCode(),
-        html:
+const sendFunction = async (email, code) => {
+    return new Promise(resolve => {
+        mailTransport.sendMail(
+            {
+                from: `Dr丶net<${server_config.auth.user}>`,
+                to: email, //rescive_mail,
+                subject: '邮件验证码(自动发送,勿回复)',
+                //text:  '您的验证码是'+randomCode(),
+                html: `
+                <span style="color:#666;">您的验证码是:</span>
+                <span style="color:red;font-size:38px;font-weight:500;margin:0 15px;">${code}</span>
+                <span style="color:#666;">5分钟内有效</span>
             `
-            <span style="color:#666;">您的验证码是:</span>
-            <span style="color:red;font-size:38px;font-weight:500;margin:0 15px;">${code}</span>
-            <span style="color:#666;">5分钟内有效</span>
-        `
-    }, async (err) => {
-        if (err) {
-            log4.Info('Unable to send email: ' + err);
-            res.json({code: 400, msg: '发送失败'});
-        } else {
-            let getCount = await redisDb.get(`${email}_count`);
-            let sendCounts = getCount ? getCount : 0;
-            if (sendCounts >= 5) {
-                res.json({code: 201, msg: '超过发送次数，明日再试'});
-                return;
+            },
+            async err => {
+                if (err) {
+                    log4.Info('Unable to send email: ' + err);
+                    resolve({code: 400, msg: '发送失败'});
+                } else {
+                    const getCount = await redisDb.get(`${email}_count`);
+                    const sendCounts = getCount ? getCount : 0;
+                    if (sendCounts >= 5) {
+                        resolve({code: 201, msg: '超过发送次数，明日再试'});
+                        return;
+                    }
+                    const count = sendCounts - 0 + 1;
+                    const oneDay = 24 * 60 * 60;
+                    const now = new Date();
+                    const nowSecond = now.getHours() * 60 * 60 + now.getMinutes() * 60 + now.getSeconds();
+                    const set_key = await redisDb.set(email, code, 5 * 60);
+                    const set_count = await redisDb.set(`${email}_count`, count, oneDay - nowSecond);
+                    if (set_key === 200 && set_count === 200) {
+                        resolve({code: 200, msg: '发送成功'});
+                    }
+                }
             }
-            let count = sendCounts - 0 + 1;
-            let oneDay = 24 * 60 * 60;
-            let now = new Date();
-            let nowSecond = now.getHours() * 60 * 60 + now.getMinutes() * 60 + now.getSeconds();
-            let set_key = await redisDb.set(email, code, 5 * 60);
-            let set_count = await redisDb.set(`${email}_count`, count, oneDay - nowSecond);
-            if (set_key === 200 && set_count === 200) {
-                res.json({code: 200, msg: '发送成功'});
-            }
-        }
+        );
     });
 };
 
-const sendMailCode = (req, res) => {
-    let {email} = reqBody(req);
-    let {nickName} = req.session.user;
-    let code = randomCode();
-    let sql = 'select email from user_main where nickName = ?';
-    pool.getConnection((err, connection) => {
-        if (err) {
-            res.json({code: 500, msg: err});
-            return false;
-        }
-        try {
-            connection.query(sql, [nickName], (e, response) => {
-                if (e) {
-                    res.json({code: 500, msg: e});
-                } else {
-                    if (response[0].email === email) {
-                        sendFunction(email, code, res);
-                    } else {
-                        res.json({code: 400, msg: '邮箱非用户绑定邮箱'});
-                    }
-                }
-                connection.release();
-            })
-        } catch (e) {
-            res.json({code: 500, msg: '程序异常，发送失败', e});
-        }
+
+const sendMailCode = async (req, res) => {
+    const {email} = reqBody(req);
+    const {nickName} = req.session.user;
+    const code = randomCode();
+    const sql = 'select email from user_main where nickName = ?';
+    const db = await dbquery(sql, [nickName]);
+    if (db.code !== 200) {
+        res.json(db);
+        return false;
+    }
+    const result = db.result[0].email;
+    if (result === email) {
+        res.json(await sendFunction(email, code));
+        return false;
+    }
+    res.json({
+        code: 201,
+        msg: ' 邮箱不匹配'
     });
 };
 const sendMailNormal = (req, res) => {

@@ -8,13 +8,13 @@ const client = new OSS(oss_config);
 module.exports = {
     upFileForLocal: async (req, res) => {
         let writeStream = [], url = [], promise = [];
-        let {type} = reqBody(req);
+        const {type} = reqBody(req);
         if (req.files.length <= 0) {
             res.json({status: 400, msg: '未上传文件'});
             return false;
         }
         req.files.map(item => {
-            let file_type = item.originalname.split('.')[1];
+            let file_type = item.originalname.split('.').pop();
             let id = uuid(36);
             //创建真实文件
             let write_file = path.resolve('public/upload', `${type ? type : id}.${file_type}`);
@@ -52,7 +52,7 @@ module.exports = {
             return false;
         }
         req.files.map(item => {
-            let file_type = item.originalname.split('.')[1];
+            let file_type = item.originalname.split('.').pop();
             let fileName = type ? `${type}.${file_type}` : item.originalname;
             let key = `articleImg/${fileName}`;
             let or_file = path.resolve("public/upload", item.filename);

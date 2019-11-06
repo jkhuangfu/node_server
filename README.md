@@ -52,15 +52,12 @@ PS：运行方法 npm install 安装依赖
 │   │           └── signature.js
 │   ├── global //全局变量及方法
 │   │   ├── index.js
-│   │   └── redisTool.js
 │   ├── socket //socket配置信息
 │   │   ├── socket.io.js
 │   │   └── websocket.js
 │   ├── sql //抽离出的 sql 语句
 │   │   └── sqlMap.js
-│   └── util //工具类
-│       ├── index.js
-│       └── log4.js
+│   └── util //工具类集合
 ├── start.json //pm2启动配置文件
 ├── views //前端 ejs 文件
 │   ├── articlePage

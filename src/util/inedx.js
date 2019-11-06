@@ -1,8 +1,12 @@
+const dbquery = require('./dbquery');
+const log4js = require('./log4');
+const redisDb = require('./redisTool');
+const fetchData = require('./fetch');
+const hash = require('./crypto');
 const CHARS = '0123456789abcdefghijklmnopqrstuvwxyz';
-const get_char = (n) => {
+const get_char = n => {
     return CHARS.charAt((n >> 0) % CHARS.length);
 };
-
 const uuid = (c = 48, prefix = '', toLower = false) => {
     let r = '';
     while (c > 0) {
@@ -16,12 +20,8 @@ const uuid = (c = 48, prefix = '', toLower = false) => {
     return r;
 };
 
-const getClientIp = (req) => {
-    let ip = req.headers['x-real-ip']
-        || req.headers['x-forwarded-for']
-        || req.connection.remoteAddres
-        || req.socket.remoteAddress
-        || '';
+const getClientIp = ctx => {
+    let ip = ctx.headers['x-real-ip'] || ctx.headers['x-forwarded-for'] || ctx.socket.remoteAddress || '';
     if (ip.split(',').length > 0) {
         ip = ip.split(',')[0];
     }
@@ -36,5 +36,10 @@ module.exports = {
         return method === 'GET' ? param : body;
     },
     uuid,
-    getClientIp
+    getClientIp,
+    dbquery,
+    log4js,
+    redisDb,
+    fetchData,
+    hash
 };
