@@ -32,9 +32,15 @@ const formatWeatherV2 = (local, detail) => {
 };
 const weather = async msgContent => {
     const local = msgContent.replace(/天气/g, '');
+    const sql = `select id from city where cityZh = '${local}'`;
+    const db = await dbquery(sql);
+    if (db.code !== 200 || db.result.length === 0) {
+        return '未查找到相关地区天气信息';
+    }
+    const id = db.result[0].id;
     // const url = 'http://wthrcdn.etouch.cn/weather_mini?city=' + encodeURI(local);
     // api相关接口说明--->https://www.tianqiapi.com/?action=v1
-    const url = `https://www.tianqiapi.com/api/?version=v1&city=${encodeURIComponent(local)}&appid=61768783&appsecret=kZ5nRfeG`;
+    const url = `https://www.tianqiapi.com/api/?version=v1&cityid=${id}&appid=61768783&appsecret=kZ5nRfeG`;
     const result = await fetchData(url);
     const {status, data} = result;
     if (status === 200) {
