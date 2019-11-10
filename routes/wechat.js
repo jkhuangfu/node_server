@@ -3,7 +3,6 @@ const router = express.Router();
 const signature = require('../src/dao/wechat/signature');
 const getOpenid = require('../src/dao/wechat/getOpenId');
 const reply = require('../src/dao/wechat/service/wx_reply');
-const w = require('../src/dao/wechat/robot/lib/ip');
 // 微信服务接口加密校验
 const getSignature = (timestamp, nonce, token) => {
     const arr = [token, timestamp, nonce].sort();
@@ -15,10 +14,6 @@ router
     .post('/wx_signature', (req, res) => {
         console.log('======发送微信签名=====');
         signature(req, res);
-    })
-    .get('/w',async (req)=>{
-
-        w('114.114.114.114')
     })
     //获取微信 openid
     .post('/wx_openid', (req, res, next) => {
