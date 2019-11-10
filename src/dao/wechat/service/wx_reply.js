@@ -54,6 +54,7 @@ const reply = async req => {
     console.log('接收到消息', xml_json);
     const {ToUserName, FromUserName} = xml_json;
     const content = await handle_reply(xml_json);
+    console.log('返回xml--->',createReplyXml(content, ToUserName, FromUserName));
     return createReplyXml(content, ToUserName, FromUserName);
 };
 

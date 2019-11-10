@@ -1,8 +1,8 @@
-const {weather, phone, ip} = require('../robot/lib/index');
+const {weather, phone, ip, chatRobot} = require('../robot/lib/index');
 const Menu = {
     '/手机/g': phone,
     '/ip/g': ip,
-    '/天气/g': weather
+    '/-天气/g': weather
 };
 const help_con = '现有功能如下:\n\n'
     + '1、手机号归属地查询，指令：【手机号13333333333】\n'
@@ -25,6 +25,7 @@ const handle_reply = async xml_json => {
     const {MsgType, MediaId, Content, FromUserName, Event} = xml_json;
     let content = null;
     if (MsgType === 'text') {
+        // 先看自定义指令再看ichat机器人支持指令
         const _isDirect = await isDirect(Content);
         if (_isDirect) {
             content = _isDirect;
@@ -34,8 +35,14 @@ const handle_reply = async xml_json => {
             // 彩蛋
             content = '什么/:?你说的是那个人见人爱、花见花开的大美女杨琳大美女/:?';
         } else {
-            content = FromUserName === love_id ? love_con : '你说的我还不懂哦~\n您可以发送【帮助】获取相关功能指令哦~[玫瑰]';
+            const chatCanUse = await chatRobot(FromUserName, Content);
+            if (chatCanUse) {
+                content = ' ' + chatCanUse + ' ';
+            } else {
+                content = FromUserName === love_id ? love_con : '你说的我还不懂哦~\n您可以发送【帮助】获取相关功能指令哦~[玫瑰]';
+            }
         }
+        // console.log('chatdebug', chatCanUse)
     } else if (MsgType === 'image') {
         content = {
             type: 'image',

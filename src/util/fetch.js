@@ -16,7 +16,7 @@ const fetchData = (url, method = 'GET', options = {}) => {
                 if (!error && response.statusCode === 200) {
                     resolve({status: 200, data: body, message: 'success'});
                 } else {
-                    resolve({status: response.statusCode || 500, data: body, message: error});
+                    resolve({status:  500, data: body, message: error});
                 }
             }
         );
