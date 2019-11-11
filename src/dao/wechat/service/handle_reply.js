@@ -1,4 +1,4 @@
-const {weather, phone, ip, chatRobot} = require('../robot/lib/index');
+const {weather, phone, ip, chatRobot, cashRobot} = require('../robot/lib/index');
 const Menu = {
     '/手机/g': phone,
     '/ip/g': ip,
@@ -31,6 +31,8 @@ const handle_reply = async xml_json => {
             content = _isDirect;
         } else if (Content.indexOf('帮助') > -1) {
             content = help_con;
+        } else if (Content.indexOf('记账') === 0 || Content.indexOf('查账') === 0) {
+            content = await cashRobot(Content, FromUserName);
         } else if (Content.indexOf('杨琳') > -1) {
             // 彩蛋
             content = '什么/:?你说的是那个人见人爱、花见花开的大美女杨琳大美女/:?';
