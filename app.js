@@ -5,19 +5,17 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const common = require('./src/global'); //全局使用方法及变量
 const MemoryStore = require('memorystore')(session); //session存放在内存中
 const RedisStore = require('connect-redis')(session);//session 存放在redis中
 const view = require('./routes/viewRouter'); //页面渲染
 const user = require('./routes/user'); //后台管理接口
 const blog = require('./routes/blog'); //博客相关
-const wechat = require('./routes/wechat'); //微信相关
+const weChat = require('./routes/wechat'); //微信相关
 const commonRouter = require('./routes/common');
-
+require('./src/util/inedx'); //全局使用方法及变量
 const cors = require('cors');
 const app = express();
 const redisOption = require('./src/config/redis')[app.get('env') === 'development' ? 'configDev' : 'configProd'];
-common.ctrlCommon(app);
 // 跨域白名单
 const whitelist = [/^http:\/\/localhost|^http:\/\/127.0.0.1|drnet.xyz$/];
 const corsOptions = {
@@ -38,7 +36,7 @@ app.use(session({
     }),
     secret: 'mRAewUjWeLopm0Hu8v', //与cookieParser中的一致
     resave: true, //每次会话重新设置过期时间
-    rolling:true, //保证每次请求都会重置客户端cookie有效期
+    rolling: true, //保证每次请求都会重置客户端cookie有效期
     saveUninitialized: true,
     HttpOnly: true,
     cookie: {maxAge: 30 * 60 * 1000, secure: false} //过期时间
@@ -62,7 +60,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', view);
 app.use('/users', user);
 app.use('/blog', blog);
-app.use('/wx', wechat);
+app.use('/wx', weChat);
 app.use('/common', commonRouter);
 
 // catch 404 and forward to error handler

@@ -33,11 +33,10 @@ PS：运行方法 npm install 安装依赖
 │   │       ├── util //微信相关工具类（获取access_token,jsapi_ticket）
 │   │       ├── signature.js // 微信js-sdk签名
 │   │       └── getOpenid.js // 获取openid(网页授权等可用)
-│   ├── global //全局变量及方法
 │   ├── socket //socket配置信息
 │   │   ├── socket.io.js
 │   │   └── websocket.js
-│   └── util //工具类集合
+│   └── util //工具类集合(其中大部分挂载到node全局变量--global上)
 ├── start.json //pm2启动配置文件
 ├── views //前端 ejs 文件
 └── yarn.lock

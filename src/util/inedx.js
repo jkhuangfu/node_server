@@ -1,8 +1,14 @@
-const dbquery = require('./dbquery');
-const log4js = require('./log4');
-const redisDb = require('./redisTool');
-const fetchData = require('./fetch');
-const hash = require('./crypto');
+dbquery = require('./dbquery');
+log4 = require('./log4').log;
+redisDb = require('./redisTool')();
+fetchData = require('./fetch');
+hash = require('./crypto');
+reqBody = req => {
+    const method = req.method;
+    const param = req.query || req.params;
+    const body = req.body;
+    return method === 'GET' ? param : body;
+};
 const CHARS = '0123456789abcdefghijklmnopqrstuvwxyz';
 const get_char = n => {
     return CHARS.charAt((n >> 0) % CHARS.length);
@@ -27,19 +33,7 @@ const getClientIp = ctx => {
     }
     return ip;
 };
-
 module.exports = {
-    reqBody: (req) => {
-        let method = req.method;
-        let param = req.query || req.params;
-        let body = req.body;
-        return method === 'GET' ? param : body;
-    },
     uuid,
-    getClientIp,
-    dbquery,
-    log4js,
-    redisDb,
-    fetchData,
-    hash
+    getClientIp
 };
