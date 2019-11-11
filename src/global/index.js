@@ -4,7 +4,6 @@
 const { log4js, dbquery, redisDb, reqBody, fetchData, hash } = require('../util/inedx');
 
 global.log4 = log4js.log; //全局日志
-global.sql = require('../sql/sqlMap');
 global.hash = hash;
 global.reqBody = ctx => reqBody(ctx);
 global.fetchData = fetchData;

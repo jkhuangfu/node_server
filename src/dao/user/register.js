@@ -1,7 +1,8 @@
 /* 逻辑处理模块 */
 const regFunction = async (req, res, nickName, pwd, email, _sql) => {
     // 判断当前用户名是否已被注册
-    const chargeIsReg = await dbquery(sql.checkUser, [nickName]);
+    const check_sql = 'SELECT nickName FROM user_main WHERE nickName = ?';
+    const chargeIsReg = await dbquery(check_sql, [nickName]);
     if (chargeIsReg.code !== 200) {
         res.json(chargeIsReg);
         return false;
