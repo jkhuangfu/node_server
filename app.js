@@ -15,14 +15,13 @@ const koaBody = require('koa-body')({
         maxFileSize: 2 * 1024 * 1024
     }
 });
-const { ctrlCommon } = require('./src/global/index');
 const userRouter = require('./routes/user');
 const common = require('./routes/common');
 const viewRouter = require('./routes/viewRouter');
 const blogRouter = require('./routes/blog');
 const wxRouter = require('./routes/wechat');
 const testRouter = require('./routes/test');
-ctrlCommon(app);
+require('./src/util/inedx');// 暴露全局变量
 const corsOptions = {
     origin: ctx => {
         // 跨域处理

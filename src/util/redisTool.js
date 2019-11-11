@@ -1,8 +1,9 @@
 const redis = require('redis');
 const redisConfig = require('../config/redis');
-const redisDb = app => {
-  const { ip, port } = app['env'] === 'development' ? redisConfig.configDev : redisConfig.configProd;
-  const client = redis.createClient(port, ip);
+const { NODE_ENV } = process.env;
+const { ip, port } = NODE_ENV === 'development' ? redisConfig.configDev : redisConfig.configProd;
+const client = redis.createClient(port, ip);
+const redisDb = () => {
   client.on('error', err => {
     log4.Info('redis error：' + err);
   });
