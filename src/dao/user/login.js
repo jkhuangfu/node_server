@@ -2,6 +2,7 @@
 module.exports = {
     login: async ctx => {
         const {nickName, passWord, img} = reqBody(ctx);
+        const sql = 'SELECT avatar,nickName,passWord FROM user_main WHERE nickName = ?';
         if (nickName === undefined || nickName === '') {
             ctx.body = {code: 1, msg: '用户名为空'};
             log4.Info({code: 1, msg: '用户名为空'});
@@ -19,7 +20,7 @@ module.exports = {
             log4.Info({code: 0, msg: '验证码不正确'});
             return false;
         }
-        const data = await dbquery(sql.queryUserPwdByNickName, [nickName]);
+        const data = await dbquery(sql, [nickName]);
         if (data.code !== 200) {
             ctx.body = data;
             return false;

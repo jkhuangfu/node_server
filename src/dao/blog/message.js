@@ -52,24 +52,20 @@ module.exports = {
             sql = `select * from message where articleTitle like "%${articleTitle}%" and status = ${type}`;
             countSql = `SELECT COUNT(*) AS count from (${sql}) t`;
         }
-        const count_result = await dbquery(countSql);
-        if (count_result.code !== 200) {
-            ctx.body = count_result;
+        const db_result = await dbquery(countSql + ';' + querySql);
+        if (db_result.code !== 200) {
+            ctx.body = db_result;
             return false;
         }
-        const msg_result = await dbquery(querySql);
-        if (msg_result.code !== 200) {
-            ctx.body = msg_result;
-            return false;
-        }
-        let msg_res = msg_result.result;
+        const count = db_result[0].count;
+        let msg_res = db_result[1];
         msg_res.forEach(row => {
             row.createTime = moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
         });
         ctx.body = {
             code: 200,
             data: msg_res,
-            count: count_result.result[0].count
+            count
         };
     },
     /*

@@ -1,9 +1,9 @@
-dbquery = require('./dbquery');
-log4 = require('./log4').log;
-redisDb = require('./redisTool');
-fetchData = require('./fetch');
-hash = require('./crypto');
-reqBody = ctx => {
+global.dbquery = require('./dbquery');
+global.log4 = require('./log4').log;
+global.redisDb = require('./redisTool');
+global.fetchData = require('./fetch');
+global.hash = require('./crypto');
+global.reqBody = ctx => {
     const method = ctx.method;
     return method === 'GET' ? ctx.request.query : ctx.request.body;
 };

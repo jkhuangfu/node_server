@@ -51,24 +51,20 @@ module.exports = {
             sql = `SELECT id,articleTitle,createTime,isShow FROM article WHERE articleTitle LIKE  "%${articleTitle}%"  AND isShow = ${type}`;
             countSql = `SELECT COUNT(*) AS count from (${sql}) t`;
         }
-        const count_result = await dbquery(countSql);
-        if (count_result.code !== 200) {
-            ctx.body = count_result;
+        const db_result = await dbquery(countSql + ';' + querySql);
+        if (db_result.code !== 200) {
+            ctx.body = db_result;
             return false;
         }
-        const article_result = await dbquery(querySql);
-        if (article_result.code !== 200) {
-            ctx.body = article_result;
-            return false;
-        }
-        let article_res = article_result.result;
+        const count = db_result[0].count;
+        let article_res = db_result[1];
         article_res.forEach(row => {
             row.createTime = moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
         });
         ctx.body = {
             code: 200,
             data: article_res,
-            count: count_result.result[0].count
+            count
         };
     },
     /*

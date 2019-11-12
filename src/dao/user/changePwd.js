@@ -9,6 +9,8 @@ module.exports = {
     changePwd: async ctx => {
         const {oldPassWord, newPassWord, email, emailCode} = reqBody(ctx);
         const {nickName} = ctx.session.user;
+        const querySql = 'SELECT passWord FROM user_main WHERE nickName = ?';
+        const changePwdSql = 'UPDATE user_main SET passWord = ? WHERE nickName = ?';
         if (newPassWord === '' || oldPassWord === '') {
             ctx.body = {code: 1, message: '请输入新(旧)密码'};
             return false;
@@ -29,7 +31,7 @@ module.exports = {
             }
         }
         // 验证旧密码是否正确
-        const old_data = await dbquery(sql.queryUserPwdByNickName, [nickName]);
+        const old_data = await dbquery(querySql, [nickName]);
         if (old_data.code !== 200) {
             ctx.body = old_data;
             return false;
@@ -41,7 +43,7 @@ module.exports = {
             ctx.body = {code: 6, message: '旧密码不匹配'};
             return false;
         }
-        const change_res = await dbquery(sql.changePassWord, [
+        const change_res = await dbquery(changePwdSql, [
             hash('node' + newPassWord.toUpperCase() + 'reg', 'md5'),
             nickName
         ]);
