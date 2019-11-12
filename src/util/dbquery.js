@@ -2,8 +2,8 @@ const mysql = require('mysql');
 const {mysqlDev, mysqlOnline} = require('../config/mySql');
 const {NODE_ENV} = process.env;
 const mysqlConfig = NODE_ENV === 'development' ? mysqlDev : mysqlOnline;
-/* 使用连接池 */
-const pool = mysql.createPool(Object.assign({}, mysqlConfig));
+/* 使用连接池,并开启多条sql语句查询 */
+const pool = mysql.createPool(Object.assign({multipleStatements: true}, mysqlConfig));
 const dbquery = (sql, query = []) => {
     return new Promise(resolve => {
         pool.getConnection((err, connection) => {
