@@ -14,7 +14,7 @@ const upload = multer({
 
 router
     .use(checklogin)
-    .get('/cacp', (req, res) => {
+    .get('/captcha', (req, res) => {
         captcha(req, res);
     })
     .post('/sendMailCode', (req, res) => {
