@@ -57,8 +57,9 @@ module.exports = {
             ctx.body = db_result;
             return false;
         }
-        const count = db_result[0].count;
-        let msg_res = db_result[1];
+        const result = db_result.result;
+        const count = result[0].count;
+        let msg_res = result[1];
         msg_res.forEach(row => {
             row.createTime = moment(row.createTime).format('YYYY-MM-DD HH:mm:ss');
         });

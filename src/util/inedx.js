@@ -1,6 +1,6 @@
 global.dbquery = require('./dbquery');
 global.log4 = require('./log4').log;
-global.redisDb = require('./redisTool');
+global.redisDb = require('./redisTool')();
 global.fetchData = require('./fetch');
 global.hash = require('./crypto');
 global.reqBody = ctx => {

@@ -22,10 +22,16 @@ const blogRouter = require('./routes/blog');
 const wxRouter = require('./routes/wechat');
 const testRouter = require('./routes/test');
 require('./src/util/inedx');// 暴露全局变量
+// 允许请求的白名单（允许跨域的域名）
+const cors_domain = /^http:\/\/localhost|^http:\/\/127.0.0.1|drnet.xyz$/;
 const corsOptions = {
     origin: ctx => {
         // 跨域处理
-        return 'http://127.0.0.1:8080'
+        const requestOrigin = ctx.headers.origin;
+        if(cors_domain.test(requestOrigin)){
+            return requestOrigin;
+        }
+        return false;
     },
     credentials: true
 };

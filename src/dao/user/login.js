@@ -36,7 +36,7 @@ module.exports = {
         ctx.session.user = {nickName: result[0].nickName};
         const {avatar} = result[0];
         const res = {nickName, avatar};
-        ctx.body = {code: 6, msg: '登录成功', res};
+        ctx.body = {code: 6, msg: '登录成功', data: res};
         log4.Info({code: 6, msg: '登录成功,用户名为:-->' + nickName});
     }
 };
