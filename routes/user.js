@@ -5,6 +5,7 @@ const login = require('../src/dao/user/login');
 const { changePwd } = require('../src/dao/user/changePwd');
 const check_login = require('../middlewares/checklogin');
 const { changeUserAvatar } = require('../src/dao/user/changeUserAvatar');
+const cashbook_login = require('../src/dao/cashbook/login');
 router
     .post('/reg', (req, res) => {
         console.log('====进入注册流程====');
@@ -21,6 +22,10 @@ router
     .post('/login', (req, res) => {
         console.log('====进入登陆流程====');
         login.login(req, res)
+    })
+    .post('/cashbook/login',(req,res)=>{
+        log4.Info('进入cashbook登录流程');
+        cashbook_login(req,res);
     })
     .post('/logout', async (req, res) => {
         console.log('======退出登录=====');

@@ -1,4 +1,5 @@
 const {weather, phone, ip, chatRobot, cashRobot} = require('../robot/lib/index');
+const {uuid} = require('../../../util/inedx');
 const Menu = {
     '/手机/g': phone,
     '/ip/g': ip,
@@ -9,8 +10,7 @@ const help_con = '现有功能如下:\n\n'
     + '2、天气查询，指令:【北京天气】（地区名不要写市或者区哦）\n'
     + '3、ip地址查询，指令:【ip127.0.0.1】\n\n'
     + '[玫瑰]更多功能还在完善中，敬请期待~[玫瑰]';
-const love_id = 'ox5xSuH5ZNfa0AFt5XdB7pFriEM0';
-const love_con = '什么/:?你发的消息我竟然不懂，难道你就是那个人见人爱、花见花开的大美女杨琳大美女/:?,难怪我脑子一团浆糊，原来是被你迷住了，来大美女送你一朵花[玫瑰]';
+const auth_id = ['ox5xSuH5ZNfa0AFt5XdB7pFriEM0', 'ox5xSuEo5joUlCN2_tA2FFZ48Qu4'];
 // 判断发送的信息是不是支持的指令集
 const isDirect = async msg => {
     for (let regex in Menu) {
@@ -21,7 +21,7 @@ const isDirect = async msg => {
     }
     return false;
 };
-const handle_reply = async xml_json => {
+const handle_reply = async (xml_json, req) => {
     const {MsgType, MediaId, Content, FromUserName, Event} = xml_json;
     let content = null;
     if (MsgType === 'text') {
@@ -29,22 +29,21 @@ const handle_reply = async xml_json => {
         const _isDirect = await isDirect(Content);
         if (_isDirect) {
             content = _isDirect;
-        } else if (Content.indexOf('帮助') > -1) {
+        } else if (Content.indexOf('帮助') === 0) {
             content = help_con;
+        } else if (Content.indexOf('管理平台验证码') === 0 && auth_id.includes(FromUserName)) {
+            content = '登录验证码为:' + uuid(4) + ',5分钟有效哦~';
+            await redisDb.set(FromUserName + '_code', content, 5 * 60);
         } else if (Content.indexOf('记账') === 0 || Content.indexOf('查账') === 0) {
             content = await cashRobot(Content, FromUserName);
-        } else if (Content.indexOf('杨琳') > -1) {
-            // 彩蛋
-            content = '什么/:?你说的是那个人见人爱、花见花开的大美女杨琳大美女/:?';
         } else {
             const chatCanUse = await chatRobot(FromUserName, Content);
             if (chatCanUse) {
                 content = ' ' + chatCanUse + ' ';
             } else {
-                content = FromUserName === love_id ? love_con : '你说的我还不懂哦~\n您可以发送【帮助】获取相关功能指令哦~[玫瑰]';
+                content = FromUserName === '你说的我还不懂哦~\n您可以发送【帮助】获取相关功能指令哦~[玫瑰]';
             }
         }
-        // console.log('chatdebug', chatCanUse)
     } else if (MsgType === 'image') {
         content = {
             type: 'image',
@@ -69,7 +68,7 @@ const handle_reply = async xml_json => {
     } else {
         console.log('不支持的微信接收信息', MsgType);
         // 彩蛋
-        content = FromUserName === love_id ? love_con : '暂不支持该类型信息~';
+        content = '暂不支持该类型信息~';
     }
     return content;
 };

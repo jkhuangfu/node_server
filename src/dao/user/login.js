@@ -36,8 +36,7 @@ module.exports = {
         req.session.user = {nickName: result[0].nickName};
         const {avatar} = result[0];
         const response = {nickName, avatar};
-        res.json({code: 6, msg: '登录成功', response});
+        res.json({code: 6, msg: '登录成功', data: response});
         log4.Info({code: 6, msg: '登录成功,用户名为:-->' + nickName});
-
     }
 };
