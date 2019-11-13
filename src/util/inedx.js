@@ -9,7 +9,7 @@ global.reqBody = req => {
     const body = req.body;
     return method === 'GET' ? param : body;
 };
-const CHARS = '0123456789abcdefghijklmnopqrstuvwxyz';
+const CHARS = '123456789abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ';
 const get_char = n => {
     return CHARS.charAt((n >> 0) % CHARS.length);
 };

@@ -10,13 +10,17 @@ const chat = async (id, info) => {
         + '&ts=' + Date.now();
     const data = await fetchData(url);
     const result = icon.decode(data.data, 'utf-8').split(';').slice(4);
-    const charge = result[0];
-    const type = charge.match(typeReg)[0];
-    const content = charge.match(contentReg)[0];
-    if (type === 'txt') {
-        return content
+    try{
+        const charge = result[0];
+        const type = charge.match(typeReg)[0];
+        const content = charge.match(contentReg)[0];
+        if (type === 'txt') {
+            return content
+        }
+        return false;
+    }catch (e) {
+        return '哇哦,脑袋瓜出错了~'
     }
-    return false;
 };
 
 module.exports = chat;

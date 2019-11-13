@@ -32,8 +32,9 @@ const handle_reply = async (xml_json, req) => {
         } else if (Content.indexOf('帮助') === 0) {
             content = help_con;
         } else if (Content.indexOf('管理平台验证码') === 0 && auth_id.includes(FromUserName)) {
-            content = '登录验证码为:' + uuid(4) + ',5分钟有效哦~';
-            await redisDb.set(FromUserName + '_code', content, 5 * 60);
+            const code = uuid(4);
+            content = '登录验证码为:' + code + ',5分钟有效哦~';
+            await redisDb.set(FromUserName + '_code', code, 5 * 60);
         } else if (Content.indexOf('记账') === 0 || Content.indexOf('查账') === 0) {
             content = await cashRobot(Content, FromUserName);
         } else {
