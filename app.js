@@ -1,21 +1,17 @@
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const favicon = require('serve-favicon');
-const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const MemoryStore = require('memorystore')(session); //session存放在内存中
 const RedisStore = require('connect-redis')(session);//session 存放在redis中
-const view = require('./routes/viewRouter'); //页面渲染
-const user = require('./routes/user'); //后台管理接口
-const blog = require('./routes/blog'); //博客相关
-const weChat = require('./routes/wechat'); //微信相关
-const commonRouter = require('./routes/common');
-require('./src/util/inedx'); //全局使用方法及变量
+require('./util/inedx'); //全局使用方法及变量
 const cors = require('cors');
 const app = express();
-const redisOption = require('./src/config/redis')[app.get('env') === 'development' ? 'configDev' : 'configProd'];
+const {NODE_ENV} = process.env;
+const redisOption = require('./config/redis')[NODE_ENV === 'development' ? 'configDev' : 'configProd'];
 // 跨域白名单
 const whitelist = [/^http:\/\/localhost|^http:\/\/127.0.0.1|drnet.xyz$/];
 const corsOptions = {
@@ -52,16 +48,16 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', view);
-app.use('/users', user);
-app.use('/blog', blog);
-app.use('/wx', weChat);
-app.use('/common', commonRouter);
+
+//配置路由
+fs.readdirSync(path.join(__dirname, './routes')).forEach(route => {
+    let api = require(`./routes/${route}`);
+    app.use(`/${route === 'viewRouter.js' ? '/' : route.replace('.js', '')}`, api);
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

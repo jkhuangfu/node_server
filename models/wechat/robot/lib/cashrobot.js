@@ -1,4 +1,4 @@
-const {addRecord, queryRecord} = require('../cashbook/index');
+const {addRecord, queryRecord} = require('../cashbook');
 const cashRobot = async (info, id) => {
     const info_detail = info.split(',');
     if (info_detail[0] === '记账') {

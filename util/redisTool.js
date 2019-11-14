@@ -1,6 +1,6 @@
 const redis = require('redis');
 const redisConfig = require('../config/redis');
-const {NODE_ENV} = process.env;
+const {NODE_ENV = 'development'} = process.env;
 const {ip, port} = NODE_ENV === 'development' ? redisConfig.configDev : redisConfig.configProd;
 const client = redis.createClient(port, ip);
 const redisDb = () => {

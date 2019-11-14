@@ -1,4 +1,4 @@
-const {weather, phone, ip, chatRobot, cashRobot} = require('../robot/lib/index');
+const {weather, phone, ip, chatRobot, cashRobot} = require('../robot/lib');
 const {uuid} = require('../../../util/inedx');
 const Menu = {
     '/手机/g': phone,

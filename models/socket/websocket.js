@@ -1,6 +1,6 @@
 const WebSocket = require('websocket').server;
 const createWebSocketServer = (server) => {
-    wsServer = new WebSocket({
+    const wsServer = new WebSocket({
         httpServer: server,
         // You should not use autoAcceptConnections for production
         // applications, as it defeats all standard cross-origin protection
@@ -11,7 +11,7 @@ const createWebSocketServer = (server) => {
     });
     //此方法是设置允许连接本 websocket的ip或者域名
     function originIsAllowed(origin) {
-        console.log(origin)
+        console.log(origin);
         // put logic here to detect whether the specified origin is allowed.
         return true;
     }
@@ -39,6 +39,6 @@ const createWebSocketServer = (server) => {
             console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
         });
     });
-}
+};
 
 module.exports = createWebSocketServer;

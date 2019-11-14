@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 12/11/2019 10:04:20
+ Date: 14/11/2019 15:26:54
 */
 
 SET NAMES utf8mb4;
@@ -40,7 +40,7 @@ CREATE TABLE `cash_user` (
   `pass_word` varchar(255) DEFAULT NULL COMMENT '密码',
   `user_openid` varchar(255) DEFAULT NULL COMMENT '用户微信id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for cashbook

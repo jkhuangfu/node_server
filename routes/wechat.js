@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const signature = require('../src/dao/wechat/signature');
-const getOpenid = require('../src/dao/wechat/getOpenId');
-const reply = require('../src/dao/wechat/service/wx_reply');
+const signature = require('../models/wechat/signature');
+const getOpenid = require('../models/wechat/getOpenId');
+const reply = require('../models/wechat/service/wx_reply');
 // 微信服务接口加密校验
 const getSignature = (timestamp, nonce, token) => {
     const arr = [token, timestamp, nonce].sort();

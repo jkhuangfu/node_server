@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const register = require('../src/dao/user/register');
-const login = require('../src/dao/user/login');
-const { changePwd } = require('../src/dao/user/changePwd');
+const register = require('../models/user/register');
+const login = require('../models/user/login');
+const { changePwd } = require('../models/user/changePwd');
 const check_login = require('../middlewares/checklogin');
-const { changeUserAvatar } = require('../src/dao/user/changeUserAvatar');
-const cashbook_login = require('../src/dao/cashbook/login');
+const { changeUserAvatar } = require('../models/user/changeUserAvatar');
+const cashbook_login = require('../models/cashbook/login');
 router
     .post('/reg', (req, res) => {
         console.log('====进入注册流程====');
