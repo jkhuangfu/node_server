@@ -56,7 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //配置路由
 fs.readdirSync(path.join(__dirname, './routes')).forEach(route => {
     let api = require(`./routes/${route}`);
-    app.use(`/${route === 'viewRouter.js' ? '/' : route.replace('.js', '')}`, api);
+    app.use(`/${route === 'viewRouter.js' ? '' : route.replace('.js', '')}`, api);
 });
 
 // catch 404 and forward to error handler
