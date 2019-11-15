@@ -1,11 +1,21 @@
 {
   "apps": {
-    "name": "server",
+    "name": "node_server",
     "script": "./bin/www",
     "args": "--abort-on-uncaught-exception",
-    "watch": ["bin", "views", "app.js", "routes", "src", "middlewares"],
+    "watch": [
+      "bin",
+      "views",
+      "app.js",
+      "routes",
+      "config",
+      "middlewares",
+      "util"
+    ],
     "watch_delay": 1000,
-    "ignore_watch": ["public/upload"],
+    "ignore_watch": [
+      "public/upload"
+    ],
     "log_date_format": "YYYY-MM-DD HH:mm Z",
     "env": {
       "NODE_ENV": "development"

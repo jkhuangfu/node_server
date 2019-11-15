@@ -1,7 +1,7 @@
 const router = require('koa-router')();
 // koa-routerconst md5 = require('md5');
 // const sha1 = require('sha1');
-const {hash} = require('../src/util/inedx');
+const {hash} = require('../util/inedx');
 router
     .get('/', async (ctx, next) => {
         // captcha(ctx, next);

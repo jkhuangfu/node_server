@@ -1,7 +1,7 @@
 const router = require('koa-router')();
 const checklogin = require('../middlewares/checklogin');
-const {publishArticle, queryArticle, queryArticleById, deleteArticle, changeArticleStatus} = require('../src/dao/blog/article');
-const {publishMessage, deleteMessage, queryMessage, changeMessageStatus} = require('../src/dao/blog/message');
+const {publishArticle, queryArticle, queryArticleById, deleteArticle, changeArticleStatus} = require('../models/blog/article');
+const {publishMessage, deleteMessage, queryMessage, changeMessageStatus} = require('../models/blog/message');
 router
     .use(checklogin)
     .post('/changeArticleStatus', async ctx => {

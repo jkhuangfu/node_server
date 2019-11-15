@@ -1,4 +1,4 @@
-const socket = require('socket.io');
+const socket = require('models/socket/socket.io');
 const createSocketIoServer = function(server) {
   const io = socket(server);
   io.on('connection', function(Socket) {

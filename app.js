@@ -5,6 +5,7 @@ const session = require('koa-session');
 const koaStatic = require('koa-static');
 const cors = require('@koa/cors');
 const path = require('path');
+const fs = require('fs');
 const app = new koa();
 const router = new Router();
 const koaBody = require('koa-body')({
@@ -15,13 +16,7 @@ const koaBody = require('koa-body')({
         maxFileSize: 2 * 1024 * 1024
     }
 });
-const userRouter = require('./routes/user');
-const common = require('./routes/common');
-const viewRouter = require('./routes/viewRouter');
-const blogRouter = require('./routes/blog');
-const wxRouter = require('./routes/wechat');
-const testRouter = require('./routes/test');
-require('./src/util/inedx');// 暴露全局变量
+require('./util/inedx');// 暴露全局变量
 // 允许请求的白名单（允许跨域的域名）
 const cors_domain = /^http:\/\/localhost|^http:\/\/127.0.0.1|drnet.xyz$/;
 const corsOptions = {
@@ -62,13 +57,12 @@ const err = async (ctx, next) => {
 };
 
 
-// 路由
-router.use('', viewRouter)
-router.use('/users', userRouter);
-router.use('/common', common);
-router.use('/wx', wxRouter);
-router.use('/t', testRouter);
-router.use('/blog', blogRouter);
+//配置路由
+fs.readdirSync(path.join(__dirname, './routes')).forEach(route => {
+    let api = require(`./routes/${route}`);
+    router.use(`/${route === 'viewRouter.js' ? '' : route.replace('.js', '')}`, api);
+});
+
 app
     .use(err)
     // session 中间件

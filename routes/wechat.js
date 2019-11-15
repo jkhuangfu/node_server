@@ -1,6 +1,6 @@
 const router = require('koa-router')();
-const {signature} = require('../src/dao/wechat/wx_signature/signature');
-const {getOpenid} = require('../src/dao/wechat/wx_opnid/index');
+const {signature} = require('../models/wechat/wx_signature/signature');
+const {getOpenid} = require('../models/wechat/wx_opnid/index');
 
 router
     //微信分享获取签名

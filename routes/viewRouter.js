@@ -20,19 +20,14 @@ router
         await ctx.render(html);
     })
     /* GET home page. */
-    .get('/', async ctx => {
+    .get('', async ctx => {
         await ctx.render('index');
     })
-    .get('/wx', async ctx => {
+    .get('wx', async ctx => {
         await ctx.render('wx');
     })
     /* to 404 page */
-    .get('/notFound', async ctx => {
+    .get('notFound', async ctx => {
         await ctx.render('error');
     });
-// .get('/img/:filename',(req,res)=>{
-//     const file = path.resolve('fileTemp',req.params.filename);
-//     const stream = fs.createReadStream(file);
-//     stream.pipe(res);
-// });
 module.exports = router.routes();

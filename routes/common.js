@@ -1,9 +1,9 @@
 const Router = require('koa-router');
 const router = new Router();
 const checklogin = require('../middlewares/checklogin');
-const captcha = require('../src/dao/common/cacp');
-const {upFileForOss, upFileForLocal} = require('../src/dao/common/upFile');
-const {sendMailCode, sendMailNormal} = require('../src/dao/common/sendMail');
+const captcha = require('../models/common/cacp');
+const {upFileForOss, upFileForLocal} = require('../models/common/upFile');
+const {sendMailCode, sendMailNormal} = require('../models/common/sendMail');
 
 const checkFile = async ctx => {
     if (!ctx.request.files) {

@@ -3,12 +3,14 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "start": "node ./app.js",
-        "pm": "pm2 start ./start.json"
+        "dev": "cross-env NODE_ENV=development node ./bin/www",
+        "start": "cross-env NODE_ENV=production node ./bin/www",
+        "pm2": "pm2 start ./start.json"
     },
     "dependencies": {
         "@koa/cors": "2",
         "ali-oss": "^6.1.1",
+        "cross-env": "^6.0.3",
         "ejs": "^2.7.1",
         "koa": "^2.11.0",
         "koa-body": "^4.1.1",

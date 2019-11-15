@@ -1,9 +1,9 @@
 const router = require('koa-router')();
-const {register} = require('../src/dao/user/register');
-const {login} = require('../src/dao/user/login');
-const {changePwd} = require('../src/dao/user/changePwd');
+const {register} = require('../models/user/register');
+const {login} = require('../models/user/login');
+const {changePwd} = require('../models/user/changePwd');
 const check_login = require('../middlewares/checklogin');
-const {changeUserAvatar} = require('../src/dao/user/changeUserAvatar');
+const {changeUserAvatar} = require('../models/user/changeUserAvatar');
 router
     .post('/reg', async ctx => {
         console.log('====进入注册流程====');
