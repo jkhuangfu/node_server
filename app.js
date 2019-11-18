@@ -60,7 +60,7 @@ const err = async (ctx, next) => {
 //配置路由
 fs.readdirSync(path.join(__dirname, './routes')).forEach(route => {
     let api = require(`./routes/${route}`);
-    router.use(`/${route === 'viewRouter.js' ? '' : route.replace('.js', '')}`, api);
+    router.use(`/${route.replace('.js', '')}`,api.routes());
 });
 
 app

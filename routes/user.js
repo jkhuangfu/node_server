@@ -34,4 +34,4 @@ router
         await changeUserAvatar(ctx);
     });
 
-module.exports = router.routes();
+module.exports = router;

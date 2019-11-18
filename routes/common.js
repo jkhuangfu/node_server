@@ -48,4 +48,4 @@ router
             ctx.body = {status: 500, msg: '上传出错', e};
         }
     });
-module.exports = router.routes();
+module.exports = router;
