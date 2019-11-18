@@ -1,5 +1,4 @@
-const Router = require('koa-router');
-const router = new Router();
+const router = require('koa-router')();
 const checklogin = require('../middlewares/checklogin');
 const captcha = require('../models/common/cacp');
 const {upFileForOss, upFileForLocal} = require('../models/common/upFile');
@@ -48,4 +47,4 @@ router
             ctx.body = {status: 500, msg: '上传出错', e};
         }
     });
-module.exports = router;
+module.exports = router.routes();

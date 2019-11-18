@@ -30,4 +30,4 @@ router
     .get('/notFound', async ctx => {
         await ctx.render('error');
     });
-module.exports = router;
+module.exports = router.routes();

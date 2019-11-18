@@ -32,4 +32,4 @@ router
         await queryMessage(ctx);
     });
 
-module.exports = router;
+module.exports = router.routes();

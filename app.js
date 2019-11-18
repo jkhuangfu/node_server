@@ -23,7 +23,7 @@ const corsOptions = {
     origin: ctx => {
         // 跨域处理
         const requestOrigin = ctx.headers.origin;
-        if(cors_domain.test(requestOrigin)){
+        if (cors_domain.test(requestOrigin)) {
             return requestOrigin;
         }
         return false;
@@ -60,7 +60,7 @@ const err = async (ctx, next) => {
 //配置路由
 fs.readdirSync(path.join(__dirname, './routes')).forEach(route => {
     let api = require(`./routes/${route}`);
-    router.use(`/${route.replace('.js', '')}`,api.routes());
+    router.use(route === 'view.js' ? '' : `/${route.replace('.js', '')}`, api);
 });
 
 app
