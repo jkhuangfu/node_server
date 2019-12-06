@@ -54,7 +54,7 @@ module.exports = {
         req.files.map(item => {
             let file_type = item.originalname.split('.').pop();
             let fileName = type ? `${type}.${file_type}` : item.originalname;
-            let key = `articleImg/${fileName}`;
+            let key = `upload/${fileName}`;
             let or_file = path.resolve("public/upload", item.filename);
             let stream = fs.createReadStream(or_file);
             promise.push(client.putStream(key, stream));
