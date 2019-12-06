@@ -82,10 +82,10 @@ module.exports = {
             });
             // 用户自定义名字--->单文件上传
             if (type && file_array.length === 1) {
-                const key = `articleImg/${type}.${ext}`;
+                const key = `upload/${type}.${ext}`;
                 promise.push(client.putStream(key, upStream)); // 上传至oss
             } else {
-                const key = `articleImg/${item.path.split('/').pop()}`;
+                const key = `upload/${item.path.split('/').pop()}`;
                 promise.push(client.putStream(key, upStream)); // 上传至oss
             }
         });
