@@ -1,6 +1,6 @@
 >此项目使用技术栈为 node express mysql express-session redis express-router socket.io websocket
 
->koa版本: [点击查看koa版本](https://github.com/jkhuangfu/node_server/tree/koa-version)
+>koa-js版本: [点击查看koa-js版本](https://github.com/jkhuangfu/node_server/tree/koa-version)
 
 >koa2-ts版本: [点击查看koa2-ts版本](https://github.com/jkhuangfu/koa-ts)
 
