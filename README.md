@@ -2,6 +2,8 @@
 
 >koa版本: [点击查看koa版本](https://github.com/jkhuangfu/node_server/tree/koa-version)
 
+>koa2-ts版本: [点击查看koa2-ts版本](https://github.com/jkhuangfu/koa-ts)
+
 ### 运行前准备
     
     1、安装node（>8版本）
